@@ -6,7 +6,7 @@ import {useEffect} from 'react';
 import ButtonHalf from './ButtonHalf'
 import SearchBar from './SearchBar'
 
-const HeaderNavigation = () => {
+const HeaderNavigation = ({ onPress }) => {
 
     const [loaded, error] = useFonts({
         'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
@@ -28,7 +28,7 @@ const HeaderNavigation = () => {
         <View style={styles.headerTop}>  
             <Text style={styles.headerTopKiddiz}>Kiddiz</Text>
             <View style={styles.headerButton}>
-                <ButtonHalf style={styles.buttonApple} text="Connexion" onPress={() => navigation.navigate('Connection')}/>
+                <ButtonHalf style={styles.buttonApple} text="Connexion" onPress={onPress}/>
             </View>
         </View>
         <View style={styles.headerBottom}>

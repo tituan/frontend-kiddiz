@@ -21,9 +21,9 @@ if (!loaded && !error) {
 
 return (
     <TouchableOpacity
-      style={[styles.buttonHalf, style]} 
-    //   onPress={onPress}
-      activeOpacity={0.7}
+        style={[styles.buttonHalf, style]} 
+        onPress={onPress}
+        activeOpacity={0.7}
     >
       <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
