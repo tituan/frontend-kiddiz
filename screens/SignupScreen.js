@@ -25,13 +25,13 @@ export default function ConnectionScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}> 
       <Text style={styles.title}>{title}</Text>
-            <View></View>
-                <TextInput placeholder="First Name" style={ styles.input} />
-                <TextInput placeholder="Last Name" style={ styles.input}/>
-                <TextInput placeholder="Email" style={ styles.input}/>
-                <TextInput placeholder="Birthday" style={ styles.input}/>
-                <TextInput placeholder="Password" style={ styles.input} />
-                <TextInput placeholder="Conforme Password" style={ styles.input} />
+            
+                <TextInput placeholder="First Name" style={ styles.input} placeholder="First Name"/>
+                <TextInput placeholder="Last Name" style={ styles.input} placeholder="Last Name"/>
+                <TextInput placeholder="Email" style={ styles.input} placeholder="Email"/>
+                <TextInput placeholder="Birthday" style={ styles.input} placeholder="Birthday"/>
+                <TextInput placeholder="Password" style={ styles.input} placeholder="Password"/>
+                <TextInput placeholder="Conforme Password" style={ styles.input} placeholder="Conforme Password" />
            
       <ButtonBig style={styles.buttonSInscrire}text="S'inscrire" />
       
@@ -57,16 +57,20 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    
-    fontSize: 25,
+    fontSize: 16,
     fontFamily: 'LilitaOne-Regular',
     marginBottom: 30, 
+    borderWidth: 2,
     width: '100%',
-    borderBottomColor: '#FDBB2D',
-    borderBottomWidth: 1,
-    textAlign: 'left',
-    
+    height: 50,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+    padding: 5,
   },
+  
+  
   buttonSInscrire: {
     backgroundColor: '#00CC99',
   },
