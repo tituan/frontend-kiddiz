@@ -1,27 +1,41 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
-import ButtonBig from './components/components';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import ButtonBig from './components/ButtonBig';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
 
 export default function ConnectionScreen({ navigation }) {
- return (
-   <View style={styles.container}>
-     <Text>Kiddiz</Text>
-     <Text>Se connecter ou S'inscrire</Text>
+  const title = 'Kiddiz';
 
-     {/* Style personnalisé pour chaque bouton */}
-     <ButtonBig style={styles.buttonApple} text="Se connecter avec Apple" />
-     <ButtonBig style={styles.buttonFacebook} text="Se connecter avec Facebook" />
-     <ButtonBig style={styles.buttonGoogle} text="Se connecter avec Google" />
+  const [loaded, error] = useFonts({
+    'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
+  });
 
-     <Button
-       title="Go to SignIn"
-       onPress={() => navigation.navigate('SignIn')}
-     />
-     <Button
-       title="Go to SignUp"
-       onPress={() => navigation.navigate('SignUp')}
-     />
-   </View>
- );
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
+
+  return (
+    <SafeAreaView style={styles.container}> 
+      <Text style={styles.title}>{title}</Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.bodyContainer}>Se connecter </Text>
+        <Text style={styles.bodyContainer}>ou</Text>
+        <Text style={styles.bodyContainer}>s'inscrire</Text>
+      </View>
+
+      <ButtonBig style={styles.buttonInscrisToi} text="Inscris-toi" onPress={() => navigation.navigate('SignUp')} />
+      <ButtonBig style={styles.buttonConnectesToi} text="Connectes toi" onPress={() => navigation.navigate('SignIn')} />
+      <ButtonBig style={styles.buttonGoogle} text="Se connecter avec Google" />
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -29,19 +43,37 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
-
-  
-  buttonApple: {
-    backgroundColor: '#EDDC5F',  
+  title: {
+    fontSize: 90,
+    fontFamily: 'LilitaOne-Regular',
+    color: "#FDBB2D",
+    textShadowColor: 'black',
+    textShadowOffset: { width: 4, height: 6 },
+    textShadowRadius: 3,
   },
-
-  
-  buttonFacebook: {
-    backgroundColor: '#4478A9',  
+  textContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 50,
+    fontFamily: 'LilitaOne-Regular',
+    width: 280,
+    height: 200,
+    margin: 60,
   },
-
+  bodyContainer: {
+    fontSize: 40,
+    textAlign: 'center',
+    fontFamily: 'LilitaOne-Regular',
+  },
+  buttonInscrisToi: {
+    backgroundColor: '#00CC99',
+  },
+  buttonConnectesToi: {
+    backgroundColor: '#4478A9',
+  },
   buttonGoogle: {
-    backgroundColor: '#E94C65',  
+    backgroundColor: '#E94C65',
   },
-})
+});
