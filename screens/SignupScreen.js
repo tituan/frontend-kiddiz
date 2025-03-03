@@ -25,14 +25,14 @@ export default function ConnectionScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}> 
       <Text style={styles.title}>{title}</Text>
-            <View>
-                <TextInput placeholder="First Name" style={styles.fisrtName} />
-                <TextInput placeholder="Last Name" style={styles.fisrtName} />
-                <TextInput placeholder="Email" style={styles.fisrtName} />
-                <TextInput placeholder="Birthday" style={styles.fisrtName} />
-                <TextInput placeholder="Password" style={styles.fisrtName} />
-                <TextInput placeholder="Conforme Password" style={styles.fisrtName} />
-            </View>
+            <View></View>
+                <TextInput placeholder="First Name" style={ styles.input} />
+                <TextInput placeholder="Last Name" style={ styles.input}/>
+                <TextInput placeholder="Email" style={ styles.input}/>
+                <TextInput placeholder="Birthday" style={ styles.input}/>
+                <TextInput placeholder="Password" style={ styles.input} />
+                <TextInput placeholder="Conforme Password" style={ styles.input} />
+           
       <ButtonBig style={styles.buttonSInscrire}text="S'inscrire" />
       
     </SafeAreaView>
@@ -47,19 +47,25 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 30,
+    fontSize: 50,
+    marginBottom: 100,
     fontFamily: 'LilitaOne-Regular',
     color: "#FDBB2D",
     textShadowColor: 'black',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 3,
   },
-  fisrtName:{
-    fontSize: 22,
+
+  input: {
+    
+    fontSize: 25,
+    fontFamily: 'LilitaOne-Regular',
+    marginBottom: 30, 
     width: '100%',
     borderBottomColor: '#FDBB2D',
     borderBottomWidth: 1,
-
+    textAlign: 'left',
+    
   },
   buttonSInscrire: {
     backgroundColor: '#00CC99',
