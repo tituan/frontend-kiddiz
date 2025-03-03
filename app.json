@@ -23,6 +23,32 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/LilitaOne-Regular.ttf",
+            "./assets/fonts/Roboto_Condensed-Black.ttf",
+            "./assets/fonts/Roboto_Condensed-BlackItalic.ttf",
+            "./assets/fonts/Roboto_Condensed-Bold.ttf",
+            "./assets/fonts/Roboto_Condensed-BoldItalic.ttf",
+            "./assets/fonts/Roboto_Condensed-Italic.ttf",
+            "./assets/fonts/Roboto_Condensed-Light.ttf",
+            "./assets/fonts/Roboto_Condensed-LightItalic.ttf",
+            "./assets/fonts/Roboto_Condensed-Medium.ttf",
+            "./assets/fonts/Roboto_Condensed-MediumItalic.ttf",
+            "./assets/fonts/Roboto_Condensed-Regular.ttf",
+            "./assets/fonts/Roboto_Condensed-SemiBold.ttf",
+            "./assets/fonts/Roboto_Condensed-SemiBoldItalic.ttf",
+            "./assets/fonts/Roboto_Condensed-Thin.ttf",
+            "./assets/fonts/Roboto_Condensed-ThinItalic.ttf",
+            "./assets/fonts/RopaSans-Regular.ttf",
+            "./assets/fonts/RopaSans-Italic.ttf"
+          ]
+        }
+      ]
+    ]
   }
 }
