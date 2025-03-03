@@ -13,7 +13,7 @@ export default function HomeScreen({ navigation }) {
         end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
         style={styles.header}
         >
-            <HeaderNavigation/>  
+            <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
             <WelcomeHome/>  
         </LinearGradient>
     </View>
