@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import HeaderNavigation from './components/HeaderNavigation'; 
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient'
 import WelcomeHome from './components/WelcomeHome'
 
 export default function HomeScreen({ navigation }) {
