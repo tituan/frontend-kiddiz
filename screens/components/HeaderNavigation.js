@@ -2,11 +2,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
-
+import { useSelector } from 'react-redux';
 import ButtonHalf from './ButtonHalf'
 import SearchBar from './SearchBar'
 
 const HeaderNavigation = ({ onPress }) => {
+    const userToken = useSelector(state => state.user.value.token);
 
     const [loaded, error] = useFonts({
         'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
@@ -28,7 +29,10 @@ const HeaderNavigation = ({ onPress }) => {
         <View style={styles.headerTop}>  
             <Text style={styles.headerTopKiddiz}>Kiddiz</Text>
             <View style={styles.headerButton}>
-                <ButtonHalf style={styles.buttonApple} text="Connexion" onPress={onPress}/>
+            {userToken ? null : (
+                <ButtonHalf style={styles.buttonApple} text="Connexion" onPress={onPress} />
+            )}
+                {/* <ButtonHalf style={styles.buttonApple} text="Connexion" onPress={onPress}/> */}
             </View>
         </View>
         <View style={styles.headerBottom}>
