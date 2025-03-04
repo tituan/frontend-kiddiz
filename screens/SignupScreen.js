@@ -1,18 +1,39 @@
-import { Button, StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ButtonBig from './components/ButtonBig';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+// Importation de react-hook-form et yup
+import { useForm, Controller } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+// Schéma de validation avec yup
+const schema = yup.object().shape({
+  firstName: yup.string().required('Prénom requis'),
+  lastName: yup.string().required('Nom requis'),
+  email: yup.string().email('Email invalide').required('Email requis'),
+  birthday: yup
+    .date()
+    .nullable()
+    .required('Date de naissance requise'),
+  password: yup.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères').required('Mot de passe requis'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Les mots de passe ne correspondent pas')
+    .required('Confirmation du mot de passe requise'),
+});
+
 export default function ConnectionScreen({ navigation }) {
   const title = 'Kiddiz';
-  const [date, setDate] = useState(new Date());
+  // État pour gérer l'affichage du DateTimePicker
   const [showPicker, setShowPicker] = useState(false);
-  const [formattedDate, setFormattedDate] = useState('');
-  
+
+  // Chargement de la police
   const [loaded, error] = useFonts({
     'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
   });
@@ -27,11 +48,27 @@ export default function ConnectionScreen({ navigation }) {
     return null;
   }
 
-  const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
-    setFormattedDate(currentDate.toLocaleDateString());  // Formate la date pour l'afficher
-    setShowPicker(false); // Ferme le picker après la sélection de la date
+  // Initialisation de react-hook-form avec yupResolver
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      birthday: null, // On initialise à null pour forcer la sélection
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  // Fonction de soumission du formulaire
+  const onSubmit = data => {
+    console.log('Données du formulaire :', data);
+    // Ajoutez ici l'envoi des données à votre backend
   };
 
   return (
@@ -47,29 +84,132 @@ export default function ConnectionScreen({ navigation }) {
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.bodyText}>Découvrez un monde de jouets !</Text>
 
-            <TextInput placeholder="First Name" style={styles.input} />
-            <TextInput placeholder="Last Name" style={styles.input} />
-            <TextInput placeholder="Email" style={styles.input} />
+            {/* First Name */}
+            <Controller
+              control={control}
+              name="firstName"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <>
+                  <TextInput
+                    placeholder="First Name"
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                  {errors.firstName && <Text style={styles.errorText}>{errors.firstName.message}</Text>}
+                </>
+              )}
+            />
 
-            <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.input}>
-              <Text style={formattedDate ? styles.dateText : styles.placeholderText}>
-                {formattedDate || 'Birthday'}
-              </Text>
-            </TouchableOpacity>
+            {/* Last Name */}
+            <Controller
+              control={control}
+              name="lastName"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <>
+                  <TextInput
+                    placeholder="Last Name"
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                  {errors.lastName && <Text style={styles.errorText}>{errors.lastName.message}</Text>}
+                </>
+              )}
+            />
 
-            {showPicker && (
-              <DateTimePicker
-                value={date}
-                mode="date"
-                display="spinner" 
-                onChange={handleDateChange} // Appel de la fonction pour gérer le changement de date
-              />
-            )}
+            {/* Email */}
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <>
+                  <TextInput
+                    placeholder="Email"
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                  />
+                  {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
+                </>
+              )}
+            />
 
-            <TextInput placeholder="Password" style={styles.input} secureTextEntry={true} />
-            <TextInput placeholder="Confirm Password" style={styles.input} secureTextEntry={true} />
+            {/* Birthday */}
+            <Controller
+              control={control}
+              name="birthday"
+              render={({ field: { onChange, value } }) => (
+                <>
+                  <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.input}>
+                    <Text style={value ? styles.dateText : styles.placeholderText}>
+                      {value ? new Date(value).toLocaleDateString() : 'Birthday'}
+                    </Text>
+                  </TouchableOpacity>
+                  {errors.birthday && <Text style={styles.errorText}>{errors.birthday.message}</Text>}
+                  {showPicker && (
+                    <DateTimePicker
+                      value={value ? new Date(value) : new Date()}
+                      mode="date"
+                      display="spinner"
+                      onChange={(event, selectedDate) => {
+                        onChange(selectedDate || value);
+                        setShowPicker(false);
+                      }}
+                    />
+                  )}
+                </>
+              )}
+            />
 
-            <ButtonBig style={styles.buttonSInscrire} text="S'inscrire" />
+            {/* Password */}
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <>
+                  <TextInput
+                    placeholder="Password"
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    secureTextEntry={true}
+                  />
+                  {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+                </>
+              )}
+            />
+
+            {/* Confirm Password */}
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <>
+                  <TextInput
+                    placeholder="Confirm Password"
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    secureTextEntry={true}
+                  />
+                  {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
+                </>
+              )}
+            />
+
+            {/* Bouton d'inscription */}
+            {/* Pour tester, vous pouvez aussi remplacer ButtonBig par le composant Button de react-native */}
+            {/* <TouchableOpacity > */}
+              <Button style={styles.buttonSInscrire} title="S'inscrire" onPress={handleSubmit(onSubmit)}/>
+            {/* </TouchableOpacity> */}
           </SafeAreaView>
         </KeyboardAvoidingView>
       </LinearGradient>
@@ -128,5 +268,12 @@ const styles = StyleSheet.create({
   },
   buttonSInscrire: {
     backgroundColor: '#00CC99',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginTop: -20,
+    marginBottom: 20,
+    textAlign: 'center',
   },
 });
