@@ -3,6 +3,8 @@ import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyb
 import { LinearGradient } from 'expo-linear-gradient';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../reducers/users';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -20,7 +22,9 @@ const schema = yup.object().shape({
     .required('Mot de passe est requis'),
 });
 
-const SignInScreen = () => {
+const SignInScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+
   const [fontsLoaded] = useFonts({
     'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
     'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
@@ -58,6 +62,15 @@ const SignInScreen = () => {
 
       if (data.result) {
         console.log('Connexion réussie:', data);
+        dispatch(loginUser({
+          firstname: data.userData.firstname,
+          lastname: data.userData.lastname,
+          email: data.userData.email,
+          dateOfBirth: data.userData.dateOfBirth,
+          token: data.userData.token,
+          status: data.userData.status
+        }));
+        navigation.navigate("Home");
         // Vous pouvez ajouter une navigation ou une autre action ici
       } else {
         console.log('Erreur de connexion:', data.message);
