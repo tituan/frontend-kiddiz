@@ -7,6 +7,7 @@ const initialState = {
     lastname: null,
     email: null,
     dateOfBirth: null,
+    token: null, 
   },
 };
 

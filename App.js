@@ -1,5 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
 import ConnectionScreen from "./screens/ConnectionScreen";
@@ -7,31 +8,19 @@ import SignUpScreen from "./screens/SignupScreen";
 import SignInScreen from "./screens/SigninScreen";
 // import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+
 // redux imports
-import { Provider } from "react-redux";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import user from "./reducers/users";
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import user from './reducers/users';
 
-// redux-persist imports
-import { persistStore, persistReducer } from "redux-persist";
-import { PersistGate } from "redux-persist/integration/react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const reducers = combineReducers({ user });
-const persistConfig = {
-  key: "faceup",
-  storage: AsyncStorage,
-};
 
 const store = configureStore({
-  reducer: persistReducer(persistConfig, reducers),
-  middleware: (getDefaultMiddleware: any) =>
-    getDefaultMiddleware({ serializableCheck: false }),
+  reducer: { user },
 });
 
-const persistor = persistStore(store);
-
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
@@ -69,7 +58,6 @@ const TabNavigator = () => {
 export default function App() {
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -78,7 +66,6 @@ export default function App() {
             <Stack.Screen name="SignIn" component={SignInScreen} />
           </Stack.Navigator>
         </NavigationContainer>
-      </PersistGate>
     </Provider>
   );
 }
