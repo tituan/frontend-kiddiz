@@ -28,7 +28,7 @@ const SignInScreen = ({navigation}) => {
       });
       // Convertir la réponse en JSON
       const data = await response.json();
-
+      console.log(data)
       // Vérifier si la requête a réussi
       if (data.result) {
         console.log('Données envoyées avec succès :', data);
