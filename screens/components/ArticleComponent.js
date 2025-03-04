@@ -7,6 +7,7 @@ import { FontAwesome } from '@expo/vector-icons';
 function Article({ text, onPress, style }) {
   const [loaded, error] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
+    'RopaSans-Regular': require('../../assets/fonts/RopaSans-Regular.ttf'),
   });
 
   const [isLiked, setIsLiked] = useState(false);  
@@ -31,17 +32,17 @@ function Article({ text, onPress, style }) {
       <View style={styles.imageContainer}>
         <Image source={require('../../assets/peluche.jpg')} style={styles.image} />
         <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
-          <FontAwesome name="heart" size={24} color={isLiked ? "red" : "black"} />
+          <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.rowContainer}>
         <View>
-          <Text style={styles.text}>Article</Text>
-          <Text style={styles.text}>Etat</Text>
+          <Text style={styles.text}>Ballon de football</Text>
+          <Text style={styles.textType}>Très bon état</Text>
         </View>
         <View style={styles.priceContainer}>
-          <Text style={styles.textPrix}>48€</Text>
+          <Text style={styles.textPrix}>648 €</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -60,7 +61,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 10,
-    backgroundColor: '#4478A9',
+    backgroundColor: '#00CC99',
+    padding: 5,
 
     // Shadow for iOS
     shadowColor: "#000",
@@ -76,14 +78,15 @@ const styles = StyleSheet.create({
     
   },
   image: {
-    width: 160,
-    height: 160,
+    width: 150,
+    height: 170,
     borderWidth: 2,
     borderColor: "#000000",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 10,
+  
   },
   heartIcon: {
     position: 'absolute',
@@ -104,11 +107,19 @@ const styles = StyleSheet.create({
     borderColor: "#000000",
   },
   text: {
-    color: "#ffffff",
-    fontWeight: "bold",
-    fontFamily: 'LilitaOne-Regular',
-    fontSize: 20,
-    textShadowColor: 'black',
+    color: "black",
+    fontFamily: 'RopaSans-Regular',
+    fontSize: 12,
+    textShadowColor: 'white',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 1,
+    marginBottom: 3,
+  },
+  textType: {
+    color: "black",
+    fontFamily: 'RopaSans-Regular',
+    fontSize: 10,
+    textShadowColor: 'white',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
   },
@@ -116,22 +127,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     marginBottom: 10,
     width: '100%',
   },
   priceContainer: {
-    width: 45,
-    height: 45,
+    padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#000000",
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: '#EDDC5F',
   },
   textPrix: {
-    fontSize: 18,
+    fontSize: 12,
     fontFamily: 'LilitaOne-Regular',
   }
 });

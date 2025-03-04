@@ -39,18 +39,38 @@ const TabNavigator = () => {
             iconName = "map-pin";
           }
 
-          return <FontAwesome name={iconName} size={size} color={color} />;
+          return <FontAwesome name={"home"} size="45" color={color} />;
         },
-        tabBarActiveTintColor: "#ec6e5b",
+        tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "#335561",
         headerShown: false,
+        tabBarLabelStyle: {
+          fontSize: 13,
+          fontFamily: 'Arial',
+          fontWeight: 300,
+        },
+        tabBarStyle: {
+          backgroundColor: 'rgba(34,193,195,1)', // Vert avec opacité 0.5
+          height: 85,
+          borderTopColor: 'black',
+          borderTopWidth: 2,
+        
+          // Pour iOS
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 3,
+        
+          // Pour Android
+          elevation: 5,
+        },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Favoris" component={FavorisScreen} />
+      {/* <Tab.Screen name="Favoris" component={FavorisScreen} />
       <Tab.Screen name="AddArticles" component={AddArticlesScreen} />
       <Tab.Screen name="Messagerie" component={MessagerieScreen} />
-      <Tab.Screen name="Profil" component={ProfilScreen} />
+      <Tab.Screen name="Profil" component={ProfilScreen} /> */}
     </Tab.Navigator>
   );
 };
@@ -64,6 +84,7 @@ export default function App() {
             <Stack.Screen name="Connection" component={ConnectionScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
     </Provider>

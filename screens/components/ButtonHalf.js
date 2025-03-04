@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#ffff", 
     fontFamily: 'LilitaOne-Regular',
-    fontSize : 20,
+    fontSize : 18,
     textShadowColor: 'black', 
     textShadowOffset: { width: 1, height:3 }, 
     textShadowRadius: 1, 

@@ -93,7 +93,7 @@ export default function SignUpScreen({ navigation }) {
 
       console.log(values.dateOfBirth)
 
-      const response = await fetch('http://192.168.100.209:3000/users/signup', {
+      const response = await fetch('http://192.168.1.134:3000/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formattedValues),
@@ -110,7 +110,7 @@ export default function SignUpScreen({ navigation }) {
           token: data.userResponse.token,
           status: data.userResponse.status
         }));
-        navigation.navigate('Home');
+        navigation.navigate('TabNavigator');
       } else {
         console.log('Une erreur s\'est produite lors de l\'inscription :', data.error);
       }

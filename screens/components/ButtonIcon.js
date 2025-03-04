@@ -11,7 +11,7 @@ function ButtonIcon({ text, onPress, style, name, color }) {
           onPress={onPress}
           activeOpacity={0.7}
         >
-          <FontAwesome name={name} size={25} color="white" />
+          <FontAwesome name={name} size={22} color="white" />
         </TouchableOpacity>
     );
 }
@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
   buttonSquare: {
     borderWidth: 2,
     borderColor: "#000000",
-    height: 50,
-    width: 50,
+    height: 45,
+    width: 45,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",

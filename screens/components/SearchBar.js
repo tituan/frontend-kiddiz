@@ -7,6 +7,7 @@ import {useEffect} from 'react';
 function SearchBar() {
   const [loaded, error] = useFonts({
       'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
+      'RopaSans-Regular': require('../../assets/fonts/RopaSans-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
   },
   buttonFilter: {
     width: '30%',
-    height: 60,
+    height: 45,
     borderWidth: 2,
     borderColor: "#000000",
     backgroundColor: '#F0D74D',
@@ -64,18 +65,18 @@ const styles = StyleSheet.create({
   },
   buttonFilterText: {
     fontFamily: 'LilitaOne-Regular',
-    fontSize: 18,
+    fontSize: 16,
   },
   searchBar: {
     width: '70%',
-    height: 60,
+    height: 45,
     borderWidth: 2,
     borderColor: "#000000",
     backgroundColor: '#ffff',
-    fontFamily: 'LilitaOne-Regular',
+    fontFamily: 'Ropa-Sans',
     textAlign: 'right',
     paddingHorizontal: 30,
-    fontSize: 18,
+    fontSize: 14,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     borderLeftWidth: 0,

@@ -53,7 +53,7 @@ const SignInScreen = ({navigation}) => {
   // Fonction pour envoyer les données au serveur
   const handlePost = async (values) => {
     try {
-      const response = await fetch('http://192.168.100.209:3000/users/signin', {
+      const response = await fetch('http://192.168.1.134:3000/users/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
@@ -70,7 +70,9 @@ const SignInScreen = ({navigation}) => {
           token: data.userData.token,
           status: data.userData.status
         }));
-        navigation.navigate("Home");
+        // navigation.replace("TabNavigator");
+        navigation.navigate("TabNavigator");
+        // navigation.replace("TabNavigator");
         // Vous pouvez ajouter une navigation ou une autre action ici
       } else {
         console.log('Erreur de connexion:', data.message);
