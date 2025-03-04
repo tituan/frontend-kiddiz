@@ -36,7 +36,7 @@ const CustomCheckBox = ({ label, value, onChange }) => {
       <Icon
         name={value ? 'check-box' : 'check-box-outline-blank'}
         size={24}
-        color={value ? '#22c1c3' : '#000'}
+        color={value ? '#EDDC5F' : '#000'}
       />
       <Text style={styles.checkboxLabel}>{label}</Text>
     </TouchableOpacity>
@@ -51,6 +51,7 @@ export default function SignUpScreen({ navigation }) {
   // Chargement de la police
   const [loaded, error] = useFonts({
     'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
+    'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -198,7 +199,7 @@ export default function SignUpScreen({ navigation }) {
               render={({ field: { onChange, value } }) => (
                 <>
                   <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.input}>
-                    <Text style={value ? styles.dateText : styles.placeholderText}>
+                    <Text style={[value ? styles.dateText : styles.placeholderText, { fontFamily: 'RopaSans-Regular' }, { opacity: 0.7 }]}>
                       {value ? new Date(value).toLocaleDateString() : 'Date de naissance'}
                     </Text>
                   </TouchableOpacity>
@@ -322,14 +323,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#fff',
     fontSize: 16,
-    fontFamily: 'LilitaOne-Regular',
+    fontFamily: 'RopaSans-Regular',
     height: 50,
   },
   errorText: {
     color: '#ff4d4d',
     fontSize: 14,
     marginBottom: 10,
-    fontFamily: 'LilitaOne-Regular',
+    fontFamily: 'RopaSans-Regular',
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -339,7 +340,7 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     fontSize: 14,
     marginLeft: 10,
-    fontFamily: 'LilitaOne-Regular',
+    fontFamily: 'RopaSans-Regular',
   },
   buttonSignUp: {
     backgroundColor: '#00CC99',
