@@ -16,7 +16,6 @@ export default function HomeScreen({ navigation }) {
         style={styles.header}
         >
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
-            
         </LinearGradient> 
         
         <ScrollView contentContainerStyle={styles.contentContainer}>
