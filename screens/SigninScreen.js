@@ -63,12 +63,12 @@ const SignInScreen = ({navigation}) => {
       if (data.result) {
         console.log('Connexion réussie:', data);
         dispatch(loginUser({
-          firstname: data.userResponse.firstname,
-          lastname: data.userResponse.lastname,
-          email: data.userResponse.email,
-          dateOfBirth: data.userResponse.dateOfBirth,
-          token: data.userResponse.token,
-          status: data.userResponse.status
+          firstname: data.userData.firstname,
+          lastname: data.userData.lastname,
+          email: data.userData.email,
+          dateOfBirth: data.userData.dateOfBirth,
+          token: data.userData.token,
+          status: data.userData.status
         }));
         navigation.navigate("Home");
         // Vous pouvez ajouter une navigation ou une autre action ici
