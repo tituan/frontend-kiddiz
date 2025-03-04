@@ -9,7 +9,7 @@ export default function HomeScreen({ navigation }) {
 
     return (
     <View style={styles.container}>
-        {/* <LinearGradient
+        <LinearGradient
         colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
         start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
         end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
@@ -17,7 +17,7 @@ export default function HomeScreen({ navigation }) {
         >
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
             <WelcomeHome/>  
-        </LinearGradient> */}
+        </LinearGradient>
 
         <ScrollView contentContainerStyle={styles.contentContainer}>
              <View style={styles.row}> 
