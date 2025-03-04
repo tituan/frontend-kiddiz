@@ -35,7 +35,7 @@ const WelcomeHome = () => {
                 />
                 <Text style={styles.welcomeLine}>Vendez / Achetez des jouets</Text>
                 <Text style={styles.welcomeLine}>d'occasion non reconditionnés</Text>
-                <ButtonBig style={styles.buttonVendre} text="Vendre votre article" />
+                <ButtonBig style={styles.buttonVendre} text="Vendre votre article" onPress={() => navigation.navigate("Connection")}/>
             </View>
       )} 
     </View>

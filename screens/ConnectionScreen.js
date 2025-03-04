@@ -4,6 +4,7 @@ import ButtonBig from './components/ButtonBig';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import ButtonSmall from './components/ButtonSmall'
 
 export default function ConnectionScreen({ navigation }) {
   const title = 'Kiddiz';
@@ -24,6 +25,7 @@ export default function ConnectionScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}> 
+    
       <Text style={styles.title}>{title}</Text>
       <View style={styles.textContainer}>
         <Text style={styles.bodyContainer}>Se connecter </Text>
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
+
   title: {
     fontSize: 90,
     fontFamily: 'LilitaOne-Regular',
@@ -76,4 +79,5 @@ const styles = StyleSheet.create({
   buttonGoogle: {
     backgroundColor: '#E94C65',
   },
+
 });

@@ -6,6 +6,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ConnectionScreen from "./screens/ConnectionScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import SignInScreen from "./screens/SigninScreen";
+import AddArticlesScreen from "./screens/AddArticlesScreen";
 // import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -64,6 +65,7 @@ export default function App() {
             <Stack.Screen name="Connection" component={ConnectionScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="AddArticleScreen" component={AddArticlesScreen} />
           </Stack.Navigator>
         </NavigationContainer>
     </Provider>

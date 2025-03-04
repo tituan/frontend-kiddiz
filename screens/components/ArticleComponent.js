@@ -31,7 +31,7 @@ function Article({ text, onPress, style }) {
       <View style={styles.imageContainer}>
         <Image source={require('../../assets/peluche.jpg')} style={styles.image} />
         <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
-          <FontAwesome name="heart" size={24} color={isLiked ? "red" : "black"} />
+          <FontAwesome name="heart" size={17} color={isLiked ? "red" : "black"} />
         </TouchableOpacity>
       </View>
 
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   articleContainer: {
     borderWidth: 2,
     borderColor: "#000000",
-    width: 180,
+    width: '48%',
     height: 240,
     borderRadius: 10,
     alignItems: "center",

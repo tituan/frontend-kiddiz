@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
   buttonBig: {
     borderWidth: 2,
     borderColor: "#000000",
-    width: '100%',
-    height: 40,
+    width: '15%',
+    height: 50,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
