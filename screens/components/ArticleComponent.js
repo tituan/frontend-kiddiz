@@ -1,0 +1,90 @@
+import React from "react";
+import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import {useEffect} from 'react';
+import ButtonSmall from "./ButtonSmall";
+
+
+
+function Article({ text, onPress, style }) {
+  const [loaded, error] = useFonts({
+      'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
+  });
+
+  useEffect(() => {
+    if (loaded || error) {
+        SplashScreen.hideAsync();
+        }
+    }, [loaded, error]);
+
+    if (!loaded && !error) {
+        return null;
+    } 
+
+    return (
+        <TouchableOpacity style={[styles.articleContainer, style]} onPress={onPress} >
+
+           <Image source={require('../../assets/peluche.jpg')} style={styles.image}/>
+
+                    <View style={styles.rowContainer}> 
+                        <View>
+                            <Text style={styles.textArticle}>Article</Text>
+                            <Text style={styles.textEtat}>Etat</Text>
+                        </View>
+                        <View>
+                           <Text style={styles.textPrix}>48€</Text>
+                        </View>
+                    </View>
+                
+
+        </TouchableOpacity>
+      );
+    }
+
+
+export default Article;
+
+const styles = StyleSheet.create({
+articleContainer: {
+    borderWidth: 2,
+    borderColor: "#000000",
+    width: '100%',
+    height: 240,
+    width: 180,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+
+    // Ombre sur iOS
+    shadowColor: "#000",
+    shadowOffset: { width: 4, height: 4 }, 
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+
+    // Ombre sur Android
+    elevation: 5, 
+   
+  },
+  text: {
+    color: "#ffffff", 
+    fontWeight: "bold",
+    fontFamily: 'LilitaOne-Regular',
+    fontSize : 20,
+    textShadowColor: 'black', 
+    textShadowOffset: { width: 1, height:3 }, 
+    textShadowRadius: 1, 
+    },
+    image:{
+        width: 150, 
+        height: 170,
+        borderWidth: 2,
+        borderColor: "#000000",
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 10,
+
+    },
+});

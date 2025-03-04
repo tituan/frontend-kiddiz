@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
+import ButtonBig from '../components/ButtonBig';
 
 const WelcomeHome = () => {
 
@@ -30,6 +31,7 @@ const WelcomeHome = () => {
         />
         <Text style={styles.welcomeLine}>Vendez / Achetez des jouets</Text>
         <Text style={styles.welcomeLine}>d'occasion non recondiotionnés</Text>
+        <ButtonBig style={styles.buttonVendre} text="Vendre votre article" />
     </View>
  );
 }
@@ -53,7 +55,13 @@ const styles = StyleSheet.create({
         color: '#00000',
         fontFamily: 'RopaSans',
         fontSize: '22',
+        
     },
+    buttonVendre: {
+     backgroundColor: '#EDDC5F',
+     marginTop: 30,
+    },
+
     welcomeImage: {
         width: '100%',
         height: 200,
