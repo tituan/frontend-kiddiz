@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import axios from 'axios';
 
 // Importation de react-hook-form et yup
 import { useForm, Controller } from 'react-hook-form';
@@ -47,6 +48,7 @@ export default function ConnectionScreen({ navigation }) {
   if (!loaded && !error) {
     return null;
   }
+  
 
   // Initialisation de react-hook-form avec yupResolver
   const {
@@ -66,9 +68,29 @@ export default function ConnectionScreen({ navigation }) {
   });
 
   // Fonction de soumission du formulaire
-  const onSubmit = data => {
-    console.log('Données du formulaire :', data);
-    // Ajoutez ici l'envoi des données à votre backend
+  const onSubmit = (data) => {
+    handleSignUp(data);
+  };
+
+  const handleSignup = async (values) => {
+    try {
+
+      const response = await fetch('http://192.168.100.209:3000/users/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      });
+  
+      const data = await response.json();
+      
+      if (data.result) {
+        console.log('Utilisateur inscrit avec succès :', data);
+      } else {
+        console.log("Une erreur s'est produite lors de l'inscription.");
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription :', error);
+    }
   };
 
   return (
@@ -82,7 +104,7 @@ export default function ConnectionScreen({ navigation }) {
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
           <SafeAreaView style={styles.innerContainer}>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.bodyText}>Découvrez un monde de jouets !</Text>
+            
 
             {/* First Name */}
             <Controller
@@ -207,9 +229,8 @@ export default function ConnectionScreen({ navigation }) {
 
             {/* Bouton d'inscription */}
             {/* Pour tester, vous pouvez aussi remplacer ButtonBig par le composant Button de react-native */}
-            {/* <TouchableOpacity > */}
-              <Button style={styles.buttonSInscrire} title="S'inscrire" onPress={handleSubmit(onSubmit)}/>
-            {/* </TouchableOpacity> */}
+         
+              <ButtonBig style={styles.buttonSInscrire} text="S'inscrire" onPress={handleSubmit(onSubmit)} onPress={() => navigation.navigate('Home')}/>
           </SafeAreaView>
         </KeyboardAvoidingView>
       </LinearGradient>
@@ -228,7 +249,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 70,
+    fontSize: 40,
+    marginTop: -90,
     marginBottom: 30,
     fontFamily: 'LilitaOne-Regular',
     color: "white",
@@ -236,15 +258,15 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 4, height: 4 },
     textShadowRadius: 3,
   },
-  bodyText: {
-    fontSize: 23,
-    fontFamily: 'LilitaOne-Regular',
-    marginBottom: 30,
-    color: '#E94C65',
-    textShadowColor: 'black',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 1,
-  },
+  // bodyText: {
+  //   fontSize: 23,
+  //   fontFamily: 'LilitaOne-Regular',
+  //   marginBottom: 30,
+  //   color: '#E94C65',
+  //   textShadowColor: 'black',
+  //   textShadowOffset: { width: 2, height: 2 },
+  //   textShadowRadius: 1,
+  // },
   input: {
     fontSize: 16,
     fontFamily: 'LilitaOne-Regular',
