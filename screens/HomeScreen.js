@@ -16,21 +16,25 @@ export default function HomeScreen({ navigation }) {
         style={styles.header}
         >
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
-            <WelcomeHome/>  
-        </LinearGradient>
-
+            
+        </LinearGradient> 
+        
         <ScrollView contentContainerStyle={styles.contentContainer}>
+        <WelcomeHome/>  
              <View style={styles.row}> 
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
                 <Article style={styles.articleContainer}/>
                 <Article style={styles.articleContainer}/>
              </View>
         </ScrollView>
         
-
-    
-
-
-
     </View>
     );
 }
@@ -44,21 +48,21 @@ const styles = StyleSheet.create({
         padding: 20,
         borderBottomColor: '#00000',
         borderBottomWidth: 2,
-        paddingBottom: 35,
+        paddingBottom: 20,
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between', 
+        flexWrap: 'wrap',
         alignItems: 'center', 
         width: '100%', 
-        paddingHorizontal: 20, 
+        padding: 20, 
     },
     article: {
         width: '48%', 
     },
     contentContainer: {
         flexGrow: 1,
-        paddingVertical: 20,
     },
 
 })
