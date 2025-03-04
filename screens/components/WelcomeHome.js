@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
      marginTop: 15,
     },
     welcomeImage: {
-        width: '70%',
+        width: '60%',
         height: 120,
         resizeMode: 'cover',
         marginBottom: 15,
