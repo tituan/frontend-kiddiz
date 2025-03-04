@@ -5,7 +5,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ConnectionScreen from "./screens/ConnectionScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import SignInScreen from "./screens/SigninScreen";
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 // redux imports
 import { Provider } from "react-redux";
