@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import ButtonBig from './components/ButtonBig'
 
 // Définition du schéma de validation avec yup
 const schema = yup.object().shape({
@@ -119,9 +120,8 @@ const SignInScreen = () => {
           />
           {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
 
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.submitButtonText}>Se connecter</Text>
-          </TouchableOpacity>
+          <ButtonBig style={styles.submitButton} text="Connectez-vous" onPress={handleSubmit(onSubmit)}/>
+
         </KeyboardAvoidingView>
       </LinearGradient>
     </TouchableWithoutFeedback>
@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  // buttonSInscrire
   innerContainer: {
     flex: 1,
     alignItems: 'center',
@@ -165,6 +166,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     fontSize: 16,
     fontFamily: 'RopaSans-Regular',
+    height: 50,
   },
   errorText: {
     color: '#ff4d4d',
@@ -173,17 +175,7 @@ const styles = StyleSheet.create({
     fontFamily: 'RopaSans-Regular',
   },
   submitButton: {
-    width: '100%',
-    backgroundColor: '#22c1c3',
-    paddingVertical: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  submitButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    backgroundColor: '#00CC99',
   },
 });
 

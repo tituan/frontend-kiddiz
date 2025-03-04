@@ -10,7 +10,7 @@ import { StyleSheet, Text, View } from "react-native";
 // redux imports
 import { Provider } from "react-redux";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import user from "./reducers/user";
+import user from "./reducers/users";
 
 // redux-persist imports
 import { persistStore, persistReducer } from "redux-persist";
