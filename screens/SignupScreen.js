@@ -10,6 +10,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Remplacez CheckBox par une icône
+import { useDispatch } from 'react-redux';
+import { signUpUser } from '../reducers/users';
 
 // Schéma de validation avec yup
 const schema = yup.object().shape({
@@ -42,6 +44,8 @@ const CustomCheckBox = ({ label, value, onChange }) => {
 };
 
 export default function SignUpScreen({ navigation }) {
+   const dispatch = useDispatch();
+
   const [showPicker, setShowPicker] = useState(false);
 
   // Chargement de la police
@@ -98,7 +102,15 @@ export default function SignUpScreen({ navigation }) {
       const data = await response.json();
       if (data.result) {
         console.log('Utilisateur inscrit avec succès :', data);
-        // navigation.navigate('Home');
+        dispatch(signUpUser({
+          firstname: data.userResponse.firstname,
+          lastname: data.userResponse.lastname,
+          email: data.userResponse.email,
+          dateOfBirth: data.userResponse.dateOfBirth,
+          token: data.userResponse.token,
+          status: data.userResponse.status
+        }));
+        navigation.navigate('Home');
       } else {
         console.log('Une erreur s\'est produite lors de l\'inscription :', data.error);
       }
