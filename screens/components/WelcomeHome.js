@@ -2,10 +2,11 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
+import { LinearGradient } from 'expo-linear-gradient'
 import ButtonBig from '../components/ButtonBig';
 import { useSelector } from 'react-redux';
 
-const WelcomeHome = () => {
+const WelcomeHome = ({ navigation }) => {
     const userToken = useSelector(state => state.user.value.token);
     
     const [loaded, error] = useFonts({
@@ -24,7 +25,13 @@ const WelcomeHome = () => {
     }  
 
  return (
-    <View style={styles.container}>
+    <LinearGradient
+            colors={['rgba(253,187,45,1)', 'rgba(34,193,195,1)']} // Couleurs du dégradé
+            start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
+            end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
+            style={styles.header}
+            >
+    {/* <View style={styles.container}> */}
         {!userToken && ( 
             <View style={styles.containerWelcome}>
                 <Text style={styles.welcomeTitle}>Bienvenue sur Kiddiz</Text>
@@ -38,7 +45,8 @@ const WelcomeHome = () => {
                 <ButtonBig style={styles.buttonVendre} text="Vendre votre article" onPress={() => navigation.navigate("Connection")}/>
             </View>
       )} 
-    </View>
+    {/* </View> */}
+    </LinearGradient>
 
  );
 }
@@ -49,7 +57,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
-        backgroundColor: 'rgba(34,193,195,1)',
         borderBottomColor: '#00000',
         borderBottomWidth: 2,
     },

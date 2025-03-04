@@ -16,11 +16,10 @@ export default function HomeScreen({ navigation }) {
         style={styles.header}
         >
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
-            
         </LinearGradient> 
         
         <ScrollView contentContainerStyle={styles.contentContainer}>
-        <WelcomeHome/>  
+        <WelcomeHome navigation={navigation}/>  
              <View style={styles.row}> 
                 <Article style={styles.articleContainer}/>
                 <Article style={styles.articleContainer}/>

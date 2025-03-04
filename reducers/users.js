@@ -54,9 +54,14 @@ export const userSlice = createSlice({
        // Ajoutez un console.log pour vérifier ce qui est stocké
       console.log("État actuel du reducer user après signUpUser:", state.value);
     },
+     // Action to log out user
+     logOut: (state) => {
+      state.value = initialState.value; // Réinitialise l'état à l'état initial
+      console.log("État actuel du reducer user après logOut:", state.value);
+    },
   },
 });
 
 // Exporter les actions
-export const { signUpUser, loginUser, updateUser, resetUser } = userSlice.actions;
+export const { signUpUser, loginUser, updateUser, resetUser, logOut } = userSlice.actions;
 export default userSlice.reducer;
