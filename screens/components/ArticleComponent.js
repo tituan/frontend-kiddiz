@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   articleContainer: {
     borderWidth: 2,
     borderColor: "#000000",
-    width: 180,
+    width: '48%',
     height: 240,
     borderRadius: 10,
     alignItems: "center",

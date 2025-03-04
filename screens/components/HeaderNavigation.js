@@ -4,14 +4,22 @@ import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import ButtonHalf from './ButtonHalf'
+import ButtonIcon from './ButtonIcon'
 import SearchBar from './SearchBar'
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../reducers/users';
 
 const HeaderNavigation = ({ onPress }) => {
     const userToken = useSelector(state => state.user.value.token);
-
+    const dispatch = useDispatch();
     const [loaded, error] = useFonts({
         'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
     });
+
+    const handleLogOut = () => {
+        dispatch(logOut()); // Déclenche l'action logOut
+        console.log('Utilisateur déconnecté');
+    };
 
     useEffect(() => {
         if (loaded || error) {
@@ -29,8 +37,10 @@ const HeaderNavigation = ({ onPress }) => {
         <View style={styles.headerTop}>  
             <Text style={styles.headerTopKiddiz}>Kiddiz</Text>
             <View style={styles.headerButton}>
-            {userToken ? null : (
+            {!userToken ?  (
                 <ButtonHalf style={styles.buttonApple} text="Connexion" onPress={onPress} />
+            ) : (
+                <ButtonIcon style={styles.buttonLogOut} text="tototo" name="sign-out" onPress={handleLogOut}/>
             )}
             </View>
         </View>
@@ -70,6 +80,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         width: '50%',
         height: 60,
+    },
+    buttonLogOut: {
+        backgroundColor: '#f095B4',
+        
     }
 })
 
