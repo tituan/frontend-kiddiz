@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    marginBottom: 25,
   },
   buttonFilter: {
     width: '30%',

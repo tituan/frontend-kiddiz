@@ -32,7 +32,6 @@ const HeaderNavigation = ({ onPress }) => {
             {userToken ? null : (
                 <ButtonHalf style={styles.buttonApple} text="Connexion" onPress={onPress} />
             )}
-                {/* <ButtonHalf style={styles.buttonApple} text="Connexion" onPress={onPress}/> */}
             </View>
         </View>
         <View style={styles.headerBottom}>
@@ -45,14 +44,14 @@ const HeaderNavigation = ({ onPress }) => {
 
 const styles = StyleSheet.create({
     header: {
-        paddingTop: 50,
+        paddingTop: 30,
     },
     headerTop: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 15,
+        marginBottom: 10,
     },
     headerTopKiddiz: {
         fontSize: 60,

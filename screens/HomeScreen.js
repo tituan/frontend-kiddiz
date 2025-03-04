@@ -9,28 +9,32 @@ export default function HomeScreen({ navigation }) {
 
     return (
     <View style={styles.container}>
-        {/* <LinearGradient
+        <LinearGradient
         colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
         start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
         end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
         style={styles.header}
         >
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
-            <WelcomeHome/>  
-        </LinearGradient> */}
-
+            
+        </LinearGradient> 
+        
         <ScrollView contentContainerStyle={styles.contentContainer}>
+        <WelcomeHome/>  
              <View style={styles.row}> 
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
+                <Article style={styles.articleContainer}/>
                 <Article style={styles.articleContainer}/>
                 <Article style={styles.articleContainer}/>
              </View>
         </ScrollView>
         
-
-    
-
-
-
     </View>
     );
 }
@@ -44,21 +48,21 @@ const styles = StyleSheet.create({
         padding: 20,
         borderBottomColor: '#00000',
         borderBottomWidth: 2,
-        paddingBottom: 35,
+        paddingBottom: 20,
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between', 
+        flexWrap: 'wrap',
         alignItems: 'center', 
         width: '100%', 
-        paddingHorizontal: 20, 
+        padding: 20, 
     },
     article: {
         width: '48%', 
     },
     contentContainer: {
         flexGrow: 1,
-        paddingVertical: 20,
     },
 
 })
