@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 20,
         borderBottomColor: '#00000',
-        borderBottomWidth: 2,
+        borderBottomWidth: 1,
     },
     welcomeTitle: {
         fontSize: 35,

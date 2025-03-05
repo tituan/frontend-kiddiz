@@ -33,7 +33,7 @@ export default ButtonHalf;
 
 const styles = StyleSheet.create({
   buttonHalf: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#000000",
     width: '80%',
     height: 50,

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   buttonFilter: {
     width: '30%',
     height: 45,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#000000",
     backgroundColor: '#F0D74D',
     display: 'flex',
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   searchBar: {
     width: '70%',
     height: 45,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#000000",
     backgroundColor: '#ffff',
     fontFamily: 'Ropa-Sans',

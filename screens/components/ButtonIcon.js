@@ -21,7 +21,7 @@ export default ButtonIcon;
 
 const styles = StyleSheet.create({
   buttonSquare: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#000000",
     height: 45,
     width: 45,

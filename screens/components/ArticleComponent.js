@@ -53,8 +53,8 @@ export default Article;
 
 const styles = StyleSheet.create({
   articleContainer: {
-    borderWidth: 2,
-    borderColor: "#000000",
+    borderWidth: 1,
+    borderColor: "rgb(69, 120, 169)",
     width: '48%',
     height: 240,
     borderRadius: 10,
@@ -66,9 +66,9 @@ const styles = StyleSheet.create({
 
     // Shadow for iOS
     shadowColor: "#000",
-    shadowOffset: { width: 4, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
 
     // Shadow for Android
     elevation: 5,
@@ -78,9 +78,9 @@ const styles = StyleSheet.create({
     
   },
   image: {
-    width: 150,
+    width: 165,
     height: 170,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#000000",
     borderRadius: 10,
     alignItems: "center",

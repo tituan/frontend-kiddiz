@@ -41,8 +41,8 @@ const TabNavigator = () => {
 
           return <FontAwesome name={"home"} size="45" color={color} />;
         },
-        tabBarActiveTintColor: "white",
-        tabBarInactiveTintColor: "#335561",
+        tabBarActiveTintColor: "black",
+        tabBarInactiveTintColor: "#F0F0F0",
         headerShown: false,
         tabBarLabelStyle: {
           fontSize: 13,
@@ -50,10 +50,11 @@ const TabNavigator = () => {
           fontWeight: 300,
         },
         tabBarStyle: {
-          backgroundColor: 'rgba(34,193,195,1)', // Vert avec opacité 0.5
+          // backgroundColor: 'rgb(89, 208, 210)', 
+          backgroundColor: '#F0D74D', // Vert avec opacité 0.5
           height: 85,
           borderTopColor: 'black',
-          borderTopWidth: 2,
+          borderTopWidth: 1,
         
           // Pour iOS
           shadowColor: 'black',
