@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useForm, Controller } from 'react-hook-form';
@@ -9,7 +9,7 @@ import ButtonBig from './components/ButtonBig';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Remplacez CheckBox par une icône
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch } from 'react-redux';
 import { signUpUser } from '../reducers/users';
 
@@ -44,9 +44,8 @@ const CustomCheckBox = ({ label, value, onChange }) => {
 };
 
 export default function SignUpScreen({ navigation }) {
-   const dispatch = useDispatch();
-
-  const [showPicker, setShowPicker] = useState(false);
+  const dispatch = useDispatch();
+  const [showDatePicker, setShowDatePicker] = useState(false); // État pour afficher/masquer le DatePicker
 
   // Chargement de la police
   const [loaded, error] = useFonts({
@@ -68,6 +67,7 @@ export default function SignUpScreen({ navigation }) {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -91,12 +91,12 @@ export default function SignUpScreen({ navigation }) {
         dateOfBirth: values.dateOfBirth ? new Date(values.dateOfBirth).toISOString() : null,
       };
 
-      console.log(values.dateOfBirth)
+      console.log(values.dateOfBirth);
 
       const response = await fetch('http://192.168.100.209:3000/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formattedValues),
+        body: JSON.stringify(values),
       });
 
       const data = await response.json();
@@ -108,7 +108,7 @@ export default function SignUpScreen({ navigation }) {
           email: data.userResponse.email,
           dateOfBirth: data.userResponse.dateOfBirth,
           token: data.userResponse.token,
-          status: data.userResponse.status
+          status: data.userResponse.status,
         }));
         navigation.navigate('TabNavigator');
       } else {
@@ -197,20 +197,22 @@ export default function SignUpScreen({ navigation }) {
               name="dateOfBirth"
               render={({ field: { onChange, value } }) => (
                 <>
-                  <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.input}>
+                  <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
                     <Text style={value ? styles.dateText : styles.placeholderText}>
                       {value ? new Date(value).toLocaleDateString() : 'Date de naissance'}
                     </Text>
                   </TouchableOpacity>
                   {errors.dateOfBirth && <Text style={styles.errorText}>{errors.dateOfBirth.message}</Text>}
-                  {showPicker && (
+                  {showDatePicker && (
                     <DateTimePicker
                       value={value ? new Date(value) : new Date()}
                       mode="date"
-                      display="spinner"
+                      display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                       onChange={(event, selectedDate) => {
-                        onChange(selectedDate || value);
-                        setShowPicker(false);
+                        setShowDatePicker(false); // Masquer le DatePicker après la sélection
+                        if (selectedDate) {
+                          onChange(selectedDate); // Mettre à jour la valeur dans react-hook-form
+                        }
                       }}
                     />
                   )}

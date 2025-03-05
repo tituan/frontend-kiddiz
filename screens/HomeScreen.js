@@ -5,6 +5,7 @@ import WelcomeHome from './components/WelcomeHome'
 import ButtonBig from './components/ButtonBig';
 import Article from './components/ArticleComponent';
 
+
 export default function HomeScreen({ navigation }) {
 
     return (

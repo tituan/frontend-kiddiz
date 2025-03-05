@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
+import AddArticlesScreen from "./screens/AddArticlesScreen";
 import ConnectionScreen from "./screens/ConnectionScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import SignInScreen from "./screens/SigninScreen";
@@ -33,13 +34,13 @@ const TabNavigator = () => {
             iconName = "location-arrow";
           } else if (route.name === "Messagerie") {
             iconName = "map-pin";
-          } else if (route.name === "AddArticles") {
-            iconName = "map-pin";
-          } else if (route.name === "Home") {
-            iconName = "map-pin";
+          } else if (route.name === "Vendre") {
+            iconName = "tag";
+          } else if (route.name === "Accueil") {
+            iconName = "home";
           }
 
-          return <FontAwesome name={"home"} size="45" color={color} />;
+          return <FontAwesome name={iconName} size={40} color={color} />;
         },
         tabBarActiveTintColor: "black",
         tabBarInactiveTintColor: "#F0F0F0",
@@ -55,6 +56,8 @@ const TabNavigator = () => {
           height: 85,
           borderTopColor: 'black',
           borderTopWidth: 1,
+          paddingBottom: 20,
+          paddingTop:10,
         
           // Pour iOS
           shadowColor: 'black',
@@ -67,9 +70,10 @@ const TabNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Accueil" component={HomeScreen} />
+      <Tab.Screen name="Vendre" component={AddArticlesScreen} />
       {/* <Tab.Screen name="Favoris" component={FavorisScreen} />
-      <Tab.Screen name="AddArticles" component={AddArticlesScreen} />
+      // 
       <Tab.Screen name="Messagerie" component={MessagerieScreen} />
       <Tab.Screen name="Profil" component={ProfilScreen} /> */}
     </Tab.Navigator>

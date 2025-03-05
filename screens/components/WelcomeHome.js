@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     welcomeLine: {
         color: '#00000',
         fontFamily: 'RopaSans',
-        fontSize: '16',
+        fontSize: 16,
     },
     buttonVendre: {
      backgroundColor: '#F095b4',

@@ -40,7 +40,7 @@ const HeaderNavigation = ({ onPress }) => {
             {!userToken ?  (
                 <ButtonHalf style={styles.buttonConnection} text="Connexion" onPress={onPress} />
             ) : (
-                <ButtonIcon style={styles.buttonLogOut} text="tototo" name="sign-out" onPress={handleLogOut}/>
+                <ButtonIcon style={styles.buttonLogOut} name="sign-out" onPress={handleLogOut}/>
             )}
             </View>
         </View>
