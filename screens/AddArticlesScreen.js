@@ -7,16 +7,34 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
+import RadioButton from './components/RadioButton'; 
 
 const schema = yup.object().shape({
-  title: yup.string().max(40, 'Le titre ne doit pas dépasser 40 caractères').required('Le titre est requis'),
-  productDescription: yup.string().max(250, 'La description ne doit pas dépasser 250 caractères').required('La description est requise'),
-  category: yup.array().min(1, 'Sélectionnez au moins une catégorie'),
-  itemType: yup.array().min(1, 'Sélectionnez au moins un type'),
-  condition: yup.array().min(1, 'Sélectionnez au moins un état'),
-  price: yup.number().positive('Le prix doit être un nombre positif').required('Le prix est requis'),
-  pictures: yup.string().required('Une photo est requise'),
-});
+    title: yup
+      .string()
+      .max(40, 'Le titre ne doit pas dépasser 40 caractères')
+      .required('Le titre est requis'),
+    productDescription: yup
+      .string()
+      .max(250, 'La description ne doit pas dépasser 250 caractères')
+      .required('La description est requise'),
+    category: yup
+      .string()
+      .required('Sélectionnez une catégorie'), // Une seule catégorie sélectionnée
+    itemType: yup
+      .string()
+      .required('Sélectionnez un type'), // Un seul type sélectionné
+    condition: yup
+      .string()
+      .required('Sélectionnez un état'), // Un seul état sélectionné
+    price: yup
+      .number()
+      .positive('Le prix doit être un nombre positif')
+      .required('Le prix est requis'),
+    pictures: yup
+      .string()
+      .required('Une photo est requise'),
+  });
 
 // const userId = '67c70f09d7eb098b650dece3';
 const categories = ['0-1 an', '1-3 ans', '3-6 ans', '6-12 ans'];
@@ -27,14 +45,15 @@ const AddArticlesScreen = ({ navigation }) => {
 
 const userToken = useSelector(state => state.user.value.token);
 console.log(userToken)
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm({
-    resolver: yupResolver(schema),
-  });
+
+    const { control, handleSubmit, setValue, reset, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
 
   const [image, setImage] = useState(null);
-  const [selectedCategories, setSelectedCategories] = useState('');
-  const [selectedTypes, setSelectedTypes] = useState('');
-  const [selectedConditions, setSelectedConditions] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedType, setSelectedType] = useState(null);
+  const [selectedCondition, setSelectedCondition] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -59,12 +78,9 @@ console.log(userToken)
     }
   };
 
-  const toggleSelection = (value, list, setList, fieldName) => {
-    const newSelection = list.includes(value)
-      ? list.filter(item => item !== value)
-      : [...list, value];
-    setList(newSelection);
-    setValue(fieldName, newSelection);
+  const handleRadioSelection = (value, setSelected, fieldName) => {
+    setSelected(value); // Mettre à jour l'élément sélectionné
+    setValue(fieldName, value); // Mettre à jour la valeur dans react-hook-form
   };
 
   const onSubmit = async (data) => {
@@ -93,7 +109,7 @@ console.log(userToken)
       }
 
       // Envoyer les données au backend
-      const response = await fetch('http://192.168.1.134:3000/articles', {
+    const response = await fetch('http://192.168.1.134:3000/articles', {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data', // Utiliser multipart/form-data pour les fichiers
@@ -106,6 +122,11 @@ console.log(userToken)
 
       if (response.ok) {
         Alert.alert('Succès', 'L\'article a été publié avec succès.');
+        reset(); // Réinitialiser tous les champs du formulaire
+        setImage(null); // Réinitialiser l'image
+        setSelectedCategory(null); // Réinitialiser la catégorie sélectionnée
+        setSelectedType(null); // Réinitialiser le type sélectionné
+        setSelectedCondition(null); // Réinitialiser l'état sélectionné
         navigation.goBack();
       } else {
         Alert.alert('Erreur', result.error || 'Une erreur est survenue lors de la publication de l\'article.');
@@ -174,29 +195,42 @@ console.log(userToken)
         />
         {errors.productDescription && <Text style={styles.errorText}>{errors.productDescription.message}</Text>}
 
+        {/* Tranche d'âge */}
         <Text style={styles.labelCategorie}>Tranche d'âge :</Text>
         {categories.map(cat => (
-          <TouchableOpacity key={cat} onPress={() => toggleSelection(cat, selectedCategories, setSelectedCategories, 'category')}>
-            <Text style={styles.labelCheckbox}>{selectedCategories.includes(cat) ? '☑' : '☐'} {cat}</Text>
-          </TouchableOpacity>
+            <RadioButton
+            key={cat}
+            label={cat}
+            selected={selectedCategory === cat}
+            onPress={() => handleRadioSelection(cat, setSelectedCategory, 'category')}
+            />
         ))}
         {errors.category && <Text style={styles.errorText}>{errors.category.message}</Text>}
 
+        {/* Type */}
         <Text style={styles.labelCategorie}>Type :</Text>
         {types.map(type => (
-          <TouchableOpacity key={type} onPress={() => toggleSelection(type, selectedTypes, setSelectedTypes, 'itemType')}>
-            <Text style={styles.labelCheckbox}>{selectedTypes.includes(type) ? '☑' : '☐'} {type}</Text>
-          </TouchableOpacity>
+            <RadioButton
+            key={type}
+            label={type}
+            selected={selectedType === type}
+            onPress={() => handleRadioSelection(type, setSelectedType, 'itemType')}
+            />
         ))}
         {errors.itemType && <Text style={styles.errorText}>{errors.itemType.message}</Text>}
 
+        {/* État de l'article */}
         <Text style={styles.labelCategorie}>État de l'article :</Text>
         {conditions.map(cond => (
-          <TouchableOpacity key={cond} onPress={() => toggleSelection(cond, selectedConditions, setSelectedConditions, 'condition')}>
-            <Text style={styles.labelCheckbox}>{selectedConditions.includes(cond) ? '☑' : '☐'} {cond}</Text>
-          </TouchableOpacity>
+            <RadioButton
+            key={cond}
+            label={cond}
+            selected={selectedCondition === cond}
+            onPress={() => handleRadioSelection(cond, setSelectedCondition, 'condition')}
+            />
         ))}
         {errors.condition && <Text style={styles.errorText}>{errors.condition.message}</Text>}
+
         <Text style={styles.labelCategorie}>Prix de l'article :</Text>
         <Controller
           control={control}
