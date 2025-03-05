@@ -6,6 +6,7 @@ import ButtonBig from './components/ButtonBig';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const schema = yup.object().shape({
   title: yup.string().max(40, 'Le titre ne doit pas dépasser 40 caractères').required('Le titre est requis'),
@@ -92,7 +93,7 @@ console.log(userToken)
       }
 
       // Envoyer les données au backend
-      const response = await fetch('http://192.168.100.209:3000/articles', {
+      const response = await fetch('http://192.168.1.134:3000/articles', {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data', // Utiliser multipart/form-data pour les fichiers
@@ -116,10 +117,18 @@ console.log(userToken)
   };
 
   return (
+    <LinearGradient
+                colors={['#22c1c3', '#fdba2d']}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.containerLinear}
+              >
     <View style={styles.container}>
+        
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.title}>Mettre en ligne un article</Text>
+        <Text style={styles.title}>Vendez votre article !</Text>
 
+        <Text style={styles.labelCategorie}>Ajouter votre photo :</Text>
         <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
           {image ? (
             <Image source={{ uri: image }} style={styles.image} />
@@ -129,6 +138,7 @@ console.log(userToken)
         </TouchableOpacity>
         {errors.pictures && <Text style={styles.errorText}>{errors.pictures.message}</Text>}
 
+        <Text style={styles.labelCategorie}>Titre de l'article :</Text>
         <Controller
           control={control}
           name="title"
@@ -146,6 +156,7 @@ console.log(userToken)
         />
         {errors.title && <Text style={styles.errorText}>{errors.title.message}</Text>}
 
+        <Text style={styles.labelCategorie}>Description :</Text>
         <Controller
           control={control}
           name="productDescription"
@@ -163,30 +174,30 @@ console.log(userToken)
         />
         {errors.productDescription && <Text style={styles.errorText}>{errors.productDescription.message}</Text>}
 
-        <Text>Tranche d'âge :</Text>
+        <Text style={styles.labelCategorie}>Tranche d'âge :</Text>
         {categories.map(cat => (
           <TouchableOpacity key={cat} onPress={() => toggleSelection(cat, selectedCategories, setSelectedCategories, 'category')}>
-            <Text>{selectedCategories.includes(cat) ? '☑' : '☐'} {cat}</Text>
+            <Text style={styles.labelCheckbox}>{selectedCategories.includes(cat) ? '☑' : '☐'} {cat}</Text>
           </TouchableOpacity>
         ))}
         {errors.category && <Text style={styles.errorText}>{errors.category.message}</Text>}
 
-        <Text>Type :</Text>
+        <Text style={styles.labelCategorie}>Type :</Text>
         {types.map(type => (
           <TouchableOpacity key={type} onPress={() => toggleSelection(type, selectedTypes, setSelectedTypes, 'itemType')}>
-            <Text>{selectedTypes.includes(type) ? '☑' : '☐'} {type}</Text>
+            <Text style={styles.labelCheckbox}>{selectedTypes.includes(type) ? '☑' : '☐'} {type}</Text>
           </TouchableOpacity>
         ))}
         {errors.itemType && <Text style={styles.errorText}>{errors.itemType.message}</Text>}
 
-        <Text>État de l'article :</Text>
+        <Text style={styles.labelCategorie}>État de l'article :</Text>
         {conditions.map(cond => (
           <TouchableOpacity key={cond} onPress={() => toggleSelection(cond, selectedConditions, setSelectedConditions, 'condition')}>
-            <Text>{selectedConditions.includes(cond) ? '☑' : '☐'} {cond}</Text>
+            <Text style={styles.labelCheckbox}>{selectedConditions.includes(cond) ? '☑' : '☐'} {cond}</Text>
           </TouchableOpacity>
         ))}
         {errors.condition && <Text style={styles.errorText}>{errors.condition.message}</Text>}
-
+        <Text style={styles.labelCategorie}>Prix de l'article :</Text>
         <Controller
           control={control}
           name="price"
@@ -206,70 +217,84 @@ console.log(userToken)
 
         <ButtonBig text="Publier l'article" style={styles.submitButton} onPress={handleSubmit(onSubmit)} />
       </ScrollView>
+     
     </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 30,
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    paddingTop: 30,
-    marginBottom: 20,
-    color: 'white',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 3,
-    fontFamily: 'LilitaOne-Regular',
-    textAlign: 'center',
-  },
-  input: {
-    width: '100%',
-    padding: 15,
-    marginVertical: 10,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 8,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    fontFamily: 'RopaSans-Regular',
-    height: 50,
-  },
-  imagePicker: {
-    width: '100%',
-    height: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 8,
-    backgroundColor: '#f0f0f0',
-    marginVertical: 10,
-  },
-  imagePickerText: {
-    fontSize: 16,
-    color: '#999',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 8,
-  },
-  errorText: {
-    color: '#ff4d4d',
-    fontSize: 14,
-    marginBottom: 10,
-    fontFamily: 'RopaSans-Regular',
-  },
-  submitButton: {
-    backgroundColor: '#00CC99',
-    marginTop: 20,
-  },
+    containerLinear: {
+        flex: 1,
+    },
+    contentContainer: {
+        padding: 20,
+    },
+    title: {
+        fontSize: 36,
+        fontWeight: 'bold',
+        paddingTop: 60,
+        marginBottom: 40,
+        color: 'white',
+        textShadowColor: 'rgba(0, 0, 0, 0.5)',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 3,
+        fontFamily: 'LilitaOne-Regular',
+        textAlign: 'center',
+    },
+    input: {
+        width: '100%',
+        padding: 15,
+        marginVertical: 10,
+        borderWidth: 1,
+        borderColor: '#000',
+        borderRadius: 8,
+        backgroundColor: '#fff',
+        fontSize: 16,
+        fontFamily: 'RopaSans-Regular',
+        height: 50,
+    },
+    labelCategorie: {
+        fontSize: 22,
+        fontFamily: 'LilitaOne-Regular',
+        marginBottom: 5,
+        marginTop: 10,
+    },
+    labelCheckbox: {
+        fontSize: 20,
+        marginBottom: 9,
+    },
+    imagePicker: {
+        width: '100%',
+        height: 300,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#000',
+        borderRadius: 8,
+        backgroundColor: 'white',
+        marginVertical: 10,
+    },
+    imagePickerText: {
+        fontSize: 22,
+        color: '#00000',
+        fontFamily: 'RopaSans-Regular',
+    },
+    image: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 8,
+    },
+    errorText: {
+        color: '#ff4d4d',
+        fontSize: 14,
+        marginBottom: 10,
+        fontFamily: 'RopaSans-Regular',
+    },
+    submitButton: {
+        backgroundColor: '#00CC99',
+        marginTop: 20,
+    },
 });
 
 export default AddArticlesScreen;

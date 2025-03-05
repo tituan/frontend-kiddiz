@@ -32,12 +32,12 @@ function Article({ text, onPress, style, item }) {
       <View style={styles.imageContainer}>
 
       <View style={styles.imageWrapper} >
-        <Image source={{uri: `${item.pictures[0]}` }} style={styles.image} resizeMode="contain" />
+        <Image source={{uri: `${item.pictures[0]}` }} style={styles.image} resizeMode="cover" />
       </View>
 
         <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
           <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
-          <Text>{item.likesCount}</Text>
+          <Text style={styles.likeCounter}>{item.likesCount}</Text>
         </TouchableOpacity>
         
       </View>
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff', 
     borderWidth: 1,
     borderColor: "black",
+    marginBottom: 8,
   },
   image: {
     width: '100%',
@@ -100,17 +101,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 10,
-  
   },
   heartIcon: {
     position: 'absolute',
+    display: 'flex',
+    flexDirection: 'row',
     bottom: 20,
     right: 10,
     backgroundColor: 'white',
     borderRadius: 5,
-    width: 30,
-    height: 30,
+    padding: 2,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: "#000",
@@ -120,6 +120,9 @@ const styles = StyleSheet.create({
     elevation: 3, 
     borderWidth: 1,
     borderColor: "#000000",
+  },
+  likeCounter: {
+    marginLeft: 3,
   },
   text: {
     color: "black",

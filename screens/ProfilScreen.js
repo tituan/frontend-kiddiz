@@ -17,16 +17,9 @@ export default function ProfilScreen({ navigation }) {
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
         </LinearGradient> 
         <ScrollView contentContainerStyle={styles.contentContainer}>
-            
             <View style={styles.profilCard}>
 
             </View>
-
-
-
-             <View style={styles.row}> 
-                <Article style={styles.articleContainer}/>
-             </View>
         </ScrollView>
         
     </View>
