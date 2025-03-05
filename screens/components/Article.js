@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, Image, View, ImageBackground } from "react-native";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { FontAwesome } from '@expo/vector-icons';
@@ -30,7 +30,11 @@ function Article({ text, onPress, style }) {
   return (
     <TouchableOpacity style={[styles.articleContainer, style]} onPress={onPress}>
       <View style={styles.imageContainer}>
-        <Image source={require('../../assets/peluche.jpg')} style={styles.image} />
+
+      <View style={styles.imageWrapper} >
+        <Image source={require('../../assets/peluche.jpg')} style={styles.image} resizeMode="contain" />
+      </View>
+
         <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
           <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
         </TouchableOpacity>
@@ -77,11 +81,20 @@ const styles = StyleSheet.create({
     position: 'relative',
     
   },
-  image: {
-    width: 165,
-    height: 170,
+  imageWrapper: {
+    width: 165, 
+    height: 170, 
+    overflow: 'hidden',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff', 
     borderWidth: 1,
-    borderColor: "#000000",
+    borderColor: "black",
+  },
+  image: {
+    width: '100%',
+    height: '100%',
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
