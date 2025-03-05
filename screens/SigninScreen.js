@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -9,6 +9,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import ButtonBig from './components/ButtonBig'
+import ButtonIcon from './components/ButtonIcon';
+import { TouchableOpacity} from 'react-native';
 
 // Définition du schéma de validation avec yup
 const schema = yup.object().shape({
@@ -70,10 +72,9 @@ const SignInScreen = ({navigation}) => {
           token: data.userData.token,
           status: data.userData.status
         }));
-        // navigation.replace("TabNavigator");
+        
         navigation.navigate("TabNavigator");
-        // navigation.replace("TabNavigator");
-        // Vous pouvez ajouter une navigation ou une autre action ici
+       
       } else {
         console.log('Erreur de connexion:', data.message);
       }
@@ -94,6 +95,7 @@ const SignInScreen = ({navigation}) => {
         end={{ x: 1, y: 0 }}
         style={styles.container}
       >
+        <ButtonIcon style={styles.buttonBack}  name="arrow-left"  onPress={() => navigation.navigate('Connection')}/>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.innerContainer}>
           <Text style={styles.title}>Se connecter</Text>
           <Text style={styles.description}>Veuillez entrer vos informations pour vous connecter.</Text>
@@ -137,6 +139,10 @@ const SignInScreen = ({navigation}) => {
 
           <ButtonBig style={styles.submitButton} text="Connectez-vous" onPress={handleSubmit(onSubmit)}/>
 
+          <TouchableOpacity >
+             <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
+          </TouchableOpacity>
+        
         </KeyboardAvoidingView>
       </LinearGradient>
     </TouchableWithoutFeedback>
@@ -150,10 +156,17 @@ const styles = StyleSheet.create({
   // buttonSInscrire
   innerContainer: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
+  buttonBack: {
+    position: 'absolute',
+    top: '7%', 
+    left: '5%',
+    backgroundColor: '#F095B4',
+    
+  },
+
   title: {
     fontSize: 45,
     fontWeight: 'bold',
@@ -163,6 +176,7 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 3,
     fontFamily: 'LilitaOne-Regular',
+    textAlign: 'center',
   },
   description: {
     fontSize: 16,
@@ -175,7 +189,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 15,
     marginVertical: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#000',
     borderRadius: 8,
     backgroundColor: '#fff',
@@ -192,6 +206,12 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: '#00CC99',
   },
+  forgotPasswordText: {
+    color: 'white',
+    marginVertical: 10,
+    fontSize: 14,
+    textDecorationLine: 'underline',
+  }
 });
 
 export default SignInScreen;

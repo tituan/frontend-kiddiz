@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import ButtonBig from '../components/ButtonBig';
 import { useSelector } from 'react-redux';
 
-const WelcomeHome = () => {
+const WelcomeHome = ({ navigation }) => {
     const userToken = useSelector(state => state.user.value.token);
     
     const [loaded, error] = useFonts({
@@ -42,7 +42,7 @@ const WelcomeHome = () => {
                 />
                 <Text style={styles.welcomeLine}>Vendez / Achetez des jouets</Text>
                 <Text style={styles.welcomeLine}>d'occasion non reconditionnés</Text>
-                <ButtonBig style={styles.buttonVendre} text="Vendre votre article" />
+                <ButtonBig style={styles.buttonVendre} text="Vendre votre article" onPress={() => navigation.navigate("Connection")}/>
             </View>
       )} 
     {/* </View> */}

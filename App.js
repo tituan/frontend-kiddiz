@@ -3,10 +3,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
-import AddArticlesScreen from "./screens/AddArticlesScreen";
 import ConnectionScreen from "./screens/ConnectionScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import SignInScreen from "./screens/SigninScreen";
+import AddArticlesScreen from "./screens/AddArticlesScreen";
+import ProfilScreen from "./screens/ProfilScreen";
 // import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -31,16 +32,16 @@ const TabNavigator = () => {
           let iconName = "";
 
           if (route.name === "Profil") {
-            iconName = "location-arrow";
+            iconName = "user";
           } else if (route.name === "Messagerie") {
-            iconName = "map-pin";
+            iconName = "envelope";
           } else if (route.name === "Vendre") {
-            iconName = "tag";
-          } else if (route.name === "Accueil") {
+            iconName = "plus";
+          } else if (route.name === "Home") {
             iconName = "home";
           }
 
-          return <FontAwesome name={iconName} size={40} color={color} />;
+          return <FontAwesome name={iconName} size="45" color={color} />;
         },
         tabBarActiveTintColor: "black",
         tabBarInactiveTintColor: "#F0F0F0",
@@ -70,12 +71,11 @@ const TabNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Accueil" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Vendre" component={AddArticlesScreen} />
-      {/* <Tab.Screen name="Favoris" component={FavorisScreen} />
-      // 
-      <Tab.Screen name="Messagerie" component={MessagerieScreen} />
-      <Tab.Screen name="Profil" component={ProfilScreen} /> */}
+      {/* {/* <Tab.Screen name="Favoris" component={FavorisScreen} />
+      <Tab.Screen name="Messagerie" component={MessagerieScreen} /> */}
+      <Tab.Screen name="Profil" component={ProfilScreen} /> 
     </Tab.Navigator>
   );
 };

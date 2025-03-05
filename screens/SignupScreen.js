@@ -9,9 +9,10 @@ import ButtonBig from './components/ButtonBig';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
 import { useDispatch } from 'react-redux';
 import { signUpUser } from '../reducers/users';
+import ButtonIcon from './components/ButtonIcon';
 
 // Schéma de validation avec yup
 const schema = yup.object().shape({
@@ -36,7 +37,7 @@ const CustomCheckBox = ({ label, value, onChange }) => {
       <Icon
         name={value ? 'check-box' : 'check-box-outline-blank'}
         size={24}
-        color={value ? '#22c1c3' : '#000'}
+        color={value ? 'white' : '#000'}
       />
       <Text style={styles.checkboxLabel}>{label}</Text>
     </TouchableOpacity>
@@ -50,6 +51,7 @@ export default function SignUpScreen({ navigation }) {
   // Chargement de la police
   const [loaded, error] = useFonts({
     'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
+    'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -131,6 +133,7 @@ export default function SignUpScreen({ navigation }) {
         end={{ x: 1, y: 0 }}
         style={styles.container}
       >
+        <ButtonIcon style={styles.buttonBack}  name="arrow-left"  onPress={() => navigation.navigate('Connection')}/>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
           <SafeAreaView style={styles.innerContainer}>
             <Text style={styles.title}>Kiddiz</Text>
@@ -197,8 +200,8 @@ export default function SignUpScreen({ navigation }) {
               name="dateOfBirth"
               render={({ field: { onChange, value } }) => (
                 <>
-                  <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
-                    <Text style={value ? styles.dateText : styles.placeholderText}>
+                  <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.input}>
+                    <Text style={[value ? styles.dateText : styles.placeholderText, { fontFamily: 'RopaSans-Regular' }, { opacity: 0.7 }]}>
                       {value ? new Date(value).toLocaleDateString() : 'Date de naissance'}
                     </Text>
                   </TouchableOpacity>
@@ -300,10 +303,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   innerContainer: {
-    flex: 1,
-    alignItems: 'center',
+    
     justifyContent: 'center',
     paddingHorizontal: 20,
+    marginTop:100,
+  },
+  
+  buttonBack: {
+    position: 'absolute',
+    top: '7%', 
+    left: '5%',
+    backgroundColor: '#F095B4',
+    
   },
   title: {
     fontSize: 45,
@@ -314,37 +325,40 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 3,
     fontFamily: 'LilitaOne-Regular',
+    textAlign: 'center',
   },
   input: {
     width: '100%',
     padding: 15,
     marginVertical: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#000',
     borderRadius: 8,
     backgroundColor: '#fff',
     fontSize: 16,
-    fontFamily: 'LilitaOne-Regular',
+    fontFamily: 'RopaSans-Regular',
     height: 50,
   },
   errorText: {
     color: '#ff4d4d',
     fontSize: 14,
     marginBottom: 10,
-    fontFamily: 'LilitaOne-Regular',
+    fontFamily: 'RopaSans-Regular',
   },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 15,
+
   },
   checkboxLabel: {
     fontSize: 14,
     marginLeft: 10,
-    fontFamily: 'LilitaOne-Regular',
+    fontFamily: 'RopaSans-Regular',
   },
   buttonSignUp: {
     backgroundColor: '#00CC99',
+  
   },
   dateText: {
     fontSize: 16,
