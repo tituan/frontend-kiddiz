@@ -4,7 +4,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { FontAwesome } from '@expo/vector-icons';
 
-function Article({ text, onPress, style }) {
+function Article({ text, onPress, style, item }) {
   const [loaded, error] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
     'RopaSans-Regular': require('../../assets/fonts/RopaSans-Regular.ttf'),
@@ -32,21 +32,23 @@ function Article({ text, onPress, style }) {
       <View style={styles.imageContainer}>
 
       <View style={styles.imageWrapper} >
-        <Image source={require('../../assets/peluche.jpg')} style={styles.image} resizeMode="contain" />
+        <Image source={{uri: `${item.pictures[0]}` }} style={styles.image} resizeMode="contain" />
       </View>
 
         <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
           <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
+          <Text>{item.likesCount}</Text>
         </TouchableOpacity>
+        
       </View>
 
       <View style={styles.rowContainer}>
         <View>
-          <Text style={styles.text}>Ballon de football</Text>
-          <Text style={styles.textType}>Très bon état</Text>
+          <Text style={styles.text}>{item.title}</Text>
+          <Text style={styles.textType}>{item.condition}</Text>
         </View>
         <View style={styles.priceContainer}>
-          <Text style={styles.textPrix}>648 €</Text>
+          <Text style={styles.textPrix}>{item.price} €</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -58,7 +60,7 @@ export default Article;
 const styles = StyleSheet.create({
   articleContainer: {
     borderWidth: 1,
-    borderColor: "rgb(69, 120, 169)",
+    borderColor: "#fffff",
     width: '48%',
     height: 240,
     borderRadius: 10,

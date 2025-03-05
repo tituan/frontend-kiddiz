@@ -200,7 +200,7 @@ export default function SignUpScreen({ navigation }) {
               name="dateOfBirth"
               render={({ field: { onChange, value } }) => (
                 <>
-                  <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.input}>
+                  <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
                     <Text style={[value ? styles.dateText : styles.placeholderText, { fontFamily: 'RopaSans-Regular' }, { opacity: 0.7 }]}>
                       {value ? new Date(value).toLocaleDateString() : 'Date de naissance'}
                     </Text>
