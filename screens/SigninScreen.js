@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -10,6 +10,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import ButtonBig from './components/ButtonBig'
 import ButtonIcon from './components/ButtonIcon';
+import { TouchableOpacity} from 'react-native';
 
 // Définition du schéma de validation avec yup
 const schema = yup.object().shape({
@@ -138,6 +139,10 @@ const SignInScreen = ({navigation}) => {
 
           <ButtonBig style={styles.submitButton} text="Connectez-vous" onPress={handleSubmit(onSubmit)}/>
 
+          <TouchableOpacity >
+             <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
+          </TouchableOpacity>
+        
         </KeyboardAvoidingView>
       </LinearGradient>
     </TouchableWithoutFeedback>
@@ -161,7 +166,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F095B4',
     
   },
-  
+
   title: {
     fontSize: 45,
     fontWeight: 'bold',
@@ -201,6 +206,12 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: '#00CC99',
   },
+  forgotPasswordText: {
+    color: 'white',
+    marginVertical: 10,
+    fontSize: 14,
+    textDecorationLine: 'underline',
+  }
 });
 
 export default SignInScreen;
