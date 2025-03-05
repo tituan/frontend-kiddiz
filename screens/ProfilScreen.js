@@ -1,35 +1,54 @@
-import { StyleSheet, View, ScrollView} from 'react-native';
+import { StyleSheet, View, ScrollView, Text, ActivityIndicator } from 'react-native';
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
-import WelcomeHome from './components/WelcomeHome'
 import Article from './components/Article';
+import { useFonts } from 'expo-font';
+import ButtonBig from './components/ButtonBig'
+import ButtonHalf from './components/ButtonHalf';
 
 export default function ProfilScreen({ navigation }) {
 
+    const [fontsLoaded] = useFonts({
+        'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
+        'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
+    });
+    if (!fontsLoaded) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
+    }
+
     return (
-    <View style={styles.container}>
+        <View style={styles.container}>
             <LinearGradient
                 colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
                 start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
                 end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
                 style={styles.header}
-                >
-            <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
-        </LinearGradient> 
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-            
-            <View style={styles.profilCard}>
+            >
+                <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
+            </LinearGradient> 
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+                <View style={styles.profil}>
+                        <View style={styles.cardProfil}>
+                             <View style={styles.idBox}>  </View>
+                             <Text> Nombre d'abonnés 150 </Text>
+                             <Text> Nombre de vente réalisées 50 </Text>
+                         </View>
+                   
+                    <View style={styles.buttonContainer}>
+                        <ButtonHalf style={styles.buttonHalf} />
+                        <ButtonHalf style={styles.buttonHalf} />
+                    </View>
 
-            </View>
-
-
-
-             <View style={styles.row}> 
-                <Article style={styles.articleContainer}/>
-             </View>
-        </ScrollView>
-        
-    </View>
+                    <Text style={styles.titre}> 12 Articles en vente </Text>
+                    <Text style={styles.titre}> Categorie </Text>
+                    <ButtonBig style={styles.submitButton} />
+                </View>
+                <Text style={styles.titre}> Articles en vente </Text>
+                <View style={styles.row}> 
+                    <Article style={styles.articleContainer}/>
+                </View>
+            </ScrollView>
+        </View>
     );
 }
 
@@ -43,6 +62,47 @@ const styles = StyleSheet.create({
         borderBottomColor: '#00000',
         borderBottomWidth: 1,
         paddingBottom: 20,
+    },
+    profil: {
+        borderWidth: 1,
+        borderColor: "red",
+        height: '70%',
+        width: '100%',
+        padding: 20,
+    },
+    cardProfil:{
+        borderWidth: 1,
+        borderColor: "blue",
+        height: '45%',
+        width: '100%',
+    },
+    idBox:{
+        borderWidth: 1,
+        borderColor: "orange",
+        height: '70%',
+        width: '100%',
+    },
+    buttonContainer :{
+        borderWidth: 1,
+        borderColor: "green",
+        height: '15%',
+        width: '100%',
+        flexDirection: 'row',  
+        justifyContent: 'space-between',  
+        alignItems: 'center',
+    },
+
+    buttonHalf:{
+        height: '90%',
+        width: '48%',
+        borderColor: "black",
+    },
+    titre: {
+        color: "black",
+        fontFamily: 'LilitaOne-Regular',
+        fontSize: 30, 
+        padding:10,
+        
     },
     row: {
         flexDirection: 'row',
@@ -58,5 +118,4 @@ const styles = StyleSheet.create({
     contentContainer: {
         flexGrow: 1,
     },
-
-})
+});
