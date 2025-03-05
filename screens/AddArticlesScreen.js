@@ -7,7 +7,6 @@ export default function AddArticleScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      {/* Ajoute ici les autres composants pour ton formulaire ou contenu */}
     </SafeAreaView>
   );
 }

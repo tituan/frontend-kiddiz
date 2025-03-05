@@ -7,6 +7,7 @@ import ConnectionScreen from "./screens/ConnectionScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import SignInScreen from "./screens/SigninScreen";
 import AddArticlesScreen from "./screens/AddArticlesScreen";
+import ProfilScreen from "./screens/ProfilScreen";
 // import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -31,16 +32,16 @@ const TabNavigator = () => {
           let iconName = "";
 
           if (route.name === "Profil") {
-            iconName = "location-arrow";
+            iconName = "user";
           } else if (route.name === "Messagerie") {
-            iconName = "map-pin";
+            iconName = "envelope";
           } else if (route.name === "AddArticles") {
-            iconName = "map-pin";
+            iconName = "plus";
           } else if (route.name === "Home") {
-            iconName = "map-pin";
+            iconName = "home";
           }
 
-          return <FontAwesome name={"home"} size="45" color={color} />;
+          return <FontAwesome name={iconName} size="45" color={color} />;
         },
         tabBarActiveTintColor: "black",
         tabBarInactiveTintColor: "#F0F0F0",
@@ -69,10 +70,10 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      {/* <Tab.Screen name="Favoris" component={FavorisScreen} />
+      {/* {/* <Tab.Screen name="Favoris" component={FavorisScreen} />
       <Tab.Screen name="AddArticles" component={AddArticlesScreen} />
-      <Tab.Screen name="Messagerie" component={MessagerieScreen} />
-      <Tab.Screen name="Profil" component={ProfilScreen} /> */}
+      <Tab.Screen name="Messagerie" component={MessagerieScreen} /> */}
+      <Tab.Screen name="Profil" component={ProfilScreen} /> 
     </Tab.Navigator>
   );
 };
