@@ -38,7 +38,7 @@ const HeaderNavigation = ({ onPress }) => {
             <Text style={styles.headerTopKiddiz}>Kiddiz</Text>
             <View style={styles.headerButton}>
             {!userToken ?  (
-                <ButtonHalf style={styles.buttonApple} text="Connexion" onPress={onPress} />
+                <ButtonHalf style={styles.buttonConnection} text="Connexion" onPress={onPress} />
             ) : (
                 <ButtonIcon style={styles.buttonLogOut} text="tototo" name="sign-out" onPress={handleLogOut}/>
             )}
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         marginBottom: 10,
     },
     headerTopKiddiz: {
@@ -83,8 +83,14 @@ const styles = StyleSheet.create({
     },
     buttonLogOut: {
         backgroundColor: '#f095B4',
+        marginTop:7,
         
+    },
+    buttonConnection: {
+        height:45,
+        width: 125,
     }
+    
 })
 
 export default HeaderNavigation;

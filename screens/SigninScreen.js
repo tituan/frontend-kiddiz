@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import ButtonBig from './components/ButtonBig'
+import ButtonIcon from './components/ButtonIcon';
 
 // Définition du schéma de validation avec yup
 const schema = yup.object().shape({
@@ -70,8 +71,9 @@ const SignInScreen = ({navigation}) => {
           token: data.userData.token,
           status: data.userData.status
         }));
-        navigation.navigate("Home");
-        // Vous pouvez ajouter une navigation ou une autre action ici
+        
+        navigation.navigate("TabNavigator");
+       
       } else {
         console.log('Erreur de connexion:', data.message);
       }
@@ -92,6 +94,7 @@ const SignInScreen = ({navigation}) => {
         end={{ x: 1, y: 0 }}
         style={styles.container}
       >
+        <ButtonIcon style={styles.buttonBack}  name="arrow-left"  onPress={() => navigation.navigate('Connection')}/>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.innerContainer}>
           <Text style={styles.title}>Se connecter</Text>
           <Text style={styles.description}>Veuillez entrer vos informations pour vous connecter.</Text>
@@ -148,10 +151,17 @@ const styles = StyleSheet.create({
   // buttonSInscrire
   innerContainer: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
+  buttonBack: {
+    position: 'absolute',
+    top: '7%', 
+    left: '5%',
+    backgroundColor: '#F095B4',
+    
+  },
+  
   title: {
     fontSize: 45,
     fontWeight: 'bold',
@@ -161,6 +171,7 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 3,
     fontFamily: 'LilitaOne-Regular',
+    textAlign: 'center',
   },
   description: {
     fontSize: 16,
@@ -173,7 +184,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 15,
     marginVertical: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#000',
     borderRadius: 8,
     backgroundColor: '#fff',

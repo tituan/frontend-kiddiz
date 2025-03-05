@@ -1,10 +1,10 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ButtonBig from './components/ButtonBig';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import ButtonSmall from './components/ButtonSmall'
+import ButtonIcon from './components/ButtonIcon';
 
 export default function ConnectionScreen({ navigation }) {
   const title = 'Kiddiz';
@@ -24,17 +24,19 @@ export default function ConnectionScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}> 
+    <SafeAreaView style={styles.container}>
+
+      <ButtonIcon style={styles.buttonBack}  name="arrow-left"  onPress={() => navigation.navigate('Home')}/>
     
       <Text style={styles.title}>{title}</Text>
       <View style={styles.textContainer}>
-        <Text style={styles.bodyContainer}>Se connecter </Text>
+        <Text style={styles.bodyContainer}>Se connecter</Text>
         <Text style={styles.bodyContainer}>ou</Text>
         <Text style={styles.bodyContainer}>s'inscrire</Text>
       </View>
 
       <ButtonBig style={styles.buttonInscrisToi} text="Inscris-toi" onPress={() => navigation.navigate('SignUp')} />
-      <ButtonBig style={styles.buttonConnectesToi} text="Connectes toi" onPress={() => navigation.navigate('SignIn')} />
+      <ButtonBig style={styles.buttonConnectesToi} text="Connectes-toi" onPress={() => navigation.navigate('SignIn')} />
       <ButtonBig style={styles.buttonGoogle} text="Se connecter avec Google" />
     </SafeAreaView>
   );
@@ -46,8 +48,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: '#F5F5F5', 
   },
-
+  buttonBack: {
+    position: 'absolute',
+    top: '7%', 
+    left: '5%',
+    backgroundColor: '#F095B4',
+    
+  },
   title: {
     fontSize: 90,
     fontFamily: 'LilitaOne-Regular',
@@ -55,12 +64,11 @@ const styles = StyleSheet.create({
     textShadowColor: 'black',
     textShadowOffset: { width: 4, height: 6 },
     textShadowRadius: 3,
+    marginBottom: 20,
   },
   textContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 50,
-    fontFamily: 'LilitaOne-Regular',
     width: 280,
     height: 200,
     margin: 60,
@@ -72,12 +80,13 @@ const styles = StyleSheet.create({
   },
   buttonInscrisToi: {
     backgroundColor: '#00CC99',
+    marginBottom: 10,
   },
   buttonConnectesToi: {
     backgroundColor: '#4478A9',
+    marginBottom: 10,
   },
   buttonGoogle: {
     backgroundColor: '#E94C65',
   },
-
 });

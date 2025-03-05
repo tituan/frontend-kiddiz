@@ -37,7 +37,7 @@ export default ButtonSmall;
 
 const styles = StyleSheet.create({
   buttonBig: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#000000",
     width: '15%',
     height: 50,

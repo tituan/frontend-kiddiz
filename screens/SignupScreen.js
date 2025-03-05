@@ -9,9 +9,10 @@ import ButtonBig from './components/ButtonBig';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Remplacez CheckBox par une icône
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
 import { useDispatch } from 'react-redux';
 import { signUpUser } from '../reducers/users';
+import ButtonIcon from './components/ButtonIcon';
 
 // Schéma de validation avec yup
 const schema = yup.object().shape({
@@ -36,7 +37,7 @@ const CustomCheckBox = ({ label, value, onChange }) => {
       <Icon
         name={value ? 'check-box' : 'check-box-outline-blank'}
         size={24}
-        color={value ? '#EDDC5F' : '#000'}
+        color={value ? 'white' : '#000'}
       />
       <Text style={styles.checkboxLabel}>{label}</Text>
     </TouchableOpacity>
@@ -111,7 +112,7 @@ export default function SignUpScreen({ navigation }) {
           token: data.userResponse.token,
           status: data.userResponse.status
         }));
-        navigation.navigate('Home');
+        navigation.navigate('TabNavigator');
       } else {
         console.log('Une erreur s\'est produite lors de l\'inscription :', data.error);
       }
@@ -132,6 +133,7 @@ export default function SignUpScreen({ navigation }) {
         end={{ x: 1, y: 0 }}
         style={styles.container}
       >
+        <ButtonIcon style={styles.buttonBack}  name="arrow-left"  onPress={() => navigation.navigate('Connection')}/>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
           <SafeAreaView style={styles.innerContainer}>
             <Text style={styles.title}>Kiddiz</Text>
@@ -299,10 +301,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   innerContainer: {
-    flex: 1,
-    alignItems: 'center',
+    
     justifyContent: 'center',
     paddingHorizontal: 20,
+    marginTop:100,
+  },
+  
+  buttonBack: {
+    position: 'absolute',
+    top: '7%', 
+    left: '5%',
+    backgroundColor: '#F095B4',
+    
   },
   title: {
     fontSize: 45,
@@ -313,12 +323,13 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 3,
     fontFamily: 'LilitaOne-Regular',
+    textAlign: 'center',
   },
   input: {
     width: '100%',
     padding: 15,
     marginVertical: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#000',
     borderRadius: 8,
     backgroundColor: '#fff',
@@ -336,6 +347,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 15,
+
   },
   checkboxLabel: {
     fontSize: 14,
@@ -344,6 +356,7 @@ const styles = StyleSheet.create({
   },
   buttonSignUp: {
     backgroundColor: '#00CC99',
+  
   },
   dateText: {
     fontSize: 16,
