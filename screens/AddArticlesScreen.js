@@ -294,10 +294,6 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginTop: 10,
     },
-    labelCheckbox: {
-        fontSize: 20,
-        marginBottom: 9,
-    },
     imagePicker: {
         width: '100%',
         height: 300,
