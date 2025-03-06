@@ -53,8 +53,6 @@ export default function ArticleScreen({ navigation, route }) {
                 <Text>{article.firstname}</Text>
 
                 <Button style={styles.buttonSeller} title="vendeur" onPress={() => navigation.navigate("SellerScreen", { article: article.user })} ></Button>
-
-
                 <Image style={styles.map} source={require('../assets/carte.jpg')}/>
 
                 <View style={styles.buttonHalfContainer}>
@@ -91,16 +89,12 @@ const styles = StyleSheet.create({
         shadowRadius: 4, 
         elevation: 5, 
     },
-
-
     titreContainer:{
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        
     },
-
     titre:{
         fontSize: 22,
         fontFamily: 'LilitaOne-Regular',
@@ -171,9 +165,6 @@ const styles = StyleSheet.create({
         bottom: 10, 
         right: 10, 
     },
-
-
-
     buttonContainer:{
         padding: 20,
     },
