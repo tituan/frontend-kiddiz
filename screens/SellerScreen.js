@@ -7,7 +7,7 @@ import ButtonBig from './components/ButtonBig'
 import ButtonHalf from './components/ButtonHalf';
 import Article from './components/Article';
 
-export default function SellerScreen({ route }) {
+export default function SellerScreen({ navigation, route }) {
     const article = route.params;
     const sellerToken = article.article.token;
     const sellerFirstName = article.article.firstname;
