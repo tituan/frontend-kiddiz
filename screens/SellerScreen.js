@@ -7,7 +7,12 @@ import ButtonBig from './components/ButtonBig'
 import ButtonHalf from './components/ButtonHalf';
 import Article from './components/Article';
 
+// Env variable for BACKEND
+const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+
 export default function SellerScreen({ navigation, route }) {
+     
+
     const article = route.params;
     const sellerToken = article.article.token;
     const sellerFirstName = article.article.firstname;
@@ -15,17 +20,13 @@ export default function SellerScreen({ navigation, route }) {
     const [loading, setLoading] = useState(true);
     const [articles, setArticles] = useState([]);
     const numberArticlesSeller = articles ? articles.length : 0;
-    // console.log(articles)
-    // console.log(numberArticlesSeller)
-
-    
-    // console.log(articles)
+   
 
     useEffect(() => {
         // Remplace l'URL par celle de ton backend
         const fetchArticles = async () => {
             try {
-                const response = await fetch(`http://192.168.100.209:3000/articles/get-by/seller/${sellerToken}`);
+                const response = await fetch(`${urlBackend}articles/get-by/seller/${sellerToken}`);
                 const data = await response.json();
                 console.log(data)
                 setArticles(data.article); // Stocke les articles dans l'état
