@@ -29,20 +29,32 @@ export default function ProfilScreen({ navigation }) {
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <View style={styles.profil}>
                         <View style={styles.cardProfil}>
-                             <View style={styles.idBox}>  </View>
+                             <View style={styles.idBox}>  
+
+                                <View style={styles.infoUser}>
+                                <Text> Paul-Loup </Text>
+                                <Text> Chatin </Text>
+                                <Text> Star </Text>
+                                <Text> Paris (75017) </Text>
+                                    
+                                </View>
+
+                             </View>
                              <Text> Nombre d'abonnés 150 </Text>
                              <Text> Nombre de vente réalisées 50 </Text>
                          </View>
                    
                     <View style={styles.buttonContainer}>
-                        <ButtonHalf style={styles.buttonHalf} />
-                        <ButtonHalf style={styles.buttonHalf} />
+                        <ButtonHalf style={styles.buttonContacter} text="Contacter"/>
+                        <ButtonHalf style={styles.buttonAbonner} text="S'abonner"/>
                     </View>
 
                     <Text style={styles.titre}> 12 Articles en vente </Text>
                     <Text style={styles.titre}> Categorie </Text>
                     <ButtonBig style={styles.submitButton} />
                 </View>
+
+
                 <Text style={styles.titre}> Articles en vente </Text>
                 <View style={styles.row}> 
                     <Article style={styles.articleContainer}/>
@@ -82,6 +94,11 @@ const styles = StyleSheet.create({
         height: '70%',
         width: '100%',
     },
+    infoUser:{borderWidth: 1,
+        borderColor: "purpul",
+        height: '100%',
+        width: '50%',},
+
     buttonContainer :{
         borderWidth: 1,
         borderColor: "green",
@@ -92,10 +109,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
-    buttonHalf:{
+    buttonContacter:{
         height: '90%',
         width: '48%',
         borderColor: "black",
+        backgroundColor: "#EDDC5F",
+    },
+    buttonAbonner:{
+        height: '90%',
+        width: '48%',
+        borderColor: "black",
+        backgroundColor: "#00CC99",
     },
     titre: {
         color: "black",
