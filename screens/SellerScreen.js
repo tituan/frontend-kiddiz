@@ -9,12 +9,14 @@ import Article from './components/Article';
 
 export default function SellerScreen({ route }) {
     const article = route.params;
-    const sellerToken = article.article.token
-    const sellerFirstName = article.article.firstname
-    const sellerLastName = article.article.lastname
+    const sellerToken = article.article.token;
+    const sellerFirstName = article.article.firstname;
+    const sellerLastName = article.article.lastname;
     const [loading, setLoading] = useState(true);
     const [articles, setArticles] = useState([]);
-    console.log(articles)
+    const numberArticlesSeller = articles ? articles.length : 0;
+    // console.log(articles)
+    // console.log(numberArticlesSeller)
 
     
     // console.log(articles)
@@ -59,17 +61,15 @@ export default function SellerScreen({ route }) {
                 <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
             </LinearGradient> 
             <ScrollView contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.titre}> Le vendeur </Text>
+            <Text style={styles.mainTitle}> Le vendeur </Text>
                 <View style={styles.profil}>
                     <View style={styles.cardProfil}>
                         <View style={styles.idBox}>
                             <View style={styles.iconProfil}>
                                 <View style={styles.iconProfilInitial}>
-                                    {/* <Text>{sellerFirstName}</Text> */}
-
+                                    <Text style={styles.iconProfilLetter}>{sellerFirstName?.charAt(0).toUpperCase() || '?'}</Text>
                                 </View>
                             </View>
-                            
                             <View style={styles.infoUser}>
                                 <View>
                                     <Text style={styles.firstName}>{sellerFirstName}</Text>
@@ -85,11 +85,14 @@ export default function SellerScreen({ route }) {
                         <ButtonHalf style={styles.buttonContacter} text="Contacter"/>
                         <ButtonHalf style={styles.buttonAbonner} text="S'abonner"/>
                     </View>
-                    <Text style={styles.titre}> 12 Articles en vente </Text>
-                    <Text style={styles.titre}> Categorie </Text>
-                    <ButtonBig style={styles.buttonCategorie} text="Tous"/>
+                    
+                    {/* <View style={styles.containerCategories}>
+                        <Text style={styles.titre}> Categorie </Text>
+                        <ButtonBig style={styles.buttonCategorie} text="Tous"/>
+                    </View> */}
+                    
                 </View>
-                <Text style={styles.titre}> Articles en vente </Text>
+                <Text style={styles.mainTitle}> {numberArticlesSeller} Articles en vente : </Text>
             
                 <View style={styles.row}> 
                     {articles.map((article, index) => (
@@ -106,6 +109,12 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fffff',
     },
+    buttonContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+    },
     header: {
         padding: 20,
         borderBottomColor: '#00000',
@@ -113,22 +122,34 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     profil: {
-        padding: 20,
+       
     },
     cardProfil:{
-
+        marginBottom:15,
+        paddingHorizontal: 20,
     },
     iconProfilInitial:{
-        width: 120,
-        height: 120,
+        width: 100,
+        height: 100,
+        borderWidth: 1,
+        borderColor: "#00000",
         borderRadius: '50%',
         backgroundColor: 'pink',
         display: 'flex',
         flexDirection: 'row',
         alignItems:'center',
         justifyContent: 'center',
-        color: 'black',
+        backgroundColor: '#00CC99',
+        shadowColor: "#000",
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+        elevation: 5,
+    },
+    iconProfilLetter: {
+        color: '#00000',
         fontFamily: 'LilitaOne-Regular',
+        fontSize: 60,
     },
     iconProfil:{
         width: '35%',
@@ -165,13 +186,12 @@ const styles = StyleSheet.create({
         fontFamily: 'RopaSans-Regular',
         fontSize: 18,
     },
-    buttonContainer :{
-        width: '100%',
-        flexDirection: 'row',  
-        justifyContent: 'space-between',  
-        alignItems: 'center',
+    mainTitle: {
+        paddingLeft: 20,
+        fontFamily: 'LilitaOne-Regular',
+        fontSize: 24,
+        marginTop: 15,
     },
-
     buttonContacter:{
         width: '48%',
         borderColor: "black",
@@ -186,7 +206,7 @@ const styles = StyleSheet.create({
         color: "black",
         fontFamily: 'LilitaOne-Regular',
         fontSize: 25, 
-        padding:10,
+        marginBottom: 10,
         
     },
     row: {
@@ -203,6 +223,7 @@ const styles = StyleSheet.create({
     buttonCategorie:{
         alignItems: 'left',
         paddingLeft: 15,
+        backgroundColor: 'pink',
     },
     contentContainer: {
         // flexGrow: 1,
