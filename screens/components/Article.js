@@ -45,7 +45,7 @@ function Article({ onPress, style, item}) {
   // Gestion du like
   const toggleLike = async () => {
     try {
-      const response = await fetch(`${urlBackend}/favorites`, {
+      const response = await fetch(`${urlBackend}favorites`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
