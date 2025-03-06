@@ -10,6 +10,7 @@ import AddArticlesScreen from "./screens/AddArticlesScreen";
 import ProfilScreen from "./screens/ProfilScreen";
 import FavorisScreen from "./screens/FavorisScreen";
 import MessagerieScreen from "./screens/MessagerieScreen";
+import MyArticlesScreen from "./screens/MyArticlesScreen";
 // import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 
@@ -96,6 +97,7 @@ export default function App() {
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="Vendre" component={AddArticlesScreen} />
             <Stack.Screen name="Favoris" component={FavorisScreen} />
+            <Stack.Screen name="MesArticles" component={MyArticlesScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>

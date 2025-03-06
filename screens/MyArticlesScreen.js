@@ -2,19 +2,39 @@ import { StyleSheet, View, ScrollView, Text} from 'react-native';
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
 import { useFonts } from 'expo-font';
+import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import ButtonBig from './components/ButtonBig';
 import * as SplashScreen from 'expo-splash-screen';
 import Article from './components/Article';
 
-export default function ProfilScreen({ navigation }) {
+export default function MyArticlesScreen({ navigation }) {
     const user = useSelector(state => state.user.value);
+    const userToken = useSelector(state => state.user.value.token);
+    const [articles, setArticles] = useState([]);
     console.log(user)
 
     const [fontsLoaded, fontError] = useFonts({
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
         'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
       });
+
+    useEffect(() => {
+            // Remplace l'URL par celle de ton backend
+            const fetchArticles = async () => {
+            try {
+                const response = await fetch(`http://192.168.100.209:3000/articles/get-by/seller/${userToken}`);
+                const data = await response.json();
+                setArticles(data.article); // Stocke les articles dans l'état
+            } catch (error) {
+                console.error("Erreur lors de la récupération des articles:", error);
+            } finally {
+                setLoading(false); // Arrête le chargement
+            }
+            };
+    
+            fetchArticles();
+        }, []);
 
     return (
     <View style={styles.container}>
@@ -28,19 +48,11 @@ export default function ProfilScreen({ navigation }) {
         </LinearGradient> 
         
         <ScrollView contentContainerStyle={styles.contentContainer}>
-            <View style={styles.containerProfil}>
-                <View style={styles.containerProfilAvatar}>
-                    <Text style={styles.containerProfilInitial}>{user?.firstname?.charAt(0).toUpperCase() || '?'}{user?.lastname?.charAt(0).toUpperCase() || '?'}</Text>
-                </View>
-                <View style={styles.containerProfilInfos}>
-                    <Text style={styles.containerProfilInfosWelcome}>Bienvenue</Text>
-                    <Text style={styles.containerProfilInfosName}>{user.firstname} {user.lastname}</Text>
-                </View>
-            </View>
-            <ButtonBig style={styles.buttonSell} text="Vendez votre article" onPress={() => navigation.navigate('Vendre')} />
-            <ButtonBig style={styles.buttonNav} text="Mes articles" onPress={() => navigation.navigate('MesArticles')} />
-            <ButtonBig style={styles.buttonNav} text="Mes favoris" onPress={() => navigation.navigate('Favoris')} />
-            <ButtonBig style={styles.buttonNav} text="FAQ" onPress={() => navigation.navigate('Vendre')} />
+            <View style={styles.row}> 
+                {articles.map((item, i) => (
+                   <Article key={item.id} item={item} />
+                ))}
+             </View>
         </ScrollView>
         
     </View>
@@ -71,7 +83,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
         paddingTop: 20,
     },
     containerProfil: {
