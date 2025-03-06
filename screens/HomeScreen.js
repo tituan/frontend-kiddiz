@@ -21,7 +21,7 @@ export default function HomeScreen({ navigation }) {
             try {
                 const response = await fetch(`${urlBackend}articles/popular`);
                 const data = await response.json();
-                setSearchResults(data.article); // Stocke les articles dans l'état
+                setArticles(data.article); // Stocke les articles dans l'état
             } catch (error) {
                 console.error("Erreur lors de la récupération des articles:", error);
             } finally {
@@ -36,12 +36,11 @@ export default function HomeScreen({ navigation }) {
 
         try {
             // encodeURIComponent permet de gérer les caractères spéciaux
-            const response = await fetch(`http://192.168.100.209:3000/articles/?search=${encodeURIComponent(searchTerm)}`);
+            const response = await fetch(`${urlBackend}articles/?search=${encodeURIComponent(searchTerm)}`);
 
             const data = await response.json();
 
-            // Ici on utilise un autre état pour gérer les articles à afficher
-            setSearchResults(data.articles);
+            setArticles(data.articles);
 
         } catch (error) {
             console.error('Erreur lors de la recherche :', error);
@@ -72,7 +71,7 @@ export default function HomeScreen({ navigation }) {
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <WelcomeHome navigation={navigation} />
                 <View style={styles.row}>
-                    {(searchResults.length > 0 ? searchResults : articles).map((item, i) => (
+                    {articles.map((item, i) => (
                         <Article key={item.id} item={item} />
                     ))}
                 </View>
