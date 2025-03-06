@@ -9,12 +9,13 @@ import SignInScreen from "./screens/SigninScreen";
 import AddArticlesScreen from "./screens/AddArticlesScreen";
 import ProfilScreen from "./screens/ProfilScreen";
 // import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 // redux imports
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/users';
+
 
 
 const store = configureStore({
@@ -52,8 +53,7 @@ const TabNavigator = () => {
           fontWeight: 300,
         },
         tabBarStyle: {
-          // backgroundColor: 'rgb(89, 208, 210)', 
-          backgroundColor: '#F0D74D', // Vert avec opacité 0.5
+          backgroundColor: '#E6C12E', // Vert avec opacité 0.5
           height: 85,
           borderTopColor: 'black',
           borderTopWidth: 1,
@@ -81,6 +81,7 @@ const TabNavigator = () => {
 };
 
 export default function App() {
+  
   return (
     <Provider store={store}>
         <NavigationContainer>

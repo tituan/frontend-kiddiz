@@ -109,7 +109,7 @@ console.log(userToken)
       }
 
       // Envoyer les données au backend
-    const response = await fetch('http://192.168.1.134:3000/articles', {
+    const response = await fetch('http://192.168.100.209:3000/articles', {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data', // Utiliser multipart/form-data pour les fichiers
