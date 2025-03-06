@@ -92,16 +92,12 @@ const styles = StyleSheet.create({
         shadowRadius: 4, 
         elevation: 5, 
     },
-
-
     titreContainer:{
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        
     },
-
     titre:{
         fontSize: 22,
         fontFamily: 'LilitaOne-Regular',
@@ -172,9 +168,6 @@ const styles = StyleSheet.create({
         bottom: 10, 
         right: 10, 
     },
-
-
-
     buttonContainer:{
         padding: 20,
     },
