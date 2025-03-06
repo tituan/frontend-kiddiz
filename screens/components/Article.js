@@ -51,12 +51,19 @@ function Article({ onPress, style, item}) {
 
       const data = await response.json();
 
-      if (data.result) {
-        setIsLiked(!isLiked);
-        setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
-      } else {
-        console.error("Erreur API:", data.error);
-      }
+      // if (data.result) {
+      //   setIsLiked(!isLiked);
+      //   );
+      // } else {
+      //   console.error("Erreur API:", data.error);
+      // }
+      
+      const alreadylike= item.user.token.find(token === userToken)  //vérifier si le token de l'utilisateur est présent dans le tableau des utilisateurs likers
+      if (alreadylike) {
+         setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1))}
+         else {
+          setIsLiked(true) && setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1))
+         }
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
     }
