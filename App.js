@@ -8,6 +8,10 @@ import SignUpScreen from "./screens/SignupScreen";
 import SignInScreen from "./screens/SigninScreen";
 import AddArticlesScreen from "./screens/AddArticlesScreen";
 import ProfilScreen from "./screens/ProfilScreen";
+import FavorisScreen from "./screens/FavorisScreen";
+import ArticleScreen from "./screens/ArticleScreen";
+import MessagerieScreen from "./screens/MessagerieScreen";
+import SellerScreen from "./screens/SellerScreen";
 // import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 
@@ -40,6 +44,8 @@ const TabNavigator = () => {
             iconName = "plus";
           } else if (route.name === "Home") {
             iconName = "home";
+          } else if (route.name === "Favoris") {
+            iconName = "heart";
           }
 
           return <FontAwesome name={iconName} size={35} color={color} />;
@@ -72,9 +78,9 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Favoris" component={FavorisScreen} />
       <Tab.Screen name="Vendre" component={AddArticlesScreen} />
-      {/* {/* <Tab.Screen name="Favoris" component={FavorisScreen} />
-      <Tab.Screen name="Messagerie" component={MessagerieScreen} /> */}
+      <Tab.Screen name="Messagerie" component={MessagerieScreen} /> 
       <Tab.Screen name="Profil" component={ProfilScreen} /> 
     </Tab.Navigator>
   );
@@ -90,6 +96,10 @@ export default function App() {
             <Stack.Screen name="Connection" component={ConnectionScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="Vendre" component={AddArticlesScreen} />
+            <Stack.Screen name="Favoris" component={FavorisScreen} />
+            <Stack.Screen name="SellerScreen" component={SellerScreen} />
+            <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
