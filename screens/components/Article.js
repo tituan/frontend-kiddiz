@@ -7,6 +7,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'; 
 
+ // Env variable for BACKEND
+ const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+
 function Article({ onPress, style, item}) {
   const navigation = useNavigation();  
   const userToken = useSelector(state => state.user.value.token);
@@ -42,7 +45,7 @@ function Article({ onPress, style, item}) {
   // Gestion du like
   const toggleLike = async () => {
     try {
-      const response = await fetch("http://192.168.100.209:3000/favorites", {
+      const response = await fetch(`${urlBackend}favorites`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

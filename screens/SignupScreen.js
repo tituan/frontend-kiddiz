@@ -14,6 +14,9 @@ import { useDispatch } from 'react-redux';
 import { signUpUser } from '../reducers/users';
 import ButtonIcon from './components/ButtonIcon';
 
+// Env variable for BACKEND
+const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+
 // Schéma de validation avec yup
 const schema = yup.object().shape({
   firstname: yup.string().required('Prénom requis'),
@@ -45,6 +48,7 @@ const CustomCheckBox = ({ label, value, onChange }) => {
 };
 
 export default function SignUpScreen({ navigation }) {
+
   const dispatch = useDispatch();
   const [showDatePicker, setShowDatePicker] = useState(false); // État pour afficher/masquer le DatePicker
 
@@ -95,7 +99,7 @@ export default function SignUpScreen({ navigation }) {
 
       console.log(values.dateOfBirth);
 
-      const response = await fetch('http://192.168.100.209:3000/users/signup', {
+      const response = await fetch(`${urlBackend}users/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
