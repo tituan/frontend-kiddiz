@@ -30,7 +30,7 @@ export default function ArticleScreen({ navigation, route }) {
              
              <View style={styles.titreContainer}>
                     <Text style={styles.titre}>{article.title}</Text>
-                    <FontAwesome name="heart" size={20} color={"red"} />
+                    <FontAwesome name="heart" size={20} color={"red"} style={styles.like}/>
                     <Text style={styles.likesCount}>{article.likesCount}</Text>
              </View>
 
@@ -91,24 +91,33 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.9, 
         shadowRadius: 4, 
         elevation: 5, 
+         bottomTop: 50,
     },
     titreContainer:{
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        marginTop:20,
+        
     },
     titre:{
-        fontSize: 22,
+        fontSize: 25,
         fontFamily: 'LilitaOne-Regular',
         position: 'absolute', 
         left : "4%",
+    
     },
 
+    like:{
+        fontSize: 20,
+        fontFamily: 'RopaSans-Regular',
+        left : 350,
+        
+    },
     likesCount:{
         fontSize: 20,
         fontFamily: 'RopaSans-Regular',
-        left : "85%",
+        left : 360,
     },
 
     photoContainer:{
@@ -129,31 +138,31 @@ const styles = StyleSheet.create({
     },
     titreDescription:{
         fontFamily: 'LilitaOne-Regular',
-        fontSize: 20,
+        fontSize: 22,
         marginBottom: 5,
         
 
     },
     textDescription:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 20,
+        fontSize: 24,
         marginBottom: 5,
 
     },
     textCategorie:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 17,
+        fontSize: 19,
         marginBottom: 5,
     },
     textType:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 17,
+        fontSize: 19,
         marginBottom: 5,
 
     },
     textCondition:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 17,
+        fontSize: 19,
         marginBottom: 5,
         
 
