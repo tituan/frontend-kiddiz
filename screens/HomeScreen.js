@@ -5,6 +5,8 @@ import { LinearGradient } from 'expo-linear-gradient'
 import WelcomeHome from './components/WelcomeHome'
 import Article from './components/Article';
 
+ // Env variable for BACKEND
+ const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function HomeScreen({ navigation }) {
     const [articles, setArticles] = useState([]);
@@ -17,7 +19,7 @@ export default function HomeScreen({ navigation }) {
         // Remplace l'URL par celle de ton backend
         const fetchArticles = async () => {
             try {
-                const response = await fetch("http://192.168.100.209:3000/articles/popular");
+                const response = await fetch(`${urlBackend}articles/popular`);
                 const data = await response.json();
                 setSearchResults(data.article); // Stocke les articles dans l'état
             } catch (error) {

@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
 import { useFonts } from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native'; 
+
+ // Env variable for BACKEND
+ const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 function Article({ onPress, style, item}) {
+  const navigation = useNavigation();  
   const userToken = useSelector(state => state.user.value.token);
+  
   // Chargement des polices
   const [fontsLoaded, fontError] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
@@ -38,7 +45,7 @@ function Article({ onPress, style, item}) {
   // Gestion du like
   const toggleLike = async () => {
     try {
-      const response = await fetch("http://192.168.100.209:3000/favorites", {
+      const response = await fetch(`${urlBackend}favorites`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,9 +68,14 @@ function Article({ onPress, style, item}) {
       console.error("Erreur lors de la requête:", error);
     }
   };
+  const handleClick = () => {
+    console.log('click');
+    console.log(item);
+    navigation.navigate("ArticleScreen", { article: item });
+  };
 
   return (
-    <TouchableOpacity style={[styles.articleContainer, style]} onPress={onPress}>
+    <TouchableOpacity style={[styles.articleContainer, style]} onPress={handleClick}>
       <View style={styles.imageContainer}>
         <View style={styles.imageWrapper}>
           <Image source={{ uri: item.pictures[0] }} style={styles.image} resizeMode="cover" />
@@ -97,11 +109,10 @@ const styles = StyleSheet.create({
     width: '48%',
     height: 240,
     borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
     marginVertical: 10,
     backgroundColor: '#00CC99',
-    padding: 5,
+    // padding: 5,
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.2,
@@ -110,23 +121,25 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: 'relative',
+    width: '100%',
   },
   imageWrapper: {
-    width: 165,
-    height: 170,
+    width: '100%',
+    height: 180,
     overflow: 'hidden',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: "black",
-    marginBottom: 8,
+    marginBottom: 10,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   image: {
     width: '100%',
     height: '100%',
     borderRadius: 10,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   heartIcon: {
     position: 'absolute',
@@ -170,7 +183,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 5,
+    paddingHorizontal: 8,
     marginBottom: 10,
     width: '100%',
   },

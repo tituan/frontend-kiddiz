@@ -9,6 +9,9 @@ import { useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import RadioButton from './components/RadioButton'; 
 
+ // Env variable for BACKEND
+ const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+
 const schema = yup.object().shape({
     title: yup
       .string()
@@ -109,7 +112,7 @@ console.log(userToken)
       }
 
       // Envoyer les données au backend
-    const response = await fetch('http://192.168.100.209:3000/articles', {
+    const response = await fetch(`${urlBackend}/articles`, {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data', // Utiliser multipart/form-data pour les fichiers
