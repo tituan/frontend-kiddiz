@@ -93,7 +93,7 @@ export default Article;
 const styles = StyleSheet.create({
   articleContainer: {
     borderWidth: 1,
-    borderColor: "#fff",
+    borderColor: "#00000",
     width: '48%',
     height: 240,
     borderRadius: 10,
