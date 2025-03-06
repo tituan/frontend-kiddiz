@@ -1,9 +1,7 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text, Button} from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text, Button, Image} from 'react-native';
 import React, { useEffect, useState } from "react";
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
-import WelcomeHome from './components/WelcomeHome'
-import Article from './components/Article';
 import ButtonBig from './components/ButtonBig';
 import ButtonHalf from './components/ButtonHalf';
 import { FontAwesome } from '@expo/vector-icons';
@@ -54,8 +52,10 @@ export default function ArticleScreen({ navigation, route }) {
             
                 <Text>{article.firstname}</Text>
 
+                <Button style={styles.buttonSeller} title="vendeur" onPress={() => navigation.navigate("SellerScreen", { article: article.user })} ></Button>
 
-                <Image style={styles.tinyLogo} source={require('../assets/carte.jpg')} style={{width: '100%', height: '50%'}} />
+
+                <Image style={styles.map} source={require('../assets/carte.jpg')}/>
 
                 <View style={styles.buttonHalfContainer}>
                 <ButtonHalf style={styles.buttonOffre} text="Faire une offre" />
@@ -64,7 +64,7 @@ export default function ArticleScreen({ navigation, route }) {
 
              </View>
              {/* Need some Style this is for the seller screen acces */}
-             <Button style={styles.buttonSeller} title="vendeur" onPress={() => navigation.navigate("SellerScreen", { article: article.user })} ></Button>
+            
         </ScrollView>
         
     </View>
@@ -179,8 +179,13 @@ const styles = StyleSheet.create({
     },
     buttonAchaterArticle: {
         backgroundColor: '#EDDC5F',
-        
+    
     },
+    map:{
+        height:200,
+        width:'100%'
+    },
+
     buttonHalfContainer :{
         padding: 20,
         flexDirection: 'row',
