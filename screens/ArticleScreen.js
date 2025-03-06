@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text} from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text, Button} from 'react-native';
 import React, { useEffect, useState } from "react";
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
@@ -11,6 +11,8 @@ export default function ArticleScreen({ navigation, route }) {
     // const [articles, setArticles] = useState([]);
     // const [loading, setLoading] = useState(true);
     const { article } = route.params;
+
+    // console.log(article)
     
     return (
     <View style={styles.container}>
@@ -46,6 +48,8 @@ export default function ArticleScreen({ navigation, route }) {
 
                 <ButtonBig style={styles.buttonAchater} text="Acheter l'article" />
              </View>
+             {/* Need some Style this is for the seller screen acces */}
+             <Button style={styles.buttonSeller} title="vendeur" onPress={() => navigation.navigate("SellerScreen", { article: article.user })} ></Button>
         </ScrollView>
         
     </View>

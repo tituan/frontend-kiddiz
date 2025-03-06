@@ -11,6 +11,7 @@ import ProfilScreen from "./screens/ProfilScreen";
 import FavorisScreen from "./screens/FavorisScreen";
 import ArticleScreen from "./screens/ArticleScreen";
 import MessagerieScreen from "./screens/MessagerieScreen";
+import SellerScreen from "./screens/SellerScreen";
 // import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 
@@ -97,6 +98,7 @@ export default function App() {
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="Vendre" component={AddArticlesScreen} />
             <Stack.Screen name="Favoris" component={FavorisScreen} />
+            <Stack.Screen name="SellerScreen" component={SellerScreen} />
             <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
           </Stack.Navigator>

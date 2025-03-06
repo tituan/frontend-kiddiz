@@ -1,63 +1,100 @@
-import { StyleSheet, View, ScrollView, Text, ActivityIndicator,Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, ActivityIndicator, Image, Button } from 'react-native';
+import React, { useEffect, useState } from "react";
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
-import Article from './components/Article';
 import { useFonts } from 'expo-font';
 import ButtonBig from './components/ButtonBig'
 import ButtonHalf from './components/ButtonHalf';
+import Article from './components/Article';
 
-export default function SellerScreen({ navigation }) {
+export default function SellerScreen({ route }) {
+    const article = route.params;
+    const sellerToken = article.article.token
+    const sellerFirstName = article.article.firstname
+    const sellerLastName = article.article.lastname
+    const [loading, setLoading] = useState(true);
+    const [articles, setArticles] = useState([]);
+    console.log(articles)
+
+    
+    // console.log(articles)
+
+    useEffect(() => {
+        // Remplace l'URL par celle de ton backend
+        const fetchArticles = async () => {
+            try {
+                const response = await fetch(`http://192.168.100.209:3000/articles/get-by/seller/${sellerToken}`);
+                const data = await response.json();
+                console.log(data)
+                setArticles(data.article); // Stocke les articles dans l'état
+            } catch (error) {
+                console.error("Erreur lors de la récupération des articles:", error);
+            } finally {
+                setLoading(false); // Arrête le chargement
+            }
+        };
+
+        fetchArticles();
+    }, []);
 
     const [fontsLoaded] = useFonts({
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
         'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
     });
+
     if (!fontsLoaded) {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
-        return (
+
+    
+
+    return (
         <View style={styles.container}>
             <LinearGradient
                 colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
                 start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
                 end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
                 style={styles.header}
-    gutyarn        >
+            >
                 <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
             </LinearGradient> 
             <ScrollView contentContainerStyle={styles.contentContainer}>
+            <Text style={styles.titre}> Le vendeur </Text>
                 <View style={styles.profil}>
-                        <View style={styles.cardProfil}>
-                             <View style={styles.idBox}>  
-                            
-                               <Image style={styles.iconProfil} source={require('../assets/icon-profil.jpg')}/> 
+                    <View style={styles.cardProfil}>
+                        <View style={styles.idBox}>
+                            <View style={styles.iconProfil}>
+                                <View style={styles.iconProfilInitial}>
+                                    {/* <Text>{sellerFirstName}</Text> */}
 
-                                <View style={styles.infoUser}>
-                                <Text style={styles.firstName} > Coffreajouet </Text>
-                                <Text> ⭐️ ⭐️ ⭐️ ⭐️ ⭐️  4.5 </Text>
-                                <Text> Paris (75017) </Text>
-                                    
                                 </View>
-
-                             </View>
-                             <Text style={styles.textAbonnes}> Nombre d'abonnés 150 </Text>
-                             <Text style={styles.textVente} > Nombre de vente réalisées 50 </Text>
-                         </View>
-                   
+                            </View>
+                            
+                            <View style={styles.infoUser}>
+                                <View>
+                                    <Text style={styles.firstName}>{sellerFirstName}</Text>
+                                    <Text> ⭐️ ⭐️ ⭐️ ⭐️ ⭐️  4.5 </Text>
+                                    <Text> Paris (75017) </Text>
+                                </View>
+                            </View>
+                        </View>
+                        <Text style={styles.textAbonnes}> Nombre d'abonnés 150 </Text>
+                        <Text style={styles.textVente} > Nombre de vente réalisées 50 </Text>
+                    </View>
                     <View style={styles.buttonContainer}>
                         <ButtonHalf style={styles.buttonContacter} text="Contacter"/>
                         <ButtonHalf style={styles.buttonAbonner} text="S'abonner"/>
                     </View>
-
                     <Text style={styles.titre}> 12 Articles en vente </Text>
                     <Text style={styles.titre}> Categorie </Text>
                     <ButtonBig style={styles.buttonCategorie} text="Tous"/>
                 </View>
-
-
                 <Text style={styles.titre}> Articles en vente </Text>
+            
                 <View style={styles.row}> 
-                    {/* <Article style={styles.articleContainer}/> */}
+                    {articles.map((article, index) => (
+                        <Article key={article.id} item={article} />
+                    ))}
                 </View>
             </ScrollView>
         </View>
@@ -76,47 +113,46 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     profil: {
-        // borderWidth: 1,
-        // borderColor: "red",
-        height: '70%',
-        width: '100%',
         padding: 20,
-        
     },
     cardProfil:{
-        // borderWidth: 1,
-        // borderColor: "blue",
-        height: '45%',
-        width: '100%',
+
+    },
+    iconProfilInitial:{
+        width: 120,
+        height: 120,
+        borderRadius: '50%',
+        backgroundColor: 'pink',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent: 'center',
+        color: 'black',
+        fontFamily: 'LilitaOne-Regular',
     },
     iconProfil:{
-        // borderWidth: 1,
-        // borderColor: "orange",
-        height: '100%',
         width: '35%',
-        
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent: 'center'
     },
     firstName:{
         fontFamily: 'LilitaOne-Regular',
         fontSize: 30,
-        
     },
     idBox:{
-        // borderWidth: 1,
-        // borderColor: "orange",
-        height: '70%',
-        width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        
+        marginBottom: 20,
     },
     infoUser:{
-        // borderWidth: 1,
-        // borderColor: "purpul",
-        height: '100%',
         width: '65%',
-       
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        
     },
     textAbonnes:{
         color: "black",
@@ -129,12 +165,7 @@ const styles = StyleSheet.create({
         fontFamily: 'RopaSans-Regular',
         fontSize: 18,
     },
-
-    
     buttonContainer :{
-        // borderWidth: 1,
-        // borderColor: "green",
-        height: '15%',
         width: '100%',
         flexDirection: 'row',  
         justifyContent: 'space-between',  
@@ -142,13 +173,11 @@ const styles = StyleSheet.create({
     },
 
     buttonContacter:{
-        height: '90%',
         width: '48%',
         borderColor: "black",
         backgroundColor: "#EDDC5F",
     },
     buttonAbonner:{
-        height: '90%',
         width: '48%',
         borderColor: "black",
         backgroundColor: "#00CC99",
@@ -174,10 +203,12 @@ const styles = StyleSheet.create({
     buttonCategorie:{
         alignItems: 'left',
         paddingLeft: 15,
-        
-
     },
     contentContainer: {
-        flexGrow: 1,
+        // flexGrow: 1,
     },
+    buttonSeller: {
+        width: 200,
+        height: 50,
+    }
 });

@@ -55,7 +55,7 @@ const SignInScreen = ({navigation}) => {
   // Fonction pour envoyer les données au serveur
   const handlePost = async (values) => {
     try {
-      const response = await fetch('http://192.168.100.81:3000/users/signin', {
+      const response = await fetch('http://192.168.100.209:3000/users/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
