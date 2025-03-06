@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import ButtonBig from './components/ButtonBig';
 import ButtonHalf from './components/ButtonHalf';
 import { FontAwesome } from '@expo/vector-icons';
-
+import ButtonProfil from './components/ButtonProfil';
 
 export default function ArticleScreen({ navigation, route }) {
     // const [articles, setArticles] = useState([]);
@@ -52,8 +52,9 @@ export default function ArticleScreen({ navigation, route }) {
             
                 <Text>{article.firstname}</Text>
 
-                <Button style={styles.buttonSeller} title="vendeur" onPress={() => navigation.navigate("SellerScreen", { article: article.user })} ></Button>
-
+                <View style={styles.buttonSeller}>
+                <ButtonProfil style={styles.buttonSeller} text="Acheter l'article" onPress={() => navigation.navigate("SellerScreen", { article: article.user })}/>
+                </View>
 
                 <Image style={styles.map} source={require('../assets/carte.jpg')}/>
 
@@ -63,7 +64,7 @@ export default function ArticleScreen({ navigation, route }) {
                 </View>
 
              </View>
-             {/* Need some Style this is for the seller screen acces */}
+            
             
         </ScrollView>
         
