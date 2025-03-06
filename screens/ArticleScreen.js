@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text, Button} from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, Image, Text, Button} from 'react-native';
 import React, { useEffect, useState } from "react";
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
@@ -55,7 +55,7 @@ export default function ArticleScreen({ navigation, route }) {
                 <Text>{article.firstname}</Text>
 
 
-                <Image style={styles.tinyLogo} source={require('../assets/carte.jpg')} style={{width: '100%', height: '50%'}} />
+                <Image style={styles.tinyLogo} source={require('../assets/carte.jpg')} />
 
                 <View style={styles.buttonHalfContainer}>
                 <ButtonHalf style={styles.buttonOffre} text="Faire une offre" />
@@ -91,16 +91,12 @@ const styles = StyleSheet.create({
         shadowRadius: 4, 
         elevation: 5, 
     },
-
-
     titreContainer:{
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        
     },
-
     titre:{
         fontSize: 22,
         fontFamily: 'LilitaOne-Regular',
@@ -171,9 +167,6 @@ const styles = StyleSheet.create({
         bottom: 10, 
         right: 10, 
     },
-
-
-
     buttonContainer:{
         padding: 20,
     },
