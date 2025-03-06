@@ -1,45 +1,78 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, Text, StyleSheet, Image, View, ImageBackground } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { FontAwesome } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
-function Article({ text, onPress, style, item }) {
-  const [loaded, error] = useFonts({
+function Article({ onPress, style, item}) {
+  const userToken = useSelector(state => state.user.value.token);
+  // Chargement des polices
+  const [fontsLoaded, fontError] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
     'RopaSans-Regular': require('../../assets/fonts/RopaSans-Regular.ttf'),
   });
 
-  const [isLiked, setIsLiked] = useState(false);  
+  // État du like et du compteur
+  const [isLiked, setIsLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(item.likesCount);
 
+  // Masquer l'écran de splash après le chargement des polices
   useEffect(() => {
-    if (loaded || error) {
+    if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, error]);
+  }, [fontsLoaded, fontError]);
 
-  if (!loaded && !error) {
+  // Vérifier si l'utilisateur a déjà liké l'article
+  useEffect(() => {
+    if (item.usersLikers && item.usersLikers.includes(userToken)) {
+      setIsLiked(true);
+    }
+  }, [item, userToken]);
+
+  if (!fontsLoaded && !fontError) {
     return null;
   }
 
-  
-  const toggleLike = () => {
-    setIsLiked(!isLiked);
+  // Gestion du like
+  const toggleLike = async () => {
+    try {
+      const response = await fetch("http://192.168.100.209:3000/favorites", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: userToken,
+          articleId: item.id,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.result) {
+        setIsLiked(!isLiked);
+        setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
+      } else {
+        console.error("Erreur API:", data.error);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
+    }
   };
 
   return (
     <TouchableOpacity style={[styles.articleContainer, style]} onPress={onPress}>
       <View style={styles.imageContainer}>
-
-      <View style={styles.imageWrapper} >
-        <Image source={{uri: `${item.pictures[0]}` }} style={styles.image} resizeMode="cover" />
-      </View>
+        <View style={styles.imageWrapper}>
+          <Image source={{ uri: item.pictures[0] }} style={styles.image} resizeMode="cover" />
+        </View>
 
         <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
           <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
-          <Text style={styles.likeCounter}>{item.likesCount}</Text>
+          <Text style={styles.likeCounter}>{likesCount}</Text>
         </TouchableOpacity>
-        
       </View>
 
       <View style={styles.rowContainer}>
@@ -60,7 +93,7 @@ export default Article;
 const styles = StyleSheet.create({
   articleContainer: {
     borderWidth: 1,
-    borderColor: "#fffff",
+    borderColor: "#00000",
     width: '48%',
     height: 240,
     borderRadius: 10,
@@ -69,28 +102,23 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     backgroundColor: '#00CC99',
     padding: 5,
-
-    // Shadow for iOS
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-
-    // Shadow for Android
     elevation: 5,
   },
   imageContainer: {
     position: 'relative',
-    
   },
   imageWrapper: {
-    width: 165, 
-    height: 170, 
+    width: 165,
+    height: 170,
     overflow: 'hidden',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff', 
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: "black",
     marginBottom: 8,
@@ -99,12 +127,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
   },
   heartIcon: {
     position: 'absolute',
-    display: 'flex',
     flexDirection: 'row',
     bottom: 20,
     right: 10,
@@ -117,7 +142,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    elevation: 3, 
+    elevation: 3,
     borderWidth: 1,
     borderColor: "#000000",
   },
