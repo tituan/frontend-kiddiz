@@ -5,6 +5,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 
+ // Env variable for BACKEND
+ const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+
 function Article({ onPress, style, item}) {
   const userToken = useSelector(state => state.user.value.token);
   // Chargement des polices
@@ -38,7 +41,7 @@ function Article({ onPress, style, item}) {
   // Gestion du like
   const toggleLike = async () => {
     try {
-      const response = await fetch("http://192.168.100.209:3000/favorites", {
+      const response = await fetch(`${urlBackend}/favorites`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
