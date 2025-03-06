@@ -1,41 +1,17 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator,} from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text} from 'react-native';
 import React, { useEffect, useState } from "react";
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
 import WelcomeHome from './components/WelcomeHome'
 import Article from './components/Article';
+import ButtonBig from './components/ButtonBig';
 
 
-export default function HomeScreen({ navigation }) {
-    const [articles, setArticles] = useState([]);
-    const [loading, setLoading] = useState(true);
-    console.log(articles)
-
-    useEffect(() => {
-        // Remplace l'URL par celle de ton backend
-        const fetchArticles = async () => {
-        try {
-            const response = await fetch("http://192.168.100.81:3000/articles/popular");
-            const data = await response.json();
-            setArticles(data.article); // Stocke les articles dans l'état
-        } catch (error) {
-            console.error("Erreur lors de la récupération des articles:", error);
-        } finally {
-            setLoading(false); // Arrête le chargement
-        }
-        };
-
-        fetchArticles();
-    }, []);
-
-    if (loading) {
-        return (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
-        );
-      }
-
+export default function ArticleScreen({ navigation, route }) {
+    // const [articles, setArticles] = useState([]);
+    // const [loading, setLoading] = useState(true);
+    const { article } = route.params;
+    
     return (
     <View style={styles.container}>
         <LinearGradient
@@ -47,11 +23,28 @@ export default function HomeScreen({ navigation }) {
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
         </LinearGradient> 
         <ScrollView contentContainerStyle={styles.contentContainer}>
-        <WelcomeHome navigation={navigation}/>  
+       
              <View style={styles.row}> 
-                {articles.map((item, i) => (
-                   <Article key={item.id} item={item} />
-                ))}
+             
+             
+                <Text>{article.title}</Text>
+                <Text>{article.likesCount}</Text>
+                <Text>{article.pictures}</Text>
+                <Text>{article.productDescription}</Text>
+                <Text>{article.category}</Text>
+                <Text>{article.price}</Text>
+
+                <Text>{article.itemType}</Text>
+                <Text>{article.condition}</Text>
+
+                <Text>{article.firstname}</Text>
+
+                
+                
+                
+
+
+                <ButtonBig style={styles.buttonAchater} text="Acheter l'article" />
              </View>
         </ScrollView>
         
@@ -95,6 +88,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    buttonAchater: {
+        backgroundColor: '#EDDC5F',
+    },
 
 })
-

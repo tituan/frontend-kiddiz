@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
 import { useFonts } from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native'; 
 
 function Article({ onPress, style, item}) {
+  const navigation = useNavigation();  
   const userToken = useSelector(state => state.user.value.token);
+  
   // Chargement des polices
   const [fontsLoaded, fontError] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
@@ -61,9 +65,14 @@ function Article({ onPress, style, item}) {
       console.error("Erreur lors de la requête:", error);
     }
   };
+  const handleClick = () => {
+    console.log('click');
+    console.log(item);
+    navigation.navigate("ArticleScreen", { article: item });
+  };
 
   return (
-    <TouchableOpacity style={[styles.articleContainer, style]} onPress={onPress}>
+    <TouchableOpacity style={[styles.articleContainer, style]} onPress={handleClick}>
       <View style={styles.imageContainer}>
         <View style={styles.imageWrapper}>
           <Image source={{ uri: item.pictures[0] }} style={styles.image} resizeMode="cover" />
