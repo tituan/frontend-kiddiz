@@ -1,14 +1,26 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text} from 'react-native';
-import React, { useEffect, useState } from "react";
+import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useRef } from "react";
 import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient'
 import WelcomeHome from './components/WelcomeHome'
 import Article from './components/Article';
+import { useIsFocused } from '@react-navigation/native';
 
  // Env variable for BACKEND
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function HomeScreen({ navigation }) {
+
+    // action de refresh scrollView (useIsFocused,useRef,ref={scrollViewRef})
+    const isFocused = useIsFocused()
+        
+          const scrollViewRef = useRef(null);
+            useEffect(() => {
+                if (isFocused && scrollViewRef.current) {
+                    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+                }
+            }, [scrollViewRef, isFocused])
+      
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchResults, setSearchResults] = useState([]);
@@ -71,17 +83,17 @@ export default function HomeScreen({ navigation }) {
                     onSearch={handleSearch} // Passe la fonction handleSearch qui va fetch à HeaderNavigation
                 />
             </LinearGradient>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
+            <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
                 <WelcomeHome navigation={navigation} />
                 
                 <View style={styles.row}>
-                     {articles && articles.length > 0 ? (
-                           articles.map((item, i) => (
-                               <Article key={item.id} item={item} />
-                      ))
-                  ) : (
+                    {articles && articles.length > 0 ? (
+                        articles.map((item, i) => (
+                            <Article key={item.id} item={item} />
+                        ))
+                    ) : (
                         <View style={styles.noArticlesContainer}>
-                            <Text style={styles.noArticlesText}>Aucun article disponible</Text>
+                            <Text style={styles.noArticlesText}> Aucun article disponible </Text>
                         </View>
                     )}
                 </View>

@@ -1,14 +1,27 @@
 import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text} from 'react-native';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useRef} from "react";
 import { useSelector } from 'react-redux';
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
 import Article from './components/Article';
+import { useIsFocused } from '@react-navigation/native';
 
  // Env variable for BACKEND
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function FavorisScreen({ navigation }) {
+
+    // action de refresh scrollView (useIsFocused,useRef,ref={scrollViewRef})
+    const isFocused = useIsFocused()
+   
+      const scrollViewRef = useRef(null);
+        useEffect(() => {
+            if (isFocused && scrollViewRef.current) {
+                scrollViewRef.current.scrollTo({ y: 0, animated: true });
+            }
+        }, [scrollViewRef, isFocused])
+
+
     const userToken = useSelector(state => state.user.value.token);
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -50,12 +63,18 @@ export default function FavorisScreen({ navigation }) {
         >
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
         </LinearGradient> 
-        <ScrollView contentContainerStyle={styles.contentContainer}>
+        <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
             <Text style={styles.title}>Liste de vos articles ajouté en favoris :</Text>
-            <View style={styles.containerList}>
-                {articles.map((item, i) => (
-                    <Article key={i} item={item} />
-                ))}
+            <View style={styles.row}>
+                {articles && articles.length > 0 ? (
+                    articles.map((item, i) => (
+                        <Article key={item.id} item={item} />
+                    ))
+                ) : (
+                    <View style={styles.noArticlesContainer}>
+                        <Text style={styles.noArticlesText}> Aucun article en favoris </Text>
+                    </View>
+                )}
             </View>
         </ScrollView>
         

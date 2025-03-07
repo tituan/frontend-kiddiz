@@ -97,6 +97,7 @@ const MainNavigator = () => {
       <Stack.Screen name="Favoris" component={FavorisScreen} />
       <Stack.Screen name="SellerScreen" component={SellerScreen} />
       <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
+      <Stack.Screen name="TransactionsScreen" component={TransactionsScreen} />
 
       {/* ✅ Ajouter TabNavigator ici pour qu'il soit accessible */}
       <Stack.Screen name="Tabs" component={TabNavigator} />
