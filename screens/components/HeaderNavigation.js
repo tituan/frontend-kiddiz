@@ -11,8 +11,7 @@ import { logOut } from '../../reducers/users';
 import HomeScreen from '../HomeScreen';
 import { useNavigation } from '@react-navigation/native';
 
-const HeaderNavigation = ({ onPress }) => {
-    const navigation = useNavigation();
+const HeaderNavigation = ({ navigation, onPress, onSearch }) => {
     const userToken = useSelector(state => state.user.value.token);
     const dispatch = useDispatch();
     const [loaded, error] = useFonts({
@@ -50,8 +49,8 @@ const HeaderNavigation = ({ onPress }) => {
                 </View>
             </View>
             <View style={styles.headerBottom}>
-                <SearchBar />
-            </View>
+                <SearchBar onSearch={onSearch} />
+            </View> 
         </View>
     );
 };

@@ -47,7 +47,6 @@ const conditions = ['Très bon état', 'Bon état', 'État moyen', 'Neuf'];
 const AddArticlesScreen = ({ navigation }) => {
 
 const userToken = useSelector(state => state.user.value.token);
-console.log(userToken)
 
     const { control, handleSubmit, setValue, reset, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
@@ -112,7 +111,7 @@ console.log(userToken)
       }
 
       // Envoyer les données au backend
-    const response = await fetch(`${urlBackend}/articles`, {
+    const response = await fetch(`${urlBackend}articles`, {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data', // Utiliser multipart/form-data pour les fichiers
@@ -121,7 +120,7 @@ console.log(userToken)
       });
 
       const result = await response.json();
-      console.log(result)
+      // console.log(result)
 
       if (response.ok) {
         Alert.alert('Succès', 'L\'article a été publié avec succès.');

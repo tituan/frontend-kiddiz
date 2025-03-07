@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
 import { useFonts } from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'; 
 
- // Env variable for BACKEND
- const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+// Env variable for BACKEND
+const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-function Article({ onPress, style, item}) {
-  const navigation = useNavigation();  
+function Article({ onPress, style, item }) {
+  const navigation = useNavigation();
   const userToken = useSelector(state => state.user.value.token);
-  
+
   // Chargement des polices
   const [fontsLoaded, fontError] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
@@ -33,10 +32,21 @@ function Article({ onPress, style, item}) {
 
   // Vérifier si l'utilisateur a déjà liké l'article
   useEffect(() => {
-    if (item.usersLikers && item.usersLikers.includes(userToken)) {
-      setIsLiked(true);
+    if (item.usersLikers && userToken) { // Vérifie que les données sont disponibles
+      // console.log("Vérification du like...");
+      // console.log("userToken:", userToken);
+      // console.log("item.usersLikers:", item.usersLikers);
+
+      const hasLiked = item.usersLikers.some(user => user.token === userToken);
+      // console.log("hasLiked:", hasLiked);
+
+      if (hasLiked) {
+        setIsLiked(true);
+      } else {
+        setIsLiked(false); // Réinitialise isLiked si l'utilisateur n'a pas liké
+      }
     }
-  }, [item, userToken]);
+  }, [item.usersLikers, userToken]);
 
   if (!fontsLoaded && !fontError) {
     return null;
@@ -61,6 +71,15 @@ function Article({ onPress, style, item}) {
       if (data.result) {
         setIsLiked(!isLiked);
         setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
+
+        // Mettre à jour item.usersLikers localement
+        if (isLiked) {
+          // Retirer le like
+          item.usersLikers = item.usersLikers.filter(user => user.token !== userToken);
+        } else {
+          // Ajouter le like
+          item.usersLikers.push({ token: userToken });
+        }
       } else {
         console.error("Erreur API:", data.error);
       }
@@ -68,6 +87,7 @@ function Article({ onPress, style, item}) {
       console.error("Erreur lors de la requête:", error);
     }
   };
+
   const handleClick = () => {
     console.log('click');
     console.log(item);
@@ -109,10 +129,8 @@ const styles = StyleSheet.create({
     width: '48%',
     height: 240,
     borderRadius: 10,
-    // justifyContent: "center",
     marginVertical: 10,
     backgroundColor: '#00CC99',
-    // padding: 5,
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.2,
