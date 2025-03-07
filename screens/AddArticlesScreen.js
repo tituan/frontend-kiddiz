@@ -112,7 +112,7 @@ console.log(userToken)
       }
 
       // Envoyer les données au backend
-    const response = await fetch(`${urlBackend}/articles`, {
+    const response = await fetch(`${urlBackend}articles`, {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data', // Utiliser multipart/form-data pour les fichiers

@@ -7,6 +7,8 @@ import ConnectionScreen from "./screens/ConnectionScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import SignInScreen from "./screens/SigninScreen";
 import AddArticlesScreen from "./screens/AddArticlesScreen";
+import ModifyArticleScreen from "./screens/ModifyArticleScreen";
+import MyArticlesScreen from "./screens/MyArticlesScreen";
 import ProfilScreen from "./screens/ProfilScreen";
 import FavorisScreen from "./screens/FavorisScreen";
 import ArticleScreen from "./screens/ArticleScreen";
@@ -97,7 +99,9 @@ export default function App() {
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="Vendre" component={AddArticlesScreen} />
+            <Stack.Screen name="Modifier" component={ModifyArticleScreen} />
             <Stack.Screen name="Favoris" component={FavorisScreen} />
+            <Stack.Screen name="MesArticles" component={MyArticlesScreen} />
             <Stack.Screen name="SellerScreen" component={SellerScreen} />
             <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />

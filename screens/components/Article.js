@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
  // Env variable for BACKEND
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-function Article({ onPress, style, item}) {
+function Article({ onPress, style, item, showModifyButton = false }) {
   const navigation = useNavigation();  
   const userToken = useSelector(state => state.user.value.token);
   
@@ -73,6 +73,10 @@ function Article({ onPress, style, item}) {
     console.log(item);
     navigation.navigate("ArticleScreen", { article: item });
   };
+  const handleModify = () => {
+    // Redirige vers ModifyArticleScreen avec l'ID de l'article
+    navigation.navigate("Modifier", { articleId: item._id }); 
+  };
 
   return (
     <TouchableOpacity style={[styles.articleContainer, style]} onPress={handleClick}>
@@ -96,6 +100,10 @@ function Article({ onPress, style, item}) {
           <Text style={styles.textPrix}>{item.price} €</Text>
         </View>
       </View>
+      {showModifyButton && ( 
+        // <TouchableOpacity text="Modifier" onPress={handleModify} />
+        <FontAwesome name="umbrella" size={20} onPress={handleModify} />
+      )}
     </TouchableOpacity>
   );
 }
