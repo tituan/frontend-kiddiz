@@ -11,9 +11,10 @@ import { logOut } from '../../reducers/users';
 import HomeScreen from '../HomeScreen';
 import { useNavigation } from '@react-navigation/native';
 
-const HeaderNavigation = ({ navigation, onPress, onSearch }) => {
+const HeaderNavigation = ({ onPress, onSearch }) => {
     const userToken = useSelector(state => state.user.value.token);
     const dispatch = useDispatch();
+    const navigation = useNavigation();
     const [loaded, error] = useFonts({
         'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
     });
