@@ -112,11 +112,7 @@ console.log(userToken)
       }
 
       // Envoyer les données au backend
-<<<<<<< HEAD
     const response = await fetch(`${urlBackend}articles`, {
-=======
-    const response = await fetch('http://192.168.100.254:3000/articles', {
->>>>>>> add-likes
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data', // Utiliser multipart/form-data pour les fichiers

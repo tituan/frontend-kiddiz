@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
-import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
@@ -35,16 +34,7 @@ function Article({ onPress, style, item}) {
   }, [fontsLoaded, fontError]);
 
   // Vérifier si l'utilisateur a déjà liké l'article
-  useEffect(() => {
-    if (item.usersLikers && item.usersLikers.includes(userToken)) {
-      setIsLiked(true);
-    }
-  }, [item, userToken]);
 
-  // if (!fontsLoaded && !fontError) {
-  // } [fontsLoaded, fontError]
-
-  // Vérifier si l'utilisateur a déjà liké l'article
   useEffect(() => {
     if (item.usersLikers && userToken) { // Vérifie que les données sont disponibles
         const hasLiked = item.usersLikers.some(user => user.token === userToken);

@@ -18,7 +18,6 @@ export default function HomeScreen({ navigation }) {
     useEffect(() => {
         // Remplace l'URL par celle de ton backend
         const fetchArticles = async () => {
-<<<<<<< HEAD
             try {
                 const response = await fetch(`${urlBackend}articles/popular`);
                 const data = await response.json();
@@ -28,17 +27,6 @@ export default function HomeScreen({ navigation }) {
             } finally {
                 setLoading(false); // Arrête le chargement
             }
-=======
-        try {
-            const response = await fetch("http://192.168.100.254:3000/articles/popular");
-            const data = await response.json();
-            setArticles(data.article); // Stocke les articles dans l'état
-        } catch (error) {
-            console.error("Erreur lors de la récupération des articles:", error);
-        } finally {
-            setLoading(false); // Arrête le chargement
-        }
->>>>>>> add-likes
         };
 
         fetchArticles();
