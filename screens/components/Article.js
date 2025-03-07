@@ -24,14 +24,11 @@ function Article({ onPress, style, item}) {
   // État du like et du compteur
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(item.likesCount);
-  // État du like et du compteur
-  const [isLiked, setIsLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(item.likesCount);
+
+
 
   // Masquer l'écran de splash après le chargement des polices
-  // Masquer l'écran de splash après le chargement des polices
   useEffect(() => {
-    if (fontsLoaded || fontError) {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
@@ -44,8 +41,8 @@ function Article({ onPress, style, item}) {
     }
   }, [item, userToken]);
 
-  if (!fontsLoaded && !fontError) {
-  }, [fontsLoaded, fontError]);
+  // if (!fontsLoaded && !fontError) {
+  // } [fontsLoaded, fontError]
 
   // Vérifier si l'utilisateur a déjà liké l'article
   useEffect(() => {
