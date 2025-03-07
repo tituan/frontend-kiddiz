@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, } from "react";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { LinearGradient } from 'expo-linear-gradient'
 
 
-function ButtonProfil({ text, onPress, style, sellerFirstName, sellerLastName, sellerToken }) {
+
+
+function ButtonProfil({ sellerFirstName, sellerLastName, onPress, style }) {
+  
   const [loaded, error] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
     'RopaSans-Regular': require('../../assets/fonts/RopaSans-Regular.ttf'),
@@ -19,6 +23,7 @@ function ButtonProfil({ text, onPress, style, sellerFirstName, sellerLastName, s
   if (!loaded && !error) {
     return null;
   }
+  
 
   return (
     <TouchableOpacity
@@ -32,9 +37,7 @@ function ButtonProfil({ text, onPress, style, sellerFirstName, sellerLastName, s
           <View style={styles.idBox}>
             <View style={styles.iconProfil}>
               <View style={styles.iconProfilInitial}>
-                <Text style={styles.iconProfilLetter}>
-                  {sellerFirstName?.charAt(0).toUpperCase() || '?'}
-                </Text>
+                <Text style={styles.iconProfilLetter}> {sellerFirstName?.charAt(0).toUpperCase() || '?'}</Text>
               </View>
             </View>
             <View style={styles.infoUser}>
@@ -46,9 +49,7 @@ function ButtonProfil({ text, onPress, style, sellerFirstName, sellerLastName, s
             </View>
           </View>
         </View>
-        
       </View>
-      
     </TouchableOpacity>
   );
 }

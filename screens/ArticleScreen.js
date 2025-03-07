@@ -53,7 +53,7 @@ export default function ArticleScreen({ navigation, route }) {
                 <Text>{article.firstname}</Text>
 
                 <View style={styles.buttonSeller}>
-                <ButtonProfil style={styles.buttonSeller} text="Acheter l'article" onPress={() => navigation.navigate("SellerScreen", { article: article.user })}/>
+                <ButtonProfil style={styles.buttonSeller} text="Acheter l'article" sellerFirstName={article.user.firstname}  onPress={() => navigation.navigate("SellerScreen", { article: article.user })}/>
                 </View>
 
                 <Image style={styles.map} source={require('../assets/carte.jpg')}/>
