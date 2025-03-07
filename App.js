@@ -14,6 +14,7 @@ import MessagerieScreen from "./screens/MessagerieScreen";
 import SellerScreen from "./screens/SellerScreen";
 // import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
+import TransactionsScreen from "./screens/TransactiosScreen";
 
 // redux imports
 import { Provider } from 'react-redux';
@@ -101,6 +102,7 @@ export default function App() {
             <Stack.Screen name="SellerScreen" component={SellerScreen} />
             <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen name="TransactionsScreen" component={TransactionsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
     </Provider>

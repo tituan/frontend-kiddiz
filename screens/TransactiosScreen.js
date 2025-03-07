@@ -6,23 +6,15 @@ import { useSelector } from 'react-redux';
 import ButtonBig from './components/ButtonBig';
 import * as SplashScreen from 'expo-splash-screen';
 import Article from './components/Article';
-import { useDispatch } from 'react-redux';
-import { logOut } from '../reducers/users';
 
-export default function ProfilScreen({ navigation }) {
+export default function TransactionsScreen({ navigation }) {
     const user = useSelector(state => state.user.value);
     console.log(user)
-    
-    const dispatch = useDispatch(); 
+
     const [fontsLoaded, fontError] = useFonts({
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
         'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
       });
-
-    const handleLogOut = () => {
-            dispatch(logOut()); // Déclenche l'action logOut
-            console.log('Utilisateur déconnecté');
-        };
 
     return (
     <View style={styles.container}>
@@ -36,7 +28,7 @@ export default function ProfilScreen({ navigation }) {
         </LinearGradient> 
         
         <ScrollView contentContainerStyle={styles.contentContainer}>
-            <View style={styles.containerProfil}>
+            {/* <View style={styles.containerProfil}>
                 <View style={styles.containerProfilAvatar}>
                     <Text style={styles.containerProfilInitial}>{user?.firstname?.charAt(0).toUpperCase() || '?'}{user?.lastname?.charAt(0).toUpperCase() || '?'}</Text>
                 </View>
@@ -44,13 +36,13 @@ export default function ProfilScreen({ navigation }) {
                     <Text style={styles.containerProfilInfosWelcome}>Bienvenue</Text>
                     <Text style={styles.containerProfilInfosName}>{user.firstname} {user.lastname}</Text>
                 </View>
-            </View>
-            <ButtonBig style={styles.buttonSell} text="Vendez votre article" onPress={() => navigation.navigate('Vendre')} />
+            </View> */}
+            {/* <ButtonBig style={styles.buttonSell} text="Vendez votre article" onPress={() => navigation.navigate('Vendre')} />
             <ButtonBig style={styles.buttonNav} text="Mes articles" onPress={() => navigation.navigate('Vendre')} />
             <ButtonBig style={styles.buttonNav} text="Mes favoris" onPress={() => navigation.navigate('Favoris')} />
-            <ButtonBig style={styles.buttonNav} text="Mes transactions" onPress={() => navigation.navigate('TransactionsScreen')} />
+            <ButtonBig style={styles.buttonNav} text="Mes transactions" onPress={() => navigation.navigate('Favoris')} />
             <ButtonBig style={styles.buttonNav} text="FAQ" onPress={() => navigation.navigate('Vendre')} />
-            <ButtonBig style={styles.buttonNav} text="Se déconnecter" onPress={handleLogOut} />
+            <ButtonBig style={styles.buttonNav} text="Se déconnecter" onPress={() => navigation.navigate('Vendre')} /> */}
         </ScrollView>
         
     </View>
