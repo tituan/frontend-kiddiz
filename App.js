@@ -14,6 +14,7 @@ import MessagerieScreen from "./screens/MessagerieScreen";
 import SellerScreen from "./screens/SellerScreen";
 import { useSelector } from "react-redux";
 import { StyleSheet } from "react-native";
+import TransactionsScreen from "./screens/TransactiosScreen";
 
 // Redux
 import { Provider } from 'react-redux';

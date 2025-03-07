@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
-        
     },
+
     header: {
         padding: 20,
         borderBottomColor: '#00000',
@@ -92,28 +92,28 @@ const styles = StyleSheet.create({
         elevation: 5, 
          bottomTop: 50,
     },
+
     titreContainer:{
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         marginTop:30,
         marginBottom:15,
-        
     },
+
     titre:{
         fontSize: 30,
         fontFamily: 'LilitaOne-Regular',
         position: 'absolute', 
         left : "4%",
-    
     },
 
     like:{
         fontSize: 20,
         fontFamily: 'RopaSans-Regular',
-        left : 350,
-        
+        left : 350, 
     },
+
     likesCount:{
         fontSize: 20,
         fontFamily: 'RopaSans-Regular',
@@ -178,13 +178,15 @@ const styles = StyleSheet.create({
         bottom: 10, 
         right: 10, 
     },
+    
     buttonContainer:{
         padding: 20,
     },
+
     buttonAchaterArticle: {
         backgroundColor: '#EDDC5F',
-    
     },
+
     map:{
         height:200,
         width:'100%'
@@ -196,15 +198,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+
     buttonOffre:{
         width: '48%',
         borderColor: "black",
         backgroundColor: "#EDDC5F",
     },
+
     buttonAchater:{
         width: '48%',
         borderColor: "black",
         backgroundColor: "#00CC99",
     },
-
 })
