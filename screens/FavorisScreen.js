@@ -15,7 +15,7 @@ export default function FavorisScreen({ navigation }) {
     console.log(articles)
 
     useEffect(() => {
-        // Remplace l'URL par celle de ton backend
+
         const fetchArticles = async () => {
         try {
             const response = await fetch(`${urlBackend}favorites/${userToken}`);
