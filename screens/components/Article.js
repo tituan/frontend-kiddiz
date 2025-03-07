@@ -54,7 +54,20 @@ function Article({ onPress, style, item }) {
 
   // Gestion du like
   const toggleLike = async () => {
+    if (!userToken) {
+      Alert.alert("Connexion requise", "Vous devez être connecté pour aimer un article.");
+      return;
+    }
+  
+    if (!item.id) {
+      console.error("Erreur: articleId est invalide", item);
+      Alert.alert("Erreur", "Impossible d'aimer cet article, ID invalide.");
+      return;
+    }
+  
     try {
+      console.log("Envoi de la requête avec articleId :", item.id); // Log pour vérifier
+  
       const response = await fetch(`${urlBackend}favorites`, {
         method: "POST",
         headers: {
@@ -65,19 +78,16 @@ function Article({ onPress, style, item }) {
           articleId: item.id,
         }),
       });
-
+  
       const data = await response.json();
-
+  
       if (data.result) {
         setIsLiked(!isLiked);
         setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
-
-        // Mettre à jour item.usersLikers localement
+  
         if (isLiked) {
-          // Retirer le like
           item.usersLikers = item.usersLikers.filter(user => user.token !== userToken);
         } else {
-          // Ajouter le like
           item.usersLikers.push({ token: userToken });
         }
       } else {
@@ -87,7 +97,7 @@ function Article({ onPress, style, item }) {
       console.error("Erreur lors de la requête:", error);
     }
   };
-
+  
   const handleClick = () => {
     console.log('click');
     console.log(item);
@@ -101,7 +111,7 @@ function Article({ onPress, style, item }) {
           <Image source={{ uri: item.pictures[0] }} style={styles.image} resizeMode="cover" />
         </View>
 
-        <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
+        <TouchableOpacity style={styles.heartIcon} onPress={toggleLike} disabled={!userToken}>
           <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
           <Text style={styles.likeCounter}>{likesCount}</Text>
         </TouchableOpacity>

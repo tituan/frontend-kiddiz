@@ -85,6 +85,7 @@ export default function HomeScreen({ navigation }) {
             </LinearGradient>
             <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
                 <WelcomeHome navigation={navigation} />
+                
                 <View style={styles.row}>
                     {articles && articles.length > 0 ? (
                         articles.map((item, i) => (
@@ -138,6 +139,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    noArticlesContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        padding: 20,
+    },
+    noArticlesText: {
+        fontSize: 16,
+        color: '#666',
+        fontStyle: 'italic',
+    },
 
 })
-
