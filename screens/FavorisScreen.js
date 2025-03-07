@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
 import WelcomeHome from './components/WelcomeHome'
+
 // import Article from './components/Article';
 
 

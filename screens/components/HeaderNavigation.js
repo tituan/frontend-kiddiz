@@ -9,7 +9,7 @@ import SearchBar from './SearchBar'
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../reducers/users';
 
-const HeaderNavigation = ({ onPress, onSearch }) => {
+const HeaderNavigation = ({ navigation, onPress, onSearch }) => {
     const userToken = useSelector(state => state.user.value.token);
     const dispatch = useDispatch();
     const [loaded, error] = useFonts({

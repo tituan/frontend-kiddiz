@@ -34,6 +34,8 @@ export default function HomeScreen({ navigation }) {
 
     const handleSearch = async (searchTerm) => {
 
+        
+
         try {
             // encodeURIComponent permet de gérer les caractères spéciaux
             const response = await fetch(`${urlBackend}articles/?search=${encodeURIComponent(searchTerm)}`);
@@ -41,6 +43,7 @@ export default function HomeScreen({ navigation }) {
             const data = await response.json();
 
             setArticles(data.articles);
+            // navigation.navigate("Home");
 
         } catch (error) {
             console.error('Erreur lors de la recherche :', error);
