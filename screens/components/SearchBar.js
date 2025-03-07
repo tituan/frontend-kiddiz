@@ -9,7 +9,7 @@ import { useRoute } from '@react-navigation/native';
 
 function SearchBar({ onSearch }) {
   const route = useRoute(); // Récupère la route actuelle
-  console.log(route)
+
   const [loaded, error] = useFonts({
       'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
       'RopaSans-Regular': require('../../assets/fonts/RopaSans-Regular.ttf'),
