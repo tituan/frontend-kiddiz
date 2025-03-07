@@ -13,7 +13,7 @@ export default function HomeScreen({ navigation }) {
     const [loading, setLoading] = useState(true);
     const [searchResults, setSearchResults] = useState([]);
 
-    console.log(articles)
+    // console.log(articles)
 
     useEffect(() => {
         // Remplace l'URL par celle de ton backend

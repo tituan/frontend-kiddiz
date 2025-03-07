@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
 import { useFonts } from 'expo-font';
@@ -14,13 +7,13 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'; 
 
- // Env variable for BACKEND
- const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+// Env variable for BACKEND
+const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-function Article({ onPress, style, item}) {
-  const navigation = useNavigation();  
+function Article({ onPress, style, item }) {
+  const navigation = useNavigation();
   const userToken = useSelector(state => state.user.value.token);
-  
+
   // Chargement des polices
   const [fontsLoaded, fontError] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
@@ -41,8 +34,13 @@ function Article({ onPress, style, item}) {
   // Vérifier si l'utilisateur a déjà liké l'article
   useEffect(() => {
     if (item.usersLikers && userToken) { // Vérifie que les données sont disponibles
-        const hasLiked = item.usersLikers.some(user => user.token === userToken);
-    
+      // console.log("Vérification du like...");
+      // console.log("userToken:", userToken);
+      // console.log("item.usersLikers:", item.usersLikers);
+
+      const hasLiked = item.usersLikers.some(user => user.token === userToken);
+      // console.log("hasLiked:", hasLiked);
+
       if (hasLiked) {
         setIsLiked(true);
       } else {
@@ -69,18 +67,28 @@ function Article({ onPress, style, item}) {
         }),
       });
 
-  const data = await response.json();
+      const data = await response.json();
 
-  if (data.result) {
-    setIsLiked(!isLiked);
-    setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
-  } else {
-    console.error("Erreur API:", data.error);
-  }
-} catch (error) {
-  console.error("Erreur lors de la requête:", error);
-}
+      if (data.result) {
+        setIsLiked(!isLiked);
+        setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
+
+        // Mettre à jour item.usersLikers localement
+        if (isLiked) {
+          // Retirer le like
+          item.usersLikers = item.usersLikers.filter(user => user.token !== userToken);
+        } else {
+          // Ajouter le like
+          item.usersLikers.push({ token: userToken });
+        }
+      } else {
+        console.error("Erreur API:", data.error);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
+    }
   };
+
   const handleClick = () => {
     console.log('click');
     console.log(item);
@@ -94,22 +102,22 @@ function Article({ onPress, style, item}) {
           <Image source={{ uri: item.pictures[0] }} style={styles.image} resizeMode="cover" />
         </View>
 
-    <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
-      <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
-      <Text style={styles.likeCounter}>{likesCount}</Text>
-    </TouchableOpacity>
-  </View>
+        <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
+          <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
+          <Text style={styles.likeCounter}>{likesCount}</Text>
+        </TouchableOpacity>
+      </View>
 
-  <View style={styles.rowContainer}>
-    <View>
-      <Text style={styles.text}>{item.title}</Text>
-      <Text style={styles.textType}>{item.condition}</Text>
-    </View>
-    <View style={styles.priceContainer}>
-      <Text style={styles.textPrix}>{item.price} €</Text>
-    </View>
-  </View>
-</TouchableOpacity>
+      <View style={styles.rowContainer}>
+        <View>
+          <Text style={styles.text}>{item.title}</Text>
+          <Text style={styles.textType}>{item.condition}</Text>
+        </View>
+        <View style={styles.priceContainer}>
+          <Text style={styles.textPrix}>{item.price} €</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 
@@ -122,10 +130,8 @@ const styles = StyleSheet.create({
     width: '48%',
     height: 240,
     borderRadius: 10,
-    // justifyContent: "center",
     marginVertical: 10,
     backgroundColor: '#00CC99',
-    // padding: 5,
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.2,
@@ -214,4 +220,3 @@ const styles = StyleSheet.create({
     fontFamily: 'LilitaOne-Regular',
   }
 });
-
