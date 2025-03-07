@@ -12,6 +12,9 @@ import ButtonBig from './components/ButtonBig'
 import ButtonIcon from './components/ButtonIcon';
 import { TouchableOpacity} from 'react-native';
 
+ // Env variable for BACKEND
+ const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+
 // Définition du schéma de validation avec yup
 const schema = yup.object().shape({
   email: yup
@@ -54,8 +57,9 @@ const SignInScreen = ({navigation}) => {
 
   // Fonction pour envoyer les données au serveur
   const handlePost = async (values) => {
+   
     try {
-      const response = await fetch('http://192.168.100.209:3000/users/signin', {
+      const response = await fetch(`${urlBackend}users/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),

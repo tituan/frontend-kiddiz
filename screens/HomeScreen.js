@@ -1,68 +1,93 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator,} from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, } from 'react-native';
 import React, { useEffect, useState } from "react";
-import HeaderNavigation from './components/HeaderNavigation'; 
+import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient'
 import WelcomeHome from './components/WelcomeHome'
 import Article from './components/Article';
 
+ // Env variable for BACKEND
+ const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function HomeScreen({ navigation }) {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchResults, setSearchResults] = useState([]);
+
     console.log(articles)
 
     useEffect(() => {
         // Remplace l'URL par celle de ton backend
         const fetchArticles = async () => {
-        try {
-            const response = await fetch("http://192.168.100.209:3000/articles/popular");
-            const data = await response.json();
-            setArticles(data.article); // Stocke les articles dans l'état
-        } catch (error) {
-            console.error("Erreur lors de la récupération des articles:", error);
-        } finally {
-            setLoading(false); // Arrête le chargement
-        }
+            try {
+                const response = await fetch(`${urlBackend}articles/popular`);
+                const data = await response.json();
+                setArticles(data.article); // Stocke les articles dans l'état
+            } catch (error) {
+                console.error("Erreur lors de la récupération des articles:", error);
+            } finally {
+                setLoading(false); // Arrête le chargement
+            }
         };
 
         fetchArticles();
     }, []);
 
+    const handleSearch = async (searchTerm) => {
+
+        
+
+        try {
+            // encodeURIComponent permet de gérer les caractères spéciaux
+            const response = await fetch(`${urlBackend}articles/?search=${encodeURIComponent(searchTerm)}`);
+
+            const data = await response.json();
+
+            setArticles(data.articles);
+            // navigation.navigate("Home");
+
+        } catch (error) {
+            console.error('Erreur lors de la recherche :', error);
+        }
+    };
+
     if (loading) {
         return (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#007AFF" />
+            </View>
         );
-      }
+    }
 
     return (
-    <View style={styles.container}>
-        <LinearGradient
-            colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
-            start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
-            end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
-            style={styles.header}
-        >
-            <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
-        </LinearGradient> 
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-        <WelcomeHome navigation={navigation}/>  
-             <View style={styles.row}> 
-                {articles.map((item, i) => (
-                   <Article key={item.id} item={item} />
-                ))}
-             </View>
-        </ScrollView>
-        
-    </View>
+        <View style={styles.container}>
+            <LinearGradient
+                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
+                start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
+                end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
+                style={styles.header}
+            >
+                <HeaderNavigation
+                    onPress={() => navigation.navigate("Connection")}
+                    onSearch={handleSearch} // Passe la fonction handleSearch qui va fetch à HeaderNavigation
+                />
+            </LinearGradient>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+                <WelcomeHome navigation={navigation} />
+                <View style={styles.row}>
+                    {articles.map((item, i) => (
+                        <Article key={item.id} item={item} />
+                    ))}
+                </View>
+            </ScrollView>
+
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fffff',
+        flex: 1,
+        backgroundColor: '#fffff',
     },
     header: {
         padding: 20,
@@ -74,18 +99,18 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.9, // Opacité de l'ombre
         shadowRadius: 4, // Flou de l'ombre
         elevation: 5, // Ajoute l'ombre sur Android
-    
+
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between', 
+        justifyContent: 'space-between',
         flexWrap: 'wrap',
-        alignItems: 'center', 
-        width: '100%', 
-        padding: 20, 
+        alignItems: 'center',
+        width: '100%',
+        padding: 20,
     },
     article: {
-        width: '48%', 
+        width: '48%',
     },
     contentContainer: {
         flexGrow: 1,
