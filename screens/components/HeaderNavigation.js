@@ -19,11 +19,6 @@ const HeaderNavigation = ({ onPress, onSearch }) => {
         'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
     });
 
-    const handleLogOut = () => {
-        dispatch(logOut()); // Déclenche l'action logOut
-        console.log('Utilisateur déconnecté');
-    };
-
     useEffect(() => {
         if (loaded || error) {
             SplashScreen.hideAsync();
