@@ -97,11 +97,12 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop:20,
+        marginTop:30,
+        marginBottom:15,
         
     },
     titre:{
-        fontSize: 25,
+        fontSize: 30,
         fontFamily: 'LilitaOne-Regular',
         position: 'absolute', 
         left : "4%",
@@ -123,6 +124,7 @@ const styles = StyleSheet.create({
     photoContainer:{
         width: '100%',
         padding: 20,
+        marginBottom: 30,
     },
 
     articleImage:{

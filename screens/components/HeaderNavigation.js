@@ -8,8 +8,11 @@ import ButtonIcon from './ButtonIcon'
 import SearchBar from './SearchBar'
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../reducers/users';
+import HomeScreen from '../HomeScreen';
+import { useNavigation } from '@react-navigation/native';
 
 const HeaderNavigation = ({ onPress }) => {
+    const navigation = useNavigation();
     const userToken = useSelector(state => state.user.value.token);
     const dispatch = useDispatch();
     const [loaded, error] = useFonts({
@@ -29,28 +32,29 @@ const HeaderNavigation = ({ onPress }) => {
 
     if (!loaded && !error) {
         return null;
-    }  
+    }
 
- return (
-
-    <View style={styles.header}>
-        <View style={styles.headerTop}>  
-            <Text style={styles.headerTopKiddiz}>Kiddiz</Text>
-            <View style={styles.headerButton}>
-            {!userToken ?  (
-                <ButtonHalf style={styles.buttonConnection} text="Connexion" onPress={onPress} />
-            ) : (
-                <ButtonIcon style={styles.buttonLogOut} name="sign-out" onPress={handleLogOut}/>
-            )}
+    return (
+        <View style={styles.header}>
+            <View style={styles.headerTop}>
+                <Text style={styles.headerTopKiddiz}>Kiddiz</Text>
+                <View style={styles.headerButton}>
+                    {!userToken ? (
+                        
+                        <ButtonHalf style={styles.buttonConnection} text="Connexion" onPress={onPress} />
+                        
+                    ) : (
+                        <ButtonIcon style={styles.buttonLogOut} name="arrow-left" onPress={() => navigation.goBack()} />
+                    )}
+                    
+                </View>
+            </View>
+            <View style={styles.headerBottom}>
+                <SearchBar />
             </View>
         </View>
-        <View style={styles.headerBottom}>
-            <SearchBar/>
-        </View>
-    </View>
-
- );
-}
+    );
+};
 
 const styles = StyleSheet.create({
     header: {

@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from 'expo-linear-gradient'
+import { FontAwesome } from '@expo/vector-icons';
 
 
 
@@ -43,7 +44,14 @@ function ButtonProfil({ sellerFirstName, sellerLastName, onPress, style }) {
             <View style={styles.infoUser}>
               <View>
                 <Text style={styles.firstName}>{sellerFirstName} {sellerLastName}</Text>
-                <Text> ⭐️ ⭐️ ⭐️ ⭐️ ⭐️  4.5 </Text>
+                <View style={styles.starContainer}> 
+                       <FontAwesome name="star" size={20} color={"gold"} />
+                       <FontAwesome name="star" size={20} color={"gold"} />
+                       <FontAwesome name="star" size={20} color={"gold"} />
+                       <FontAwesome name="star" size={20} color={"gold"} />
+                       <FontAwesome name="star" size={20} color={"gold"} />
+                       <Text> 4.5 </Text>
+                </View>
                 <Text> Paris (75017) </Text>
               </View>
             </View>
@@ -112,6 +120,11 @@ const styles = StyleSheet.create({
     fontFamily: 'LilitaOne-Regular',
     fontSize: 30,
   },
+  starContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+},
   idBox: {
     flexDirection: 'row',
     alignItems: 'center',
