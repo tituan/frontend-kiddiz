@@ -30,7 +30,7 @@ export default function SellerScreen({ navigation, route }) {
                 const response = await fetch(`${urlBackend}articles/get-by/seller/${sellerToken}`);
                 const data = await response.json();
                 console.log(data)
-                setArticles(data.article); // Stocke les articles dans l'état
+                setArticles(data.articles); // Stocke les articles dans l'état
             } catch (error) {
                 console.error("Erreur lors de la récupération des articles:", error);
             } finally {
