@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from "react";
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import RadioButton from './components/RadioButton'; 
+import { useFocusEffect } from '@react-navigation/native';
 
  // Env variable for BACKEND
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
@@ -45,6 +46,17 @@ const types = ['Puériculture', 'Loisir', 'Jouet'];
 const conditions = ['Très bon état', 'Bon état', 'État moyen', 'Neuf'];
 
 const AddArticlesScreen = ({ navigation }) => {
+
+  // action de refresh scrollView (useFocusEffect,useRef,ref={scrollViewRef})
+  const scrollViewRef = useRef(null);
+      useFocusEffect(
+          React.useCallback(() => {
+           
+            if (scrollViewRef.current) {
+              scrollViewRef.current.scrollTo({ y: 0, animated: true });
+            }
+          }, [])
+        );
 
 const userToken = useSelector(state => state.user.value.token);
 
@@ -148,7 +160,7 @@ const userToken = useSelector(state => state.user.value.token);
               >
     <View style={styles.container}>
         
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+      <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
         <Text style={styles.title}>Vendez votre article !</Text>
 
         <Text style={styles.labelCategorie}>Ajouter votre photo :</Text>

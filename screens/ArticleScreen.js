@@ -1,5 +1,6 @@
 import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text, Button, Image} from 'react-native';
 import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
 import ButtonBig from './components/ButtonBig';
@@ -8,11 +9,11 @@ import { FontAwesome } from '@expo/vector-icons';
 import ButtonProfil from './components/ButtonProfil';
 
 export default function ArticleScreen({ navigation, route }) {
-    // const [articles, setArticles] = useState([]);
-    // const [loading, setLoading] = useState(true);
+    const userToken = useSelector(state => state.user.value.token);
+    console.log(userToken)
     const { article } = route.params;
-
-    // console.log(article)
+    const sellerArticleToken = article.user.token
+    console.log(article.user.token)
     
     return (
     <View style={styles.container}>
@@ -46,27 +47,33 @@ export default function ArticleScreen({ navigation, route }) {
                 <Text style={styles.textCondition}>Etat: {article.condition}</Text>
                 <Text style={styles.textPrice}>Prix: {article.price}€</Text>
             </View>
-                <View style={styles.buttonContainer}>
-                <ButtonBig style={styles.buttonAchaterArticle} text="Acheter l'article" />
-                </View>
-            
-                <Text>{article.firstname}</Text>
 
-                <View style={styles.buttonSeller}>
-                <ButtonProfil style={styles.buttonSeller} text="Acheter l'article" sellerFirstName={article.user.firstname}  onPress={() => navigation.navigate("SellerScreen", { article: article.user })}/>
-                </View>
-
-                <Image style={styles.map} source={require('../assets/carte.jpg')}/>
-
-                <View style={styles.buttonHalfContainer}>
-                <ButtonHalf style={styles.buttonOffre} text="Faire une offre" />
-                <ButtonHalf style={styles.buttonAchater} text="Acheter" />
-                </View>
-
+            {userToken === sellerArticleToken ? (
+                <Text>Hello its your article</Text>
+            ) : (
+                
+                <>
+                    <View style={styles.buttonContainer}>
+                        <ButtonBig style={styles.buttonAchaterArticle} text="Acheter l'article" />
+                    </View>
+                    <Text>{article.firstname}</Text>
+                    <View style={styles.buttonSeller}>
+                        <ButtonProfil 
+                            style={styles.buttonSeller} 
+                            text="Voir le profil du vendeur" 
+                            sellerFirstName={article.user.firstname}  
+                            onPress={() => navigation.navigate("SellerScreen", { article: article.user })}
+                        />
+                    </View>
+                    <Image style={styles.map} source={require('../assets/carte.jpg')}/>
+                    <View style={styles.buttonHalfContainer}>
+                        <ButtonHalf style={styles.buttonOffre} text="Faire une offre" />
+                        <ButtonHalf style={styles.buttonAchater} text="Acheter" />
+                    </View>
+                </>
+            )}
              </View>
-            
         </ScrollView>
-        
     </View>
     );
 }

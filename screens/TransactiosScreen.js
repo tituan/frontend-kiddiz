@@ -11,17 +11,21 @@ import { useState } from 'react';
 export default function TransactionsScreen({ navigation }) {
     const user = useSelector(state => state.user.value);
     console.log(user);
+    const [articles, setArticles] = useState([]);
 
     const [fontsLoaded, fontError] = useFonts({
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
         'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
     });
 
-
     const [activeView, setActiveView] = useState('vente');  
     
     const handleButtonPress = (view) => {
         setActiveView(view);  
+    };
+
+    const getButtonStyle = (view) => {
+        return view === activeView ? styles.activeButton : styles.inactiveButton;
     };
 
     return (
@@ -38,25 +42,44 @@ export default function TransactionsScreen({ navigation }) {
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <View style={styles.buttonContainer}> 
                     <ButtonHalf
-                        style={styles.buttonNav}
+                        style={[styles.buttonNav, getButtonStyle('vente')]}
                         text="En vente"
                         onPress={() => handleButtonPress('vente')}
                     />
                     <ButtonHalf
-                        style={styles.buttonNav}
+                        style={[styles.buttonNav, getButtonStyle('achete')]}
                         text="Acheté"
                         onPress={() => handleButtonPress('achete')}
                     /> 
                 </View>
 
-
                 {activeView === 'vente' ? (
                     <View style={styles.venteContainer}>
-                        <Text>Vente</Text>
+                        <View style={styles.row}>
+                            {articles && articles.length > 0 ? (
+                                articles.map((item, i) => (
+                                    <Article key={item.id} item={item} />
+                                ))
+                            ) : (
+                                <View style={styles.noArticlesContainer}>
+                                    <Text style={styles.noArticlesText}>Vous avez vendu(e) aucun article </Text>
+                                </View>
+                            )}
+                        </View>
                     </View>
                 ) : (
                     <View style={styles.acheteContainer}>
-                        <Text>Acheté</Text>
+                         <View style={styles.row}>
+                            {articles && articles.length > 0 ? (
+                                articles.map((item, i) => (
+                                    <Article key={item.id} item={item} />
+                                ))
+                            ) : (
+                                <View style={styles.noArticlesContainer}>
+                                    <Text style={styles.noArticlesText}> Aucun article acheté </Text>
+                                </View>
+                            )}
+                        </View>
                     </View>
                 )}
             </ScrollView>
@@ -82,25 +105,43 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginLeft: 10,
+        marginLeft: 5,
     },
 
     venteContainer: {
-        // height: 600,
         width: '100%',
-        borderWidth: 10,  
-        borderColor: 'red',
     },
 
     acheteContainer: {
-        // height: 600,
         width: '100%',
-        borderWidth: 10,  
-        borderColor: 'green',
     },
     
     buttonNav: {
+        marginRight: 15,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    activeButton: {
         backgroundColor: '#00CC99',
     },
 
+    inactiveButton: {
+        backgroundColor: '#D3D3D3', // Gris clair pour les boutons non sélectionnés
+    },
+
+    noArticlesContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        padding: 20,
+    },
+    noArticlesText: {
+        fontSize: 16,
+        color: '#666',
+        fontStyle: 'italic',
+    },
 });
