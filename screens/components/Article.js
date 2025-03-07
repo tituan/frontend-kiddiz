@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 
 function Article({ onPress, style, item}) {
   const userToken = useSelector(state => state.user.value.token);
+  console.log( 'user tokent: ' + userToken)
   // Chargement des polices
   const [fontsLoaded, fontError] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
@@ -26,11 +27,18 @@ function Article({ onPress, style, item}) {
 
   // Vérifier si l'utilisateur a déjà liké l'article
   useEffect(() => {
-    if (item.usersLikers && item.usersLikers.includes(userToken)) {
-      setIsLiked(true);
+    if (item.usersLikers && userToken) { // Vérifie que les données sont disponibles
+        const hasLiked = item.usersLikers.some(user => user.token === userToken);
+    
+      if (hasLiked) {
+        setIsLiked(true);
+      } else {
+        setIsLiked(false); // Réinitialise isLiked si l'utilisateur n'a pas liké
+      }
     }
-  }, [item, userToken]);
+  }, [item.usersLikers, userToken]);
 
+  // Afficher un écran vide si les polices ne sont pas encore chargées
   if (!fontsLoaded && !fontError) {
     return null;
   }
@@ -38,7 +46,7 @@ function Article({ onPress, style, item}) {
   // Gestion du like
   const toggleLike = async () => {
     try {
-      const response = await fetch("http://192.168.100.209:3000/favorites", {
+      const response = await fetch("http://192.168.100.254:3000/favorites", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,19 +59,12 @@ function Article({ onPress, style, item}) {
 
       const data = await response.json();
 
-      // if (data.result) {
-      //   setIsLiked(!isLiked);
-      //   );
-      // } else {
-      //   console.error("Erreur API:", data.error);
-      // }
-      
-      const alreadylike= item.user.token.find(token === userToken)  //vérifier si le token de l'utilisateur est présent dans le tableau des utilisateurs likers
-      if (alreadylike) {
-         setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1))}
-         else {
-          setIsLiked(true) && setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1))
-         }
+      if (data.result) {
+        setIsLiked(!isLiked);
+        setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
+      } else {
+        console.error("Erreur API:", data.error);
+      }
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
     }
@@ -100,7 +101,7 @@ export default Article;
 const styles = StyleSheet.create({
   articleContainer: {
     borderWidth: 1,
-    borderColor: "#00000",
+    borderColor: "#fff",
     width: '48%',
     height: 240,
     borderRadius: 10,
