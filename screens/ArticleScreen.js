@@ -65,7 +65,6 @@ export default function ArticleScreen({ navigation, route }) {
 
              </View>
             
-            
         </ScrollView>
         
     </View>
