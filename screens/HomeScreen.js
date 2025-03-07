@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, } from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text} from 'react-native';
 import React, { useEffect, useState } from "react";
 import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient'
@@ -73,10 +73,17 @@ export default function HomeScreen({ navigation }) {
             </LinearGradient>
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <WelcomeHome navigation={navigation} />
+                
                 <View style={styles.row}>
-                    {articles.map((item, i) => (
-                        <Article key={item.id} item={item} />
-                    ))}
+                     {articles && articles.length > 0 ? (
+                           articles.map((item, i) => (
+                               <Article key={item.id} item={item} />
+                      ))
+                  ) : (
+                        <View style={styles.noArticlesContainer}>
+                            <Text style={styles.noArticlesText}>Aucun article disponible</Text>
+                        </View>
+                    )}
                 </View>
             </ScrollView>
 
@@ -120,6 +127,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    noArticlesContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        padding: 20,
+    },
+    noArticlesText: {
+        fontSize: 16,
+        color: '#666',
+        fontStyle: 'italic',
+    },
 
 })
-
