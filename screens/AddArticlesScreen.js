@@ -47,7 +47,6 @@ const conditions = ['Très bon état', 'Bon état', 'État moyen', 'Neuf'];
 const AddArticlesScreen = ({ navigation }) => {
 
 const userToken = useSelector(state => state.user.value.token);
-console.log(userToken)
 
     const { control, handleSubmit, setValue, reset, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
