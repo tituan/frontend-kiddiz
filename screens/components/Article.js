@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
@@ -23,9 +24,14 @@ function Article({ onPress, style, item}) {
   // État du like et du compteur
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(item.likesCount);
+  // État du like et du compteur
+  const [isLiked, setIsLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(item.likesCount);
 
   // Masquer l'écran de splash après le chargement des polices
+  // Masquer l'écran de splash après le chargement des polices
   useEffect(() => {
+    if (fontsLoaded || fontError) {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
@@ -38,6 +44,23 @@ function Article({ onPress, style, item}) {
     }
   }, [item, userToken]);
 
+  if (!fontsLoaded && !fontError) {
+  }, [fontsLoaded, fontError]);
+
+  // Vérifier si l'utilisateur a déjà liké l'article
+  useEffect(() => {
+    if (item.usersLikers && userToken) { // Vérifie que les données sont disponibles
+        const hasLiked = item.usersLikers.some(user => user.token === userToken);
+    
+      if (hasLiked) {
+        setIsLiked(true);
+      } else {
+        setIsLiked(false); // Réinitialise isLiked si l'utilisateur n'a pas liké
+      }
+    }
+  }, [item.usersLikers, userToken]);
+
+  // Afficher un écran vide si les polices ne sont pas encore chargées
   if (!fontsLoaded && !fontError) {
     return null;
   }
@@ -80,9 +103,13 @@ function Article({ onPress, style, item}) {
         <View style={styles.imageWrapper}>
           <Image source={{ uri: item.pictures[0] }} style={styles.image} resizeMode="cover" />
         </View>
+        <View style={styles.imageWrapper}>
+          <Image source={{ uri: item.pictures[0] }} style={styles.image} resizeMode="cover" />
+        </View>
 
         <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
           <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
+          <Text style={styles.likeCounter}>{likesCount}</Text>
           <Text style={styles.likeCounter}>{likesCount}</Text>
         </TouchableOpacity>
       </View>
@@ -156,6 +183,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     elevation: 3,
+    elevation: 3,
     borderWidth: 1,
     borderColor: "#000000",
   },
@@ -201,3 +229,4 @@ const styles = StyleSheet.create({
     fontFamily: 'LilitaOne-Regular',
   }
 });
+

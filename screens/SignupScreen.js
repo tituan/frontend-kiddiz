@@ -99,7 +99,11 @@ export default function SignUpScreen({ navigation }) {
 
       console.log(values.dateOfBirth);
 
+<<<<<<< HEAD
       const response = await fetch(`${urlBackend}users/signup`, {
+=======
+      const response = await fetch('http://192.168.100.254:3000/users/signup', {
+>>>>>>> add-likes
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),

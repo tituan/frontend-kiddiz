@@ -59,7 +59,11 @@ const SignInScreen = ({navigation}) => {
   const handlePost = async (values) => {
    
     try {
+<<<<<<< HEAD
       const response = await fetch(`${urlBackend}users/signin`, {
+=======
+      const response = await fetch('http://192.168.100.254:3000/users/signin', {
+>>>>>>> add-likes
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
