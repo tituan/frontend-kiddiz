@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, View } from "react-native";
 import { useFonts } from 'expo-font';
@@ -11,9 +18,9 @@ import { useNavigation } from '@react-navigation/native';
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 function Article({ onPress, style, item}) {
-  const navigation = useNavigation();  
+  const navigation = useNavigation();
   const userToken = useSelector(state => state.user.value.token);
-  
+
   // Chargement des polices
   const [fontsLoaded, fontError] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
@@ -24,8 +31,6 @@ function Article({ onPress, style, item}) {
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(item.likesCount);
 
-
-
   // Masquer l'écran de splash après le chargement des polices
   useEffect(() => {
     if (fontsLoaded || fontError) {
@@ -34,7 +39,6 @@ function Article({ onPress, style, item}) {
   }, [fontsLoaded, fontError]);
 
   // Vérifier si l'utilisateur a déjà liké l'article
-
   useEffect(() => {
     if (item.usersLikers && userToken) { // Vérifie que les données sont disponibles
         const hasLiked = item.usersLikers.some(user => user.token === userToken);
@@ -47,7 +51,6 @@ function Article({ onPress, style, item}) {
     }
   }, [item.usersLikers, userToken]);
 
-  // Afficher un écran vide si les polices ne sont pas encore chargées
   if (!fontsLoaded && !fontError) {
     return null;
   }
@@ -66,17 +69,17 @@ function Article({ onPress, style, item}) {
         }),
       });
 
-      const data = await response.json();
+  const data = await response.json();
 
-      if (data.result) {
-        setIsLiked(!isLiked);
-        setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
-      } else {
-        console.error("Erreur API:", data.error);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la requête:", error);
-    }
+  if (data.result) {
+    setIsLiked(!isLiked);
+    setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
+  } else {
+    console.error("Erreur API:", data.error);
+  }
+} catch (error) {
+  console.error("Erreur lors de la requête:", error);
+}
   };
   const handleClick = () => {
     console.log('click');
@@ -90,27 +93,23 @@ function Article({ onPress, style, item}) {
         <View style={styles.imageWrapper}>
           <Image source={{ uri: item.pictures[0] }} style={styles.image} resizeMode="cover" />
         </View>
-        <View style={styles.imageWrapper}>
-          <Image source={{ uri: item.pictures[0] }} style={styles.image} resizeMode="cover" />
-        </View>
 
-        <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
-          <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
-          <Text style={styles.likeCounter}>{likesCount}</Text>
-          <Text style={styles.likeCounter}>{likesCount}</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.rowContainer}>
-        <View>
-          <Text style={styles.text}>{item.title}</Text>
-          <Text style={styles.textType}>{item.condition}</Text>
-        </View>
-        <View style={styles.priceContainer}>
-          <Text style={styles.textPrix}>{item.price} €</Text>
-        </View>
-      </View>
+    <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
+      <FontAwesome name="heart" size={20} color={isLiked ? "red" : "#b2bec3"} />
+      <Text style={styles.likeCounter}>{likesCount}</Text>
     </TouchableOpacity>
+  </View>
+
+  <View style={styles.rowContainer}>
+    <View>
+      <Text style={styles.text}>{item.title}</Text>
+      <Text style={styles.textType}>{item.condition}</Text>
+    </View>
+    <View style={styles.priceContainer}>
+      <Text style={styles.textPrix}>{item.price} €</Text>
+    </View>
+  </View>
+</TouchableOpacity>
   );
 }
 
@@ -169,7 +168,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    elevation: 3,
     elevation: 3,
     borderWidth: 1,
     borderColor: "#000000",
