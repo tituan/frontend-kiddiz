@@ -1,40 +1,44 @@
 import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text} from 'react-native';
 import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
-import WelcomeHome from './components/WelcomeHome'
-// import Article from './components/Article';
+import Article from './components/Article';
 
+ // Env variable for BACKEND
+ const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function FavorisScreen({ navigation }) {
-    // const [articles, setArticles] = useState([]);
-    // const [loading, setLoading] = useState(true);
-    // console.log(articles)
+    const userToken = useSelector(state => state.user.value.token);
+    const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(true);
+    console.log(articles)
 
-    // useEffect(() => {
-    //     // Remplace l'URL par celle de ton backend
-    //     const fetchArticles = async () => {
-    //     try {
-    //         const response = await fetch("http://192.168.100.209:3000/articles/popular");
-    //         const data = await response.json();
-    //         setArticles(data.article); // Stocke les articles dans l'état
-    //     } catch (error) {
-    //         console.error("Erreur lors de la récupération des articles:", error);
-    //     } finally {
-    //         setLoading(false); // Arrête le chargement
-    //     }
-    //     };
+    useEffect(() => {
 
-    //     fetchArticles();
-    // }, []);
+        const fetchArticles = async () => {
+        try {
+            const response = await fetch(`${urlBackend}favorites/${userToken}`);
+            const data = await response.json();
+            setArticles(data.article[0].articles); // Stocke les articles dans l'état
+            // console.log()
+        } catch (error) {
+            console.error("Erreur lors de la récupération des articles:", error);
+        } finally {
+            setLoading(false); // Arrête le chargement
+        }
+        };
 
-    // if (loading) {
-    //     return (
-    //       <View style={styles.loadingContainer}>
-    //         <ActivityIndicator size="large" color="#007AFF" />
-    //       </View>
-    //     );
-    //   }
+        fetchArticles();
+    }, []);
+
+    if (loading) {
+        return (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#007AFF" />
+          </View>
+        );
+      }
 
     return (
     <View style={styles.container}>
@@ -47,7 +51,12 @@ export default function FavorisScreen({ navigation }) {
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
         </LinearGradient> 
         <ScrollView contentContainerStyle={styles.contentContainer}>
-            <Text>Favoris Screen</Text>
+            <Text style={styles.title}>Liste de vos articles ajouté en favoris :</Text>
+            <View style={styles.containerList}>
+                {articles.map((item, i) => (
+                    <Article key={i} item={item} />
+                ))}
+            </View>
         </ScrollView>
         
     </View>
@@ -89,6 +98,18 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+    },
+    containerList: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+    },
+    title: {
+        padding: 20,
+        fontSize: 20,
+        fontFamily: 'LilitaOne-Regular',
     },
 
 })

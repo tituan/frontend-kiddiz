@@ -76,9 +76,7 @@ const SignInScreen = ({navigation}) => {
           token: data.userData.token,
           status: data.userData.status
         }));
-        
-        navigation.navigate("TabNavigator");
-       
+        navigation.navigate("Home");
       } else {
         console.log('Erreur de connexion:', data.message);
       }

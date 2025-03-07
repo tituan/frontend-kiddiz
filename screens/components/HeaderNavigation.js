@@ -8,18 +8,18 @@ import ButtonIcon from './ButtonIcon'
 import SearchBar from './SearchBar'
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../reducers/users';
+import HomeScreen from '../HomeScreen';
+import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 const HeaderNavigation = ({ onPress, onSearch }) => {
     const userToken = useSelector(state => state.user.value.token);
-    const dispatch = useDispatch();
+    const route = useRoute(); // Récupère la route actuelle
+    // const dispatch = useDispatch();
+    const navigation = useNavigation();
     const [loaded, error] = useFonts({
         'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
     });
-
-    const handleLogOut = () => {
-        dispatch(logOut()); // Déclenche l'action logOut
-        console.log('Utilisateur déconnecté');
-    };
 
     useEffect(() => {
         if (loaded || error) {
@@ -29,28 +29,27 @@ const HeaderNavigation = ({ onPress, onSearch }) => {
 
     if (!loaded && !error) {
         return null;
-    }  
+    }
 
- return (
-
-    <View style={styles.header}>
-        <View style={styles.headerTop}>  
-            <Text style={styles.headerTopKiddiz}>Kiddiz</Text>
-            <View style={styles.headerButton}>
-            {!userToken ?  (
-                <ButtonHalf style={styles.buttonConnection} text="Connexion" onPress={onPress} />
-            ) : (
-                <ButtonIcon style={styles.buttonLogOut} name="sign-out" onPress={handleLogOut}/>
-            )}
+    return (
+        <View style={styles.header}>
+            <View style={styles.headerTop}>
+                <Text style={styles.headerTopKiddiz}>Kiddiz</Text>
+                <View style={styles.headerButton}>
+                    {route.name !== 'Home' && (
+                        <ButtonIcon style={styles.buttonLogOut} name="arrow-left" onPress={() => navigation.goBack()} />
+                    ) }
+                    {!userToken ? (
+                        <ButtonHalf style={styles.buttonConnection} text="Connexion" onPress={onPress} />
+                    ) : null }
+                </View>
             </View>
+            <View style={styles.headerBottom}>
+                <SearchBar onSearch={onSearch} />
+            </View> 
         </View>
-        <View style={styles.headerBottom}>
-            <SearchBar onSearch={onSearch} />
-        </View>
-    </View>
-
- );
-}
+    );
+};
 
 const styles = StyleSheet.create({
     header: {

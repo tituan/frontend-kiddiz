@@ -14,15 +14,14 @@ import FavorisScreen from "./screens/FavorisScreen";
 import ArticleScreen from "./screens/ArticleScreen";
 import MessagerieScreen from "./screens/MessagerieScreen";
 import SellerScreen from "./screens/SellerScreen";
-// import { StatusBar } from "expo-status-bar";
+import { useSelector } from "react-redux";
 import { StyleSheet } from "react-native";
+import TransactionsScreen from "./screens/TransactiosScreen";
 
-// redux imports
+// Redux
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/users';
-
-
 
 const store = configureStore({
   reducer: { user },
@@ -31,6 +30,7 @@ const store = configureStore({
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// ✅ TabNavigator bien défini
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -38,17 +38,11 @@ const TabNavigator = () => {
         tabBarIcon: ({ color, size }) => {
           let iconName = "";
 
-          if (route.name === "Profil") {
-            iconName = "user";
-          } else if (route.name === "Messagerie") {
-            iconName = "envelope";
-          } else if (route.name === "Vendre") {
-            iconName = "plus";
-          } else if (route.name === "Home") {
-            iconName = "home";
-          } else if (route.name === "Favoris") {
-            iconName = "heart";
-          }
+          if (route.name === "Profil") iconName = "user";
+          else if (route.name === "Messagerie") iconName = "envelope";
+          else if (route.name === "Vendre") iconName = "plus";
+          else if (route.name === "Home") iconName = "home";
+          else if (route.name === "Favoris") iconName = "heart";
 
           return <FontAwesome name={iconName} size={35} color={color} />;
         },
@@ -58,23 +52,19 @@ const TabNavigator = () => {
         tabBarLabelStyle: {
           fontSize: 13,
           fontFamily: 'Arial',
-          fontWeight: 300,
+          fontWeight: "300",
         },
         tabBarStyle: {
-          backgroundColor: '#E6C12E', // Vert avec opacité 0.5
+          backgroundColor: '#E6C12E',
           height: 85,
           borderTopColor: 'black',
           borderTopWidth: 1,
           paddingBottom: 20,
-          paddingTop:10,
-        
-          // Pour iOS
+          paddingTop: 10,
           shadowColor: 'black',
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.25,
           shadowRadius: 3,
-        
-          // Pour Android
           elevation: 5,
         },
       })}
@@ -88,25 +78,42 @@ const TabNavigator = () => {
   );
 };
 
+// ✅ MainNavigator avec TabNavigator défini dans Stack
+const MainNavigator = () => {
+  const userToken = useSelector((state) => state.user.value.token);
+  console.log("Token utilisateur :", userToken);
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {/* HomeScreen seul si pas de token */}
+      {!userToken ? (
+        <Stack.Screen name="Home" component={HomeScreen} />
+      ) : (
+        <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      )}
+
+      <Stack.Screen name="Connection" component={ConnectionScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="SignIn" component={SignInScreen} />
+      <Stack.Screen name="Vendre" component={AddArticlesScreen} />
+            <Stack.Screen name="Modifier" component={ModifyArticleScreen} />
+      <Stack.Screen name="Favoris" component={FavorisScreen} />
+            <Stack.Screen name="MesArticles" component={MyArticlesScreen} />
+      <Stack.Screen name="SellerScreen" component={SellerScreen} />
+      <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
+
+      {/* ✅ Ajouter TabNavigator ici pour qu'il soit accessible */}
+      <Stack.Screen name="Tabs" component={TabNavigator} />
+    </Stack.Navigator>
+  );
+};
+
 export default function App() {
-  
   return (
     <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Connection" component={ConnectionScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen name="SignIn" component={SignInScreen} />
-            <Stack.Screen name="Vendre" component={AddArticlesScreen} />
-            <Stack.Screen name="Modifier" component={ModifyArticleScreen} />
-            <Stack.Screen name="Favoris" component={FavorisScreen} />
-            <Stack.Screen name="MesArticles" component={MyArticlesScreen} />
-            <Stack.Screen name="SellerScreen" component={SellerScreen} />
-            <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
-            <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          </Stack.Navigator>
-        </NavigationContainer>
+      <NavigationContainer>
+        <MainNavigator />
+      </NavigationContainer>
     </Provider>
   );
 }

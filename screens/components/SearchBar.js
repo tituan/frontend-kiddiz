@@ -4,8 +4,12 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect, useState} from 'react';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useRoute } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 
 function SearchBar({ onSearch }) {
+  const route = useRoute(); // Récupère la route actuelle
+
   const [loaded, error] = useFonts({
       'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
       'RopaSans-Regular': require('../../assets/fonts/RopaSans-Regular.ttf'),
@@ -25,12 +29,14 @@ const [isFocused, setIsFocused] = useState(false);
 const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = () => {
+
     if (searchTerm.trim()) { // Vérifie que le terme de recherche n'est pas vide
       onSearch(searchTerm); // Appelle la fonction passée via les props
+      
     }
   };
 
-return (
+return route.name === 'Home' ? (
     <View style={styles.searchContainer}>
         <TouchableOpacity
             style={styles.buttonFilter} 
@@ -51,9 +57,8 @@ return (
         </TextInput>
         {isFocused && <FontAwesome name="search" size={20} color="black" style={styles.icon} onPress={handleSearch}/>}
         </View>
-       
     </View>
-  );
+  ) : null;
 }
 export default SearchBar;
 

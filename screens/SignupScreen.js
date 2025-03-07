@@ -116,7 +116,9 @@ export default function SignUpScreen({ navigation }) {
           token: data.userResponse.token,
           status: data.userResponse.status,
         }));
-        navigation.navigate('TabNavigator');
+        Alert.alert("Bienvenu sur Kiddiz");
+        // redirection vers la home
+        navigation.navigate('Home');
       } else {
         console.log('Une erreur s\'est produite lors de l\'inscription :', data.error);
       }

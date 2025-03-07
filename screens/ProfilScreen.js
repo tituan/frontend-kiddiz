@@ -4,17 +4,24 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { useFonts } from 'expo-font';
 import { useSelector } from 'react-redux';
 import ButtonBig from './components/ButtonBig';
-import * as SplashScreen from 'expo-splash-screen';
-import Article from './components/Article';
+import { logOut } from '../reducers/users';
+import { useDispatch } from 'react-redux';
 
 export default function ProfilScreen({ navigation }) {
     const user = useSelector(state => state.user.value);
     console.log(user)
+    const dispatch = useDispatch();
 
     const [fontsLoaded, fontError] = useFonts({
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
         'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
       });
+
+    const handleLogOut = () => {
+        dispatch(logOut()); // Déclenche l'action logOut
+        navigation.navigate('Home')
+        console.log('Utilisateur déconnecté');
+    };
 
     return (
     <View style={styles.container}>
@@ -40,7 +47,9 @@ export default function ProfilScreen({ navigation }) {
             <ButtonBig style={styles.buttonSell} text="Vendez votre article" onPress={() => navigation.navigate('Vendre')} />
             <ButtonBig style={styles.buttonNav} text="Mes articles" onPress={() => navigation.navigate('MesArticles')} />
             <ButtonBig style={styles.buttonNav} text="Mes favoris" onPress={() => navigation.navigate('Favoris')} />
+            <ButtonBig style={styles.buttonNav} text="Mes transactions" onPress={() => navigation.navigate('TransactionsScreen')} />
             <ButtonBig style={styles.buttonNav} text="FAQ" onPress={() => navigation.navigate('Vendre')} />
+            <ButtonBig style={styles.buttonNav} text="Déconnexion" onPress={handleLogOut} />
         </ScrollView>
         
     </View>

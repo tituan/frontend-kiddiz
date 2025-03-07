@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import ButtonBig from './components/ButtonBig'
 import ButtonHalf from './components/ButtonHalf';
 import Article from './components/Article';
+import { FontAwesome } from '@expo/vector-icons';
 
 // Env variable for BACKEND
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
@@ -20,7 +21,6 @@ export default function SellerScreen({ navigation, route }) {
     const [loading, setLoading] = useState(true);
     const [articles, setArticles] = useState([]);
     const numberArticlesSeller = articles ? articles.length : 0;
-   
 
     useEffect(() => {
         // Remplace l'URL par celle de ton backend
@@ -29,7 +29,7 @@ export default function SellerScreen({ navigation, route }) {
                 const response = await fetch(`${urlBackend}articles/get-by/seller/${sellerToken}`);
                 const data = await response.json();
                 console.log(data)
-                setArticles(data.article); // Stocke les articles dans l'état
+                setArticles(data.articles); // Stocke les articles dans l'état
             } catch (error) {
                 console.error("Erreur lors de la récupération des articles:", error);
             } finally {
@@ -74,7 +74,14 @@ export default function SellerScreen({ navigation, route }) {
                             <View style={styles.infoUser}>
                                 <View>
                                     <Text style={styles.firstName}>{sellerFirstName}</Text>
-                                    <Text> ⭐️ ⭐️ ⭐️ ⭐️ ⭐️  4.5 </Text>
+                                    <View style={styles.starContainer}> 
+                                        <FontAwesome name="star" size={20} color={"gold"} />
+                                        <FontAwesome name="star" size={20} color={"gold"} />
+                                        <FontAwesome name="star" size={20} color={"gold"} />
+                                        <FontAwesome name="star" size={20} color={"gold"} />
+                                        <FontAwesome name="star" size={20} color={"gold"} />
+                                        <Text> 4.5 </Text>
+                                    </View>
                                     <Text> Paris (75017) </Text>
                                 </View>
                             </View>
@@ -162,6 +169,11 @@ const styles = StyleSheet.create({
     firstName:{
         fontFamily: 'LilitaOne-Regular',
         fontSize: 30,
+    },
+    starContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     idBox:{
         flexDirection: 'row',

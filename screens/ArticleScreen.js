@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import ButtonBig from './components/ButtonBig';
 import ButtonHalf from './components/ButtonHalf';
 import { FontAwesome } from '@expo/vector-icons';
-
+import ButtonProfil from './components/ButtonProfil';
 
 export default function ArticleScreen({ navigation, route }) {
     // const [articles, setArticles] = useState([]);
@@ -30,7 +30,7 @@ export default function ArticleScreen({ navigation, route }) {
              
              <View style={styles.titreContainer}>
                     <Text style={styles.titre}>{article.title}</Text>
-                    <FontAwesome name="heart" size={20} color={"red"} />
+                    <FontAwesome name="heart" size={20} color={"red"} style={styles.like}/>
                     <Text style={styles.likesCount}>{article.likesCount}</Text>
              </View>
 
@@ -52,7 +52,10 @@ export default function ArticleScreen({ navigation, route }) {
             
                 <Text>{article.firstname}</Text>
 
-                <Button style={styles.buttonSeller} title="vendeur" onPress={() => navigation.navigate("SellerScreen", { article: article.user })} ></Button>
+                <View style={styles.buttonSeller}>
+                <ButtonProfil style={styles.buttonSeller} text="Acheter l'article" sellerFirstName={article.user.firstname}  onPress={() => navigation.navigate("SellerScreen", { article: article.user })}/>
+                </View>
+
                 <Image style={styles.map} source={require('../assets/carte.jpg')}/>
 
                 <View style={styles.buttonHalfContainer}>
@@ -61,7 +64,6 @@ export default function ArticleScreen({ navigation, route }) {
                 </View>
 
              </View>
-             {/* Need some Style this is for the seller screen acces */}
             
         </ScrollView>
         
@@ -76,8 +78,8 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
-        
     },
+
     header: {
         padding: 20,
         borderBottomColor: '#00000',
@@ -88,29 +90,40 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.9, 
         shadowRadius: 4, 
         elevation: 5, 
+         bottomTop: 50,
     },
+
     titreContainer:{
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        marginTop:30,
+        marginBottom:15,
     },
+
     titre:{
-        fontSize: 22,
+        fontSize: 30,
         fontFamily: 'LilitaOne-Regular',
         position: 'absolute', 
         left : "4%",
     },
 
+    like:{
+        fontSize: 20,
+        fontFamily: 'RopaSans-Regular',
+        left : 350, 
+    },
+
     likesCount:{
         fontSize: 20,
         fontFamily: 'RopaSans-Regular',
-        left : "85%",
+        left : 360,
     },
 
     photoContainer:{
         width: '100%',
         padding: 20,
+        marginBottom: 30,
     },
 
     articleImage:{
@@ -126,31 +139,31 @@ const styles = StyleSheet.create({
     },
     titreDescription:{
         fontFamily: 'LilitaOne-Regular',
-        fontSize: 20,
+        fontSize: 22,
         marginBottom: 5,
         
 
     },
     textDescription:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 20,
+        fontSize: 24,
         marginBottom: 5,
 
     },
     textCategorie:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 17,
+        fontSize: 19,
         marginBottom: 5,
     },
     textType:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 17,
+        fontSize: 19,
         marginBottom: 5,
 
     },
     textCondition:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 17,
+        fontSize: 19,
         marginBottom: 5,
         
 
@@ -165,13 +178,15 @@ const styles = StyleSheet.create({
         bottom: 10, 
         right: 10, 
     },
+    
     buttonContainer:{
         padding: 20,
     },
+
     buttonAchaterArticle: {
         backgroundColor: '#EDDC5F',
-    
     },
+
     map:{
         height:200,
         width:'100%'
@@ -183,15 +198,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+
     buttonOffre:{
         width: '48%',
         borderColor: "black",
         backgroundColor: "#EDDC5F",
     },
+
     buttonAchater:{
         width: '48%',
         borderColor: "black",
         backgroundColor: "#00CC99",
     },
-
 })
