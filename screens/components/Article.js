@@ -18,9 +18,9 @@ import { useNavigation } from '@react-navigation/native';
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 function Article({ onPress, style, item}) {
-  const navigation = useNavigation();
+  const navigation = useNavigation();  
   const userToken = useSelector(state => state.user.value.token);
-
+  
   // Chargement des polices
   const [fontsLoaded, fontError] = useFonts({
     'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
