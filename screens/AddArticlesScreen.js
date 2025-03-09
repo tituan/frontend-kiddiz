@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Image, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 import ButtonBig from './components/ButtonBig';
@@ -158,6 +158,7 @@ const userToken = useSelector(state => state.user.value.token);
                 end={{ x: 1, y: 0 }}
                 style={styles.containerLinear}
               >
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
     <View style={styles.container}>
         
       <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
@@ -267,6 +268,7 @@ const userToken = useSelector(state => state.user.value.token);
       </ScrollView>
      
     </View>
+    </KeyboardAvoidingView>
     </LinearGradient>
   );
 };

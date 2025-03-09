@@ -230,15 +230,15 @@ const styles = StyleSheet.create({
     buttonOffre:{
         width: '48%',
         borderColor: "black",
-        backgroundColor: "#EDDC5F",
+        backgroundColor: "#00CC99",
     },
     buttonAchater:{
         width: '48%',
         borderColor: "#000000",
-        backgroundColor: "#00CC99",
+        backgroundColor: "#EDDC5F",
     },
     buttonModify: {
-        backgroundColor: '#EDDC5F',
+        backgroundColor: '#F095B4',
     },
     buttonDelete: {
         backgroundColor: '#E94C65',
