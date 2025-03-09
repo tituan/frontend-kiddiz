@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     profil: {
-       
+       marginTop: 20,
     },
     cardProfil:{
         marginBottom:15,
