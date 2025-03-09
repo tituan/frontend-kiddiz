@@ -40,7 +40,7 @@ export const userSlice = createSlice({
         status: action.payload.token,
       };
        // Ajoutez un console.log pour vérifier ce qui est stocké
-      console.log("État actuel du reducer user après loginUser:", state.value);
+      // console.log("État actuel du reducer user après loginUser:", state.value);
     },
     signUpUser: (state, action) => {
       state.value = {

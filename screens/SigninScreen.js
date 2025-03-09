@@ -67,7 +67,7 @@ const SignInScreen = ({navigation}) => {
       const data = await response.json();
 
       if (data.result) {
-        console.log('Connexion réussie:', data);
+        // console.log('Connexion réussie:', data);
         dispatch(loginUser({
           firstname: data.userData.firstname,
           lastname: data.userData.lastname,
