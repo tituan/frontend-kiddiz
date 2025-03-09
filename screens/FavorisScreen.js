@@ -12,7 +12,7 @@ export default function FavorisScreen({ navigation }) {
     const userToken = useSelector(state => state.user.value.token);
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
-    console.log(articles)
+    // console.log(articles)
 
     useEffect(() => {
 
