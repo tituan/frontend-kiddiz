@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     profil: {
-       
+       marginTop: 20,
     },
     cardProfil:{
         marginBottom:15,
@@ -221,9 +221,7 @@ const styles = StyleSheet.create({
         fontFamily: 'LilitaOne-Regular',
         fontSize: 25, 
         marginBottom: 10,
-        
     },
-
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between', 
@@ -232,19 +230,13 @@ const styles = StyleSheet.create({
         width: '100%', 
         padding: 20, 
     },
-
     article: {
         width: '48%', 
     },
-
     buttonCategorie:{
         alignItems: 'left',
         paddingLeft: 15,
         backgroundColor: 'pink',
-    },
-    
-    contentContainer: {
-        // flexGrow: 1,
     },
     buttonSeller: {
         width: 200,
