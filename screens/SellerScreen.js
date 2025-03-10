@@ -7,6 +7,7 @@ import ButtonBig from './components/ButtonBig'
 import ButtonHalf from './components/ButtonHalf';
 import Article from './components/Article';
 import { FontAwesome } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 // Env variable for BACKEND
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
@@ -21,6 +22,7 @@ export default function SellerScreen({ navigation, route }) {
     const [loading, setLoading] = useState(true);
     const [articles, setArticles] = useState([]);
     const numberArticlesSeller = articles ? articles.length : 0;
+    const userToken = useSelector(state => state.user.value.token);
 
     useEffect(() => {
         // Remplace l'URL par celle de ton backend
@@ -90,8 +92,29 @@ export default function SellerScreen({ navigation, route }) {
                         <Text style={styles.textVente} > Nombre de vente réalisées 50 </Text>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <ButtonHalf style={styles.buttonContacter} text="Contacter"/>
-                        <ButtonHalf style={styles.buttonAbonner} text="S'abonner"/>
+
+                        <ButtonHalf 
+                        style={styles.buttonContacter} 
+                        text="Contacter"
+                        onPress={() => {
+                            if (!userToken) {
+                                navigation.navigate("Connection");
+                            } else {
+                                // redirection vers la page d'achat
+                            }
+                        }}/>
+
+                        <ButtonHalf 
+                        style={styles.buttonAbonner} 
+                        text="S'abonner"
+                        onPress={() => {
+                            if (!userToken) {
+                                navigation.navigate("Connection");
+                            } else {
+                                // redirection vers la page d'achat
+                            }
+                        }}/>
+
                     </View>
                     
                     {/* <View style={styles.containerCategories}>
