@@ -16,7 +16,7 @@ import { useFocusEffect } from '@react-navigation/native';
 const schema = yup.object().shape({
     title: yup
       .string()
-      .max(40, 'Le titre ne doit pas dépasser 40 caractères')
+      .max(30, 'Le titre ne doit pas dépasser 40 caractères')
       .required('Le titre est requis'),
     productDescription: yup
       .string()
