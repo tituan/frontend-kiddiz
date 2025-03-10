@@ -35,12 +35,35 @@ export default function InvoiceScreen({ navigation, route }) {
     },
   });
 
-  const onSubmit = (data) => {
-    const requestData = { ...data, articleId: article.id,
-        seller: article.user};
-    console.log('Données envoyées :', requestData);
-    // Ici tu peux ajouter la requête API pour envoyer les données au backend
-  };
+  const onSubmit = async (data) => {
+    const requestData = { 
+        ...data, 
+        articleId: article.id, 
+        seller: article.user 
+    };
+
+    try {
+        const response = await fetch('https://api.ton-backend.com/achat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        console.log('Réponse du serveur:', responseData);
+
+        // Ici tu peux gérer la navigation après la confirmation de l'achat
+        // navigation.navigate('ConfirmationScreen', { orderData: responseData });
+
+    } catch (error) {
+        console.error('Erreur lors de l\'envoi des données:', error);
+    }
+};
+
 
   return (
     <View style={styles.container}>
