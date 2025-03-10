@@ -1,85 +1,90 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text} from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
-import HeaderNavigation from './components/HeaderNavigation'; 
+import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient'
 import Article from './components/Article';
 
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-export default function FavorisScreen({ navigation }) {
+export default function MyArticlesScreen({ navigation }) {
 
     const userToken = useSelector(state => state.user.value.token);
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
-    console.log(articles)
+    const [refreshing, setRefreshing] = useState(false);
 
-useEffect(() => {
-
-    const fetchArticles = async () => {
-
-    try {
-
-        const response = await fetch(`${urlBackend}articles/get-by/seller/${userToken}`);
-        const data = await response.json();
-        setArticles(data.articles); // Stocke les articles dans l'état
-
-    } catch (error) {
-
-        console.error("Erreur lors de la récupération des articles:", error);
-
-    } finally {
-
-        setLoading(false); // Arrête le chargement
-    }
+    // Permet d'actualiser la page lors du scrollDown avec un reRender + un appel à fetchArticles()
+    const onRefresh = () => {
+        setRefreshing(true);
+        fetchArticles();
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 750);
     };
 
-    fetchArticles();
-}, []);
+    const fetchArticles = async () => {
+        try {
+            const response = await fetch(`${urlBackend}articles/get-by/seller/${userToken}`);
+            const data = await response.json();
+            console.log('Articles récupérés:', data.articles);
+            setArticles(data.articles); // Stocke les articles dans l'état
+        }
+        catch (error) {
+            console.error("Erreur lors de la récupération des articles:", error);
+        }
+        finally {
+            setLoading(false); // Arrête le chargement
+        }
+    };
 
-const handleModify = (articleId) => {
-    // Redirige vers ModifyArticleScreen avec l'ID de l'article
-    navigation.navigate('ModifyArticle', { articleId }); 
-  };
+    useEffect(() => {
+        fetchArticles();
+    }, []);
 
-if (loading) {
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#007AFF" />
+            </View>
+        );
+    }
+
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
-      </View>
-    );
-  }
-
-return (
-<View style={styles.container}>
-    <LinearGradient
-        colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
-        start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
-        end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
-        style={styles.header}
-    >
-        <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
-    </LinearGradient> 
-    <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.title}>Liste de vos articles actuellement en vente :</Text>
-        <View style={styles.containerList}>
-            {articles.map((item, i) => (
-                <Article 
-                key={i} 
-                item={item}
-                onModify={handleModify}
-                showModifyButton={true} />
-            ))}
+        <View style={styles.container}>
+            <LinearGradient
+                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
+                start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
+                end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
+                style={styles.header}
+            >
+                <HeaderNavigation onPress={() => navigation.navigate("Connection")} />
+            </LinearGradient>
+            <ScrollView 
+            contentContainerStyle={styles.contentContainer} 
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+            }>
+                <Text style={styles.title}>Liste de vos articles actuellement en vente :</Text>
+                <View style={styles.containerList}>
+                    {articles.map((item, i) => (
+                        <Article
+                            key={i}
+                            item={item}
+                            showModifyButton={true} />
+                    ))}
+                </View>
+            </ScrollView>
         </View>
-    </ScrollView>
-    
-</View>
-);
+    );
 }
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fffff',
+        flex: 1,
+        backgroundColor: '#fffff',
     },
     header: {
         padding: 20,
@@ -95,14 +100,14 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between', 
+        justifyContent: 'space-between',
         flexWrap: 'wrap',
-        alignItems: 'center', 
-        width: '100%', 
-        padding: 20, 
+        alignItems: 'center',
+        width: '100%',
+        padding: 20,
     },
     article: {
-        width: '48%', 
+        width: '48%',
     },
     contentContainer: {
         flexGrow: 1,

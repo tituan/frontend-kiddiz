@@ -28,7 +28,7 @@ const conditions = ['Très bon état', 'Bon état', 'État moyen', 'Neuf'];
 
 const ModifyArticleScreen = ({ navigation }) => {
   const route = useRoute();
-  const articleId = route.params?.articleId;
+  const { articleId } = route.params
   const userToken = useSelector(state => state.user.value.token);
 
   const { control, handleSubmit, setValue, reset, formState: { errors } } = useForm({
@@ -41,23 +41,38 @@ const ModifyArticleScreen = ({ navigation }) => {
   const [selectedCondition, setSelectedCondition] = useState(null);
   const [article, setArticle] = useState(null);
 
+  // BOUTON RETURN TEMPORAIRE
+  const handleGoBack = () => {
+    navigation.goBack(); // Retourne à l'écran précédent
+  };
+  // FIN PARTIE BOUTOU RETOUR TEMPORAIRE
+
   useEffect(() => {
+
     const fetchArticle = async () => {
+
       try {
-        const response = await fetch(`${urlBackend}articles/${articleId}`);
+        const response = await fetch(`${urlBackend}articles/get-by/id/${articleId}`);
         const data = await response.json();
+
         if (response.ok) {
+
           setArticle(data);
-          setValue('title', data.title); // setValue est une fonction fournie par la bibliothèque React Hook Form : (nomDuChamp, nouvelleValeur)
-          setValue('productDescription', data.productDescription); // Pré-remplir le champ "productDescription"
-          setValue('category', data.category);
-          setValue('itemType', data.itemType);
-          setValue('condition', data.condition);
-          setValue('price', data.price.toString());
-          setImage(data.pictures);
-          setSelectedCategory(data.category);
-          setSelectedType(data.itemType);
-          setSelectedCondition(data.condition);
+
+          setValue('title', data.article.title); // setValue est une fonction fournie par la bibliothèque React Hook Form : (nomDuChamp, nouvelleValeur)
+          setValue('productDescription', data.article.productDescription); // Pré-remplir le champ "productDescription"
+          setValue('category', data.article.category);
+          setValue('itemType', data.article.itemType);
+          setValue('condition', data.article.condition);
+          setValue('price', data.article.price.toString());
+          setImage(data.article.pictures[0]);
+          setValue('pictures', data.article.pictures[0]);
+
+          // Mettre à jour les états locaux pour les boutons radio
+          setSelectedCategory(data.article.category);
+          setSelectedType(data.article.itemType);
+          setSelectedCondition(data.article.condition);
+
         } else {
           Alert.alert('Erreur', 'Impossible de récupérer l\'article.');
         }
@@ -101,7 +116,7 @@ const ModifyArticleScreen = ({ navigation }) => {
       formData.append('condition', data.condition);
       formData.append('price', data.price.toString());
 
-      if (image && image !== article.pictures) {
+      if (image && image !== data.pictures[0]) {
         const fileExtension = image.split('.').pop();
         const fileName = `photo.${fileExtension}`;
         formData.append('pictures', {
@@ -137,193 +152,245 @@ const ModifyArticleScreen = ({ navigation }) => {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Article non trouvé</Text>
+        <TouchableOpacity onPress={handleGoBack}><Text>Retour</Text></TouchableOpacity>
       </View>
     );
   }
 
+  // fonction de suppression de l'article (met availableStock à 0)
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`${urlBackend}articles/stock/${articleId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: userToken }),
+      });
+
+      const data = await response.json();
+
+      if (!data.result) {
+        Alert.alert("Erreur", data.error || "Impossible de supprimer l'article.");
+        return;
+      }
+  
+      Alert.alert("Succès", "L'article a bien été supprimé !");
+      navigation.goBack();
+
+    } catch (error) {
+      console.error("Erreur lors de la suppression :", error);
+      Alert.alert("Erreur", "Une erreur s'est produite.");
+    }
+  };
+
+  // Modale de confirmation de suppression qui lancera handleDelete si l'utilisateur clique sur "oui"
+  const confirmDelete = () => {
+    Alert.alert(
+      "Confirmation", 
+      "Êtes-vous sûr de vouloir supprimer votre article ?", 
+      [
+        {
+          text: "Non",
+          style: "cancel", // Ferme l'alerte sans rien faire
+        },
+        {
+          text: "Oui",
+          onPress: () => handleDelete(), // Lance la suppression si l'utilisateur confirme
+        },
+      ]
+    );
+  };
+
   return (
-    <LinearGradient
-      colors={['#22c1c3', '#fdba2d']}
-      start={{ x: 0, y: 1 }}
-      end={{ x: 1, y: 0 }}
-      style={styles.containerLinear}
-    >
-      <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <Text style={styles.title}>Modifiez votre article !</Text>
+      <LinearGradient
+        colors={['#22c1c3', '#fdba2d']}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.containerLinear}
+      >
+        <View style={styles.container}>
+          <ScrollView contentContainerStyle={styles.contentContainer}>
+            <Text style={styles.title}>Modifiez votre article !</Text>
+            <TouchableOpacity onPress={handleGoBack}><Text>Retour</Text></TouchableOpacity>
 
-          <Text style={styles.labelCategorie}>Ajouter votre photo :</Text>
-          <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
-            {image ? (
-              <Image source={{ uri: image }} style={styles.image} />
-            ) : (
-              <Text style={styles.imagePickerText}>Sélectionner une photo</Text>
-            )}
-          </TouchableOpacity>
-          {errors.pictures && <Text style={styles.errorText}>{errors.pictures.message}</Text>}
+            <Text style={styles.labelCategorie}>Ajouter votre photo :</Text>
+            <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
+              {image ? (
+                <Image source={{ uri: image }} style={styles.image} />
+              ) : (
+                <Text style={styles.imagePickerText}>Sélectionner une photo</Text>
+              )}
+            </TouchableOpacity>
+            {errors.pictures && <Text style={styles.errorText}>{errors.pictures.message}</Text>}
 
-          <Text style={styles.labelCategorie}>Titre de l'article :</Text>
-          <Controller
-            control={control}
-            name="title"
-            defaultValue=""
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Titre de l'article (max 40 caractères)"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                maxLength={40}
-              />
-            )}
-          />
-          {errors.title && <Text style={styles.errorText}>{errors.title.message}</Text>}
-
-          <Text style={styles.labelCategorie}>Description :</Text>
-          <Controller
-            control={control}
-            name="productDescription"
-            defaultValue=""
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Description de l'article (max 250 caractères)"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                maxLength={250}
-              />
-            )}
-          />
-          {errors.productDescription && <Text style={styles.errorText}>{errors.productDescription.message}</Text>}
-
-          <Text style={styles.labelCategorie}>Tranche d'âge :</Text>
-          {categories.map(cat => (
-            <RadioButton
-              key={cat}
-              label={cat}
-              selected={selectedCategory === cat}
-              onPress={() => handleRadioSelection(cat, setSelectedCategory, 'category')}
+            <Text style={styles.labelCategorie}>Titre de l'article :</Text>
+            <Controller
+              control={control}
+              name="title"
+              defaultValue=""
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Titre de l'article (max 40 caractères)"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  maxLength={40}
+                />
+              )}
             />
-          ))}
-          {errors.category && <Text style={styles.errorText}>{errors.category.message}</Text>}
+            {errors.title && <Text style={styles.errorText}>{errors.title.message}</Text>}
 
-          <Text style={styles.labelCategorie}>Type :</Text>
-          {types.map(type => (
-            <RadioButton
-              key={type}
-              label={type}
-              selected={selectedType === type}
-              onPress={() => handleRadioSelection(type, setSelectedType, 'itemType')}
+            <Text style={styles.labelCategorie}>Description :</Text>
+            <Controller
+              control={control}
+              name="productDescription"
+              defaultValue=""
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Description de l'article (max 250 caractères)"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  maxLength={250}
+                />
+              )}
             />
-          ))}
-          {errors.itemType && <Text style={styles.errorText}>{errors.itemType.message}</Text>}
+            {errors.productDescription && <Text style={styles.errorText}>{errors.productDescription.message}</Text>}
 
-          <Text style={styles.labelCategorie}>État de l'article :</Text>
-          {conditions.map(cond => (
-            <RadioButton
-              key={cond}
-              label={cond}
-              selected={selectedCondition === cond}
-              onPress={() => handleRadioSelection(cond, setSelectedCondition, 'condition')}
-            />
-          ))}
-          {errors.condition && <Text style={styles.errorText}>{errors.condition.message}</Text>}
-
-          <Text style={styles.labelCategorie}>Prix de l'article :</Text>
-          <Controller
-            control={control}
-            name="price"
-            defaultValue=""
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Prix"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="numeric"
+            <Text style={styles.labelCategorie}>Tranche d'âge :</Text>
+            {categories.map(cat => (
+              <RadioButton
+                key={cat}
+                label={cat}
+                selected={selectedCategory === cat}
+                onPress={() => handleRadioSelection(cat, setSelectedCategory, 'category')}
               />
-            )}
-          />
-          {errors.price && <Text style={styles.errorText}>{errors.price.message}</Text>}
+            ))}
+            {errors.category && <Text style={styles.errorText}>{errors.category.message}</Text>}
 
-          <ButtonBig text="Modifier l'article" style={styles.submitButton} onPress={handleSubmit(onSubmit)} />
-        </ScrollView>
-      </View>
-    </LinearGradient>
-  );
-};
+            <Text style={styles.labelCategorie}>Type :</Text>
+            {types.map(type => (
+              <RadioButton
+                key={type}
+                label={type}
+                selected={selectedType === type}
+                onPress={() => handleRadioSelection(type, setSelectedType, 'itemType')}
+              />
+            ))}
+            {errors.itemType && <Text style={styles.errorText}>{errors.itemType.message}</Text>}
 
-const styles = StyleSheet.create({
-  containerLinear: {
-    flex: 1,
-  },
-  contentContainer: {
-    padding: 20,
-  },
-  title: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    paddingTop: 60,
-    marginBottom: 40,
-    color: 'white',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 3,
-    fontFamily: 'LilitaOne-Regular',
-    textAlign: 'center',
-  },
-  input: {
-    width: '100%',
-    padding: 15,
-    marginVertical: 10,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 8,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    fontFamily: 'RopaSans-Regular',
-    height: 50,
-  },
-  labelCategorie: {
-    fontSize: 22,
-    fontFamily: 'LilitaOne-Regular',
-    marginBottom: 5,
-    marginTop: 10,
-  },
-  imagePicker: {
-    width: '100%',
-    height: 300,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 8,
-    backgroundColor: 'white',
-    marginVertical: 10,
-  },
-  imagePickerText: {
-    fontSize: 22,
-    color: '#00000',
-    fontFamily: 'RopaSans-Regular',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 8,
-  },
-  errorText: {
-    color: '#ff4d4d',
-    fontSize: 14,
-    marginBottom: 10,
-    fontFamily: 'RopaSans-Regular',
-  },
-  submitButton: {
-    backgroundColor: '#00CC99',
-    marginTop: 20,
-  },
-});
+            <Text style={styles.labelCategorie}>État de l'article :</Text>
+            {conditions.map(cond => (
+              <RadioButton
+                key={cond}
+                label={cond}
+                selected={selectedCondition === cond}
+                onPress={() => handleRadioSelection(cond, setSelectedCondition, 'condition')}
+              />
+            ))}
+            {errors.condition && <Text style={styles.errorText}>{errors.condition.message}</Text>}
 
-export default ModifyArticleScreen;
+            <Text style={styles.labelCategorie}>Prix de l'article :</Text>
+            <Controller
+              control={control}
+              name="price"
+              defaultValue=""
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Prix"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  keyboardType="numeric"
+                />
+              )}
+            />
+            {errors.price && <Text style={styles.errorText}>{errors.price.message}</Text>}
+
+            <ButtonBig text="Modifier l'article" style={styles.submitButton} onPress={handleSubmit(onSubmit)} />
+            <ButtonBig text="Supprimer l'article" style={styles.deleteButton} onPress={confirmDelete} />
+          </ScrollView>
+        </View>
+      </LinearGradient>
+    );
+  };
+
+  const styles = StyleSheet.create({
+    containerLinear: {
+      flex: 1,
+    },
+    contentContainer: {
+      padding: 20,
+    },
+    title: {
+      fontSize: 36,
+      fontWeight: 'bold',
+      paddingTop: 60,
+      marginBottom: 40,
+      color: 'white',
+      textShadowColor: 'rgba(0, 0, 0, 0.5)',
+      textShadowOffset: { width: 2, height: 2 },
+      textShadowRadius: 3,
+      fontFamily: 'LilitaOne-Regular',
+      textAlign: 'center',
+    },
+    input: {
+      width: '100%',
+      padding: 15,
+      marginVertical: 10,
+      borderWidth: 1,
+      borderColor: '#000',
+      borderRadius: 8,
+      backgroundColor: '#fff',
+      fontSize: 16,
+      fontFamily: 'RopaSans-Regular',
+      height: 50,
+    },
+    labelCategorie: {
+      fontSize: 22,
+      fontFamily: 'LilitaOne-Regular',
+      marginBottom: 5,
+      marginTop: 10,
+    },
+    imagePicker: {
+      width: '100%',
+      height: 300,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: '#000',
+      borderRadius: 8,
+      backgroundColor: 'white',
+      marginVertical: 10,
+    },
+    imagePickerText: {
+      fontSize: 22,
+      color: '#00000',
+      fontFamily: 'RopaSans-Regular',
+    },
+    image: {
+      width: '100%',
+      height: '100%',
+      borderRadius: 8,
+    },
+    errorText: {
+      color: '#ff4d4d',
+      fontSize: 14,
+      marginBottom: 10,
+      fontFamily: 'RopaSans-Regular',
+    },
+    submitButton: {
+      backgroundColor: '#00CC99',
+      marginTop: 20,
+    },
+    deleteButton: {
+      backgroundColor: 'red',
+      marginTop: 20,
+    }
+  });
+
+  export default ModifyArticleScreen;

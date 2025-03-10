@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text } from 'react-native';
 import React, { useEffect, useState, useRef } from "react";
 import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient'

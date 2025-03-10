@@ -103,9 +103,9 @@ function Article({ onPress, style, item, showModifyButton = false }) {
     console.log(item);
     navigation.navigate("ArticleScreen", { article: item });
   };
+  // Redirige vers ModifyArticleScreen avec l'ID de l'article
   const handleModify = () => {
-    // Redirige vers ModifyArticleScreen avec l'ID de l'article
-    navigation.navigate("Modifier", { articleId: item._id }); 
+    navigation.navigate("Modifier", { articleId: item.id }); 
   };
 
   return (
@@ -133,11 +133,9 @@ function Article({ onPress, style, item, showModifyButton = false }) {
       </View>
     </TouchableOpacity>
     {showModifyButton && ( 
-      
         <TouchableOpacity onPress={handleModify}>
-          <FontAwesome name="umbrella" size={40} color="#000" />
+          <Text>modifier</Text>
         </TouchableOpacity>
-  
     )}
     </View>
   );
@@ -243,5 +241,17 @@ const styles = StyleSheet.create({
   textPrix: {
     fontSize: 12,
     fontFamily: 'LilitaOne-Regular',
+  },
+  modifyButtonContainer:{
+    position: 'absolute',
+    bottom: -30, // Positionne le bouton en dessous de la carte
+    left: '50%', // Centre le bouton horizontalement
+    transform: [{ translateX: -50 }], // Ajuste le centrage
+    zIndex: 1, // Assure que le bouton reste au-dessus des autres éléments
+  },
+  modifyButton:{
+    width: 100, // Largeur du bouton
+    height: 40, // Hauteur du bouton
+    backgroundColor: '#fdba2d', // Couleur de fond du bouton
   }
 });
