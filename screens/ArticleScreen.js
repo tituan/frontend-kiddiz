@@ -8,12 +8,78 @@ import ButtonHalf from './components/ButtonHalf';
 import { FontAwesome } from '@expo/vector-icons';
 import ButtonProfil from './components/ButtonProfil';
 
+const API_URL = process.env.EXPO_PUBLIC_API_URL; 
+
+
 export default function ArticleScreen({ navigation, route }) {
     const userToken = useSelector(state => state.user.value.token);
-    console.log(userToken)
+    // console.log(userToken)
     const { article } = route.params;
     const sellerArticleToken = article.user.token
-    // console.log(article.user.token)
+    // console.log(sellerArticleToken)
+    // console.log(article)
+    
+    // const contactSeller = () => {
+    //     navigation.navigate("ChatScreen", {
+    //         userToken: userToken,
+    //         sellerToken: sellerArticleToken,
+    //         article: article
+    //     });
+    // };
+
+    const contactSeller = async () => {
+        try {
+            console.log("🚀 Vérification de la conversation...");
+    
+            // 🔹 Récupération des IDs
+            const sellerId = sellerArticleToken; // 🔥 Récupère bien l'ID du vendeur// 🔥 Récupère bien l'ID de l'acheteur
+            const articleId = article.id;
+            const buyerId = userToken;// 🔥 ID de l'article
+    
+            if (!sellerId || !buyerId || !articleId) {
+                console.error("❌ Paramètres manquants pour contacter le vendeur !");
+                return;
+            }
+            
+            // 🔹 Vérifier si une conversation existe déjà
+            const response = await fetch(`${API_URL}chatroom/get/conversation/${sellerId}/${buyerId}/${articleId}`);
+            
+            let conversation = await response.json();
+            // console.log(conversation)
+            // console.log(response.status)
+            console.log(conversation)
+            if (response.status === 404) {
+                console.log("⚠️ Aucune conversation trouvée, création d'une nouvelle...");
+    
+                // 🔹 Si aucune conversation n'existe, on en crée une nouvelle
+                const createResponse = await fetch(`${API_URL}chatroom/start`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ sellerId, buyerId, articleId }),
+                });
+    
+                conversation = await createResponse.json();
+                console.log(conversation)
+                if (!createResponse.ok) {
+                    console.error("❌ Erreur lors de la création de la conversation :", conversation.message);
+                    return;
+                }
+            }
+    
+            console.log("✅ Conversation obtenue :", conversation);
+    
+            // 🔹 Navigation vers `ChatScreen` avec la conversation
+            navigation.navigate("ChatScreen", {
+                userToken: buyerId,
+                sellerToken: sellerId,
+                article: article,
+                conversationId: conversation._id, // 🔥 Passe l'ID de la conversation
+            });
+    
+        } catch (error) {
+            console.error("❌ Erreur lors de la connexion au chat :", error);
+        }
+    };
     
     return (
     <View style={styles.container}>
@@ -57,6 +123,11 @@ export default function ArticleScreen({ navigation, route }) {
                        <ButtonBig 
                         style={styles.buttonAcheterArticle} 
                         text="Acheter l'article" 
+                        />
+                        <ButtonBig 
+                        style={styles.buttonAcheterArticle} 
+                        text="Contacter le vendeur" 
+                        onPress={contactSeller}
                         />
                     </View>
                 )}

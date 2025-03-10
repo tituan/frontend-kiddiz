@@ -117,7 +117,7 @@ function Article({ onPress, style, item, showModifyButton = false }) {
   </View>
 
       <View style={styles.rowContainer}>
-        <View>
+        <View style={styles.textContainer}>
           <Text style={styles.text}>{item.title}</Text>
           <Text style={styles.textType}>{item.condition}</Text>
         </View>
@@ -147,10 +147,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 240,
     borderRadius: 10,
-    // justifyContent: "center",
     marginVertical: 10,
     backgroundColor: '#00CC99',
-    // padding: 5,
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.2,
@@ -204,22 +202,16 @@ const styles = StyleSheet.create({
     color: "black",
     fontFamily: 'RopaSans-Regular',
     fontSize: 12,
-    textShadowColor: 'white',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
     marginBottom: 3,
   },
   textType: {
     color: "black",
     fontFamily: 'RopaSans-Regular',
     fontSize: 10,
-    textShadowColor: 'white',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
   },
   rowContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'start',
     justifyContent: 'space-between',
     paddingHorizontal: 8,
     marginBottom: 10,
@@ -227,12 +219,17 @@ const styles = StyleSheet.create({
   },
   priceContainer: {
     padding: 5,
+    height: 27,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: "#000000",
     borderRadius: 5,
     backgroundColor: '#EDDC5F',
+    width: '30%',
+  },
+  textContainer: {
+    width: '70%',
   },
   textPrix: {
     fontSize: 12,

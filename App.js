@@ -13,6 +13,7 @@ import ProfilScreen from "./screens/ProfilScreen";
 import FavorisScreen from "./screens/FavorisScreen";
 import ArticleScreen from "./screens/ArticleScreen";
 import MessagerieScreen from "./screens/MessagerieScreen";
+import ChatScreen from "./screens/ChatScreen";
 import SellerScreen from "./screens/SellerScreen";
 import { useSelector } from "react-redux";
 import { StyleSheet } from "react-native";
@@ -101,6 +102,7 @@ const MainNavigator = () => {
             <Stack.Screen name="MesArticles" component={MyArticlesScreen} />
       <Stack.Screen name="SellerScreen" component={SellerScreen} />
       <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
+      <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="TransactionsScreen" component={TransactionsScreen} />
       <Stack.Screen name="FAQScreen" component={FAQScreen} />
 
