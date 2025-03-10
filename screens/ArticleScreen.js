@@ -15,6 +15,11 @@ export default function ArticleScreen({ navigation, route }) {
     const sellerArticleToken = article.user.token
     // console.log(article.user.token)
     
+const handleInvoice = () => {
+        navigation.navigate('InvoiceScreen', { article: article });
+        console.log('Article à acheter');
+    };
+
     return (
     <View style={styles.container}>
         <LinearGradient
@@ -57,6 +62,7 @@ export default function ArticleScreen({ navigation, route }) {
                        <ButtonBig 
                         style={styles.buttonAcheterArticle} 
                         text="Acheter l'article" 
+                        onPress={handleInvoice} 
                         />
                     </View>
                 )}

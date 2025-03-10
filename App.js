@@ -17,6 +17,7 @@ import SellerScreen from "./screens/SellerScreen";
 import { useSelector } from "react-redux";
 import { StyleSheet } from "react-native";
 import TransactionsScreen from "./screens/TransactiosScreen";
+import InvoiceScreen from "./screens/InvoiceScreen";
 
 // Redux
 import { Provider } from 'react-redux';
@@ -102,6 +103,8 @@ const MainNavigator = () => {
       <Stack.Screen name="SellerScreen" component={SellerScreen} />
       <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
       <Stack.Screen name="TransactionsScreen" component={TransactionsScreen} />
+      <Stack.Screen name="InvoiceScreen" component={InvoiceScreen} />
+
 
       {/* ✅ Ajouter TabNavigator ici pour qu'il soit accessible */}
       <Stack.Screen name="Tabs" component={TabNavigator} />
