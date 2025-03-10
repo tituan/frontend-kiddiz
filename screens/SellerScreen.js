@@ -8,20 +8,25 @@ import ButtonHalf from './components/ButtonHalf';
 import Article from './components/Article';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+
 
 // Env variable for BACKEND
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function SellerScreen({ item, navigation, route }) {
     const navigations = useNavigation();
+    console.log('voila litem' + item)
+    const userToken = useSelector(state => state.user.value.token);
 
     const handleContact = () => {
-      // Rediriger vers ChatScreen avec les informations nécessaires
-      navigations.navigate('ChatScreen', {
-        sellerId: item.user.token, // UID32 du vendeur
-        articleId: item._id, // ID de l'article
-      });
-    };
+        // Rediriger vers ChatScreen avec les informations nécessaires
+        navigation.navigate('ChatScreen', {
+          receiverId: article.userToken, // ID de l'utilisateur lié à l'article
+          articleId: article.id, // ID de l'article
+          senderId: userToken, // ID de l'utilisateur connecté
+        });
+      };
 
     const article = route.params;
     const sellerToken = article.article.token;

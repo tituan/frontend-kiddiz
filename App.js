@@ -14,9 +14,11 @@ import FavorisScreen from "./screens/FavorisScreen";
 import ArticleScreen from "./screens/ArticleScreen";
 import MessagerieScreen from "./screens/MessagerieScreen";
 import SellerScreen from "./screens/SellerScreen";
+import ChatScreen from "./screens/ChatScreen";
 import { useSelector } from "react-redux";
 import { StyleSheet } from "react-native";
 import TransactionsScreen from "./screens/TransactiosScreen";
+import Article from "./screens/components/Article";
 
 // Redux
 import { Provider } from 'react-redux';

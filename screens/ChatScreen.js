@@ -6,33 +6,45 @@ import socket from '../services/socket'; // Importer le service Socket.IO
 
 const ChatScreen = () => {
   const route = useRoute();
-  const { sellerId, articleId } = route.params; // Récupérer les paramètres
+  const { receiverId, articleId, senderId } = route.params; // Récupérer les paramètres
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [conversationId, setConversationId] = useState(null);
 
   useEffect(() => {
-    // Démarrer une nouvelle conversation avec le vendeur
-    socket.emit('start_conversation', { sellerId, articleId, buyerId: 'buyerUid32' }); // Remplacez 'buyerUid32' par l'UID32 de l'utilisateur actuel
+    socket.on('connect', () => {
+        console.log('Connecté au serveur Socket.IO');
+      });
+    // Démarrer une nouvelle conversation avec l'utilisateur lié à l'article
+    socket.emit('start_conversation', { receiverId, articleId, senderId });
+
+    // Écouter l'ID de la conversation renvoyé par le serveur
+  socket.on('conversation_started', (data) => {
+    console.log('Conversation démarrée avec ID:', data.conversationId);
+    setConversationId(data.conversationId);
+  });
 
     // Écouter les messages reçus du serveur
-    socket.on('receive_message', (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
+  socket.on('receive_message', (data) => {
+    console.log('Message reçu:', data);
+    setMessages((prevMessages) => [...prevMessages, data]);
+  });
 
     // Nettoyer l'écouteur lors du démontage du composant
     return () => {
-      socket.off('receive_message');
+        socket.off('conversation_started');
+        socket.off('receive_message');
     };
-  }, [sellerId, articleId]);
+  }, [receiverId, articleId, senderId]);
 
   const sendMessage = () => {
     if (message.trim()) {
       // Envoyer le message au serveur
       socket.emit('send_message', {
-        conversationId: 'conversationId', // Remplacez par l'ID de la conversation
-        sender: 'buyerUid32', // Remplacez par l'UID32 de l'utilisateur actuel
-        receiver: sellerId, // UID32 du vendeur
-        content: message, // Contenu du message
+        conversationId, // Utiliser l'ID de la conversation        
+        sender: senderId, // ID de l'utilisateur connecté
+      receiver: receiverId, // ID de l'utilisateur lié à l'article
+      content: message, // Contenu du message
       });
       setMessage('');
     }
