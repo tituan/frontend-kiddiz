@@ -68,7 +68,7 @@ export default function FavorisScreen({ navigation }) {
             <View style={styles.row}>
                 {articles && articles.length > 0 ? (
                     articles.map((item, i) => (
-                        <Article key={item.id} item={item} />
+                        <Article key={i} item={item} />
                     ))
                 ) : (
                     <View style={styles.noArticlesContainer}>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center', 
         width: '100%', 
-        padding: 20, 
+        paddingHorizontal: 20,
     },
     article: {
         width: '48%', 
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     title: {
+        paddingHorizontal: 20,
         padding: 20,
         fontSize: 20,
         fontFamily: 'LilitaOne-Regular',

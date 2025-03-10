@@ -59,11 +59,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        marginBottom: 10,
     },
     headerTopKiddiz: {
-        fontSize: 60,
+        fontSize: 55,
         fontFamily: 'LilitaOne-Regular',
         color: '#ffff',
         textShadowColor: 'black', 
@@ -75,19 +73,18 @@ const styles = StyleSheet.create({
     headerButton: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'end',
+        alignItems: 'center',
         justifyContent: 'flex-end',
         width: '50%',
-        height: 60,
     },
     buttonLogOut: {
         backgroundColor: '#f095B4',
-        marginTop:7,
-        
+        height: 45,
     },
     buttonConnection: {
         height:45,
-        width: 125,
+        width: 120,
+        marginLeft: 5,
     }
     
 })

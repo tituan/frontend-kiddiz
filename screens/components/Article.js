@@ -10,8 +10,8 @@ import { useNavigation } from '@react-navigation/native';
  // Env variable for BACKEND
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-function Article({ onPress, style, item}) {
-  const navigation = useNavigation();
+function Article({ onPress, style, item, showModifyButton = false }) {
+  const navigation = useNavigation();  
   const userToken = useSelector(state => state.user.value.token);
 
   // Chargement des polices
@@ -97,8 +97,13 @@ function Article({ onPress, style, item}) {
     console.log(item);
     navigation.navigate("ArticleScreen", { article: item });
   };
+  // Redirige vers ModifyArticleScreen avec l'ID de l'article
+  const handleModify = () => {
+    navigation.navigate("Modifier", { articleId: item.id }); 
+  };
 
   return (
+    <View style={styles.mainContainer}>
     <TouchableOpacity style={[styles.articleContainer, style]} onPress={handleClick}>
       <View style={styles.imageContainer}>
         <View style={styles.imageWrapper}>
@@ -111,26 +116,35 @@ function Article({ onPress, style, item}) {
     </TouchableOpacity>
   </View>
 
-  <View style={styles.rowContainer}>
-    <View>
-      <Text style={styles.text}>{item.title}</Text>
-      <Text style={styles.textType}>{item.condition}</Text>
+      <View style={styles.rowContainer}>
+        <View>
+          <Text style={styles.text}>{item.title}</Text>
+          <Text style={styles.textType}>{item.condition}</Text>
+        </View>
+        <View style={styles.priceContainer}>
+          <Text style={styles.textPrix}>{item.price} €</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+    {showModifyButton && ( 
+        <TouchableOpacity onPress={handleModify}>
+          <Text>modifier</Text>
+        </TouchableOpacity>
+    )}
     </View>
-    <View style={styles.priceContainer}>
-      <Text style={styles.textPrix}>{item.price} €</Text>
-    </View>
-  </View>
-</TouchableOpacity>
   );
 }
 
 export default Article;
 
 const styles = StyleSheet.create({
+  mainContainer:{
+    width: '48%',
+  },
   articleContainer: {
     borderWidth: 1,
     borderColor: "#00000",
-    width: '48%',
+    width: '100%',
     height: 240,
     borderRadius: 10,
     // justifyContent: "center",
@@ -223,6 +237,18 @@ const styles = StyleSheet.create({
   textPrix: {
     fontSize: 12,
     fontFamily: 'LilitaOne-Regular',
+  },
+  modifyButtonContainer:{
+    position: 'absolute',
+    bottom: -30, // Positionne le bouton en dessous de la carte
+    left: '50%', // Centre le bouton horizontalement
+    transform: [{ translateX: -50 }], // Ajuste le centrage
+    zIndex: 1, // Assure que le bouton reste au-dessus des autres éléments
+  },
+  modifyButton:{
+    width: 100, // Largeur du bouton
+    height: 40, // Hauteur du bouton
+    backgroundColor: '#fdba2d', // Couleur de fond du bouton
   }
 });
 
