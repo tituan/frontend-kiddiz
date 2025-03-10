@@ -1,9 +1,40 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text} from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text, TouchableOpacity, } from 'react-native';
 import HeaderNavigation from './components/HeaderNavigation'; 
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import {useState, useEffect} from 'react';
 
 
 export default function MessagerieScreen({ navigation }) {
+    const [conversations, setConversations] = useState([]);
+    const navigations = useNavigation();
+
+    useEffect(() => {
+        // Récupérer les conversations de l'utilisateur
+        const fetchConversations = async () => {
+          try {
+            const response = await fetch('http://localhost:4000/conversations?userId=userUid32'); // Remplacez 'userUid32' par l'UID32 de l'utilisateur actuel
+            if (!response.ok) {
+              throw new Error('Erreur lors de la récupération des conversations');
+            }
+            const data = await response.json();
+            setConversations(data);
+          } catch (error) {
+            console.error('Erreur lors de la récupération des conversations:', error);
+          }
+        };
+    
+        fetchConversations();
+      }, []);
+    
+      const handleConversationPress = (conversation) => {
+        // Rediriger vers ChatScreen avec les informations de la conversation
+        navigations.navigate('ChatScreen', {
+          sellerId: conversation.participants.find((id) => id !== 'userUid32'), // Trouver l'autre participant
+          articleId: conversation.articleId,
+        });
+      };
+    
 
     return (
     <View style={styles.container}>
@@ -16,6 +47,19 @@ export default function MessagerieScreen({ navigation }) {
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
         </LinearGradient> 
         <Text>Messagerie List</Text>
+        <FlatList
+        data={conversations}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.conversationItem}
+            onPress={() => handleConversationPress(item)}
+          >
+            <Text style={styles.conversationTitle}>Conversation #{item._id}</Text>
+            <Text style={styles.conversationInfo}>Article: {item.articleId}</Text>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item._id}
+      />
     </View>
     );
 }
@@ -37,4 +81,17 @@ const styles = StyleSheet.create({
         elevation: 5, // Ajoute l'ombre sur Android
     
     },
+    conversationItem: {
+        padding: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+      },
+      conversationTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      conversationInfo: {
+        fontSize: 14,
+        color: '#666',
+      },
 })

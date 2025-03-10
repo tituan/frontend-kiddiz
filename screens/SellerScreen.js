@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, Text, ActivityIndicator, Image, Button } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, ActivityIndicator, Image, Button, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from "react";
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
@@ -7,12 +7,21 @@ import ButtonBig from './components/ButtonBig'
 import ButtonHalf from './components/ButtonHalf';
 import Article from './components/Article';
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 // Env variable for BACKEND
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-export default function SellerScreen({ navigation, route }) {
-     
+export default function SellerScreen({ item, navigation, route }) {
+    const navigations = useNavigation();
+
+    const handleContact = () => {
+      // Rediriger vers ChatScreen avec les informations nécessaires
+      navigations.navigate('ChatScreen', {
+        sellerId: item.user.token, // UID32 du vendeur
+        articleId: item._id, // ID de l'article
+      });
+    };
 
     const article = route.params;
     const sellerToken = article.article.token;
@@ -91,7 +100,7 @@ export default function SellerScreen({ navigation, route }) {
                         <Text style={styles.textVente} > Nombre de vente réalisées 50 </Text>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <ButtonHalf style={styles.buttonContacter} text="Contacter"/>
+                        <ButtonHalf style={styles.buttonContacter} text="Contacter" onPress={handleContact}/>
                         <ButtonHalf style={styles.buttonAbonner} text="S'abonner"/>
                     </View>
                     
