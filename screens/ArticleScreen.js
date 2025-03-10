@@ -13,7 +13,7 @@ export default function ArticleScreen({ navigation, route }) {
     console.log(userToken)
     const { article } = route.params;
     const sellerArticleToken = article.user.token
-    console.log(article.user.token)
+    // console.log(article.user.token)
     
     return (
     <View style={styles.container}>
@@ -30,9 +30,11 @@ export default function ArticleScreen({ navigation, route }) {
              <View style={styles.mainContainer}> 
              
              <View style={styles.titreContainer}>
-                    <Text style={styles.titre}>{article.title}</Text>
+                <Text style={styles.titre}>{article.title}</Text>
+                <View style={styles.titreContainerLikes}>
                     <FontAwesome name="heart" size={20} color={"red"} style={styles.like}/>
                     <Text style={styles.likesCount}>{article.likesCount}</Text>
+                </View>
              </View>
 
             <View style={styles.photoContainer}>
@@ -40,22 +42,32 @@ export default function ArticleScreen({ navigation, route }) {
             </View>
 
             <View style={styles.descriptionContainer}>
-                <Text style={styles.titreDescription}>{article.title}</Text>
-                <Text style={styles.textDescription}>{article.productDescription}</Text>
-                <Text style={styles.textCategorie}>Categorie: {article.category}</Text>
-                <Text style={styles.textType} >Type: {article.itemType}</Text>
-                <Text style={styles.textCondition}>Etat: {article.condition}</Text>
-                <Text style={styles.textPrice}>Prix: {article.price}€</Text>
-            </View>
-
-            {userToken === sellerArticleToken ? (
-                <Text>Hello its your article</Text>
-            ) : (
-                
-                <>
+                <View style={styles.boxTitle}>
+                    <Text style={styles.titreDescription}>{article.title}</Text>
+                    <Text style={styles.textPrice}>{article.price}€</Text>
+                </View>
+                <View style={styles.boxText}>
+                    <Text style={styles.textType}>{article.itemType}</Text>
+                    <Text style={styles.textType}>{article.category}</Text>
+                    <Text style={styles.textType}>{article.condition}</Text>
+                </View>
+                <Text style={styles.textDescription}>Description : {article.productDescription}</Text>
+                {userToken !== sellerArticleToken && (
                     <View style={styles.buttonContainer}>
-                        <ButtonBig style={styles.buttonAchaterArticle} text="Acheter l'article" />
+                       <ButtonBig 
+                        style={styles.buttonAcheterArticle} 
+                        text="Acheter l'article" 
+                        />
                     </View>
+                )}
+            </View>
+            {userToken === sellerArticleToken ? (
+                <View style={styles.containerBtnSeller}>
+                    <ButtonBig style={styles.buttonModify} text="Modifier votre article" />
+                    <ButtonBig style={styles.buttonDelete} text="Supprimer votre article" />
+                </View>
+            ) : (
+                <>
                     <Text>{article.firstname}</Text>
                     <View style={styles.buttonSeller}>
                         <ButtonProfil 
@@ -82,11 +94,11 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fffff',
+      marginBottom: 20,
     },
     contentContainer: {
         flexGrow: 1,
     },
-
     header: {
         padding: 20,
         borderBottomColor: '#00000',
@@ -99,122 +111,136 @@ const styles = StyleSheet.create({
         elevation: 5, 
          bottomTop: 50,
     },
-
     titreContainer:{
         width: '100%',
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginTop:30,
-        marginBottom:15,
+        marginBottom:10,
+        paddingHorizontal: 20,
     },
-
+    titreContainerLikes: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     titre:{
         fontSize: 30,
         fontFamily: 'LilitaOne-Regular',
-        position: 'absolute', 
-        left : "4%",
     },
-
     like:{
         fontSize: 20,
         fontFamily: 'RopaSans-Regular',
-        left : 350, 
+        marginRight: 10,
     },
-
     likesCount:{
         fontSize: 20,
         fontFamily: 'RopaSans-Regular',
-        left : 360,
     },
-
     photoContainer:{
         width: '100%',
         padding: 20,
         marginBottom: 30,
     },
-
     articleImage:{
         width:'100%',
         height:250,
     },
-    
-
     descriptionContainer:{
-        padding: 20,
-        backgroundColor : '#F095B4',
+        paddingVertical: 25,
+        paddingHorizontal: 20,
+        backgroundColor : '#00CC99',
         width: '100%',
+        marginBottom: 15,
+    },
+    boxTitle: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
+    boxText: {
+       display: 'flex',
+       flexDirection: 'row',
+       alignItems: 'center',
+       marginBottom: 20,
     },
     titreDescription:{
         fontFamily: 'LilitaOne-Regular',
-        fontSize: 22,
-        marginBottom: 5,
-        
-
+        fontSize: 24,
+        width: '80%',
     },
     textDescription:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 24,
-        marginBottom: 5,
-
+        fontSize: 20,
     },
     textCategorie:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 19,
-        marginBottom: 5,
+        fontSize: 20,
     },
     textType:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 19,
-        marginBottom: 5,
-
+        fontSize: 20,
+        alignSelf: "flex-start",
+        backgroundColor: 'white',
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        paddingVertical: 7,
+        marginRight: 10,
     },
     textCondition:{
         fontFamily: 'RopaSans-Regular',
-        fontSize: 19,
-        marginBottom: 5,
-        
-
+        fontSize: 20,
     },
     textPrice: {
         fontFamily: 'LilitaOne-Regular',
         fontSize: 20,
-        marginBottom: 5,
-        fontSize: 20,
-        marginBottom: 5,
-        position: 'absolute', 
-        bottom: 10, 
-        right: 10, 
+        width: '20%',
+        textAlign: 'center',
+        padding: 5,
+        borderWidth: 1,
+        borderColor: "#000000",
+        borderRadius: 5,
+        backgroundColor: '#EDDC5F',
     },
-    
     buttonContainer:{
         padding: 20,
     },
-
-    buttonAchaterArticle: {
+    buttonAcheterArticle: {
         backgroundColor: '#EDDC5F',
+        marginBottom: 0,
+        color: '#000000',
     },
-
+    containerBtnSeller: {
+        width: '100%',
+        padding: 20,
+    },
     map:{
         height:200,
-        width:'100%'
+        width:'100%',
     },
-
-    buttonHalfContainer :{
+    buttonHalfContainer:{
         padding: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-
     buttonOffre:{
         width: '48%',
         borderColor: "black",
-        backgroundColor: "#EDDC5F",
+        backgroundColor: "#00CC99",
     },
-
     buttonAchater:{
         width: '48%',
-        borderColor: "black",
-        backgroundColor: "#00CC99",
+        borderColor: "#000000",
+        backgroundColor: "#EDDC5F",
+    },
+    buttonModify: {
+        backgroundColor: '#F095B4',
+    },
+    buttonDelete: {
+        backgroundColor: '#E94C65',
     },
 })
