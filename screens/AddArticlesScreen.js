@@ -13,32 +13,36 @@ import { useFocusEffect } from '@react-navigation/native';
  // Env variable for BACKEND
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-const schema = yup.object().shape({
-    title: yup
-      .string()
-      .max(40, 'Le titre ne doit pas dépasser 40 caractères')
-      .required('Le titre est requis'),
-    productDescription: yup
-      .string()
-      .max(250, 'La description ne doit pas dépasser 250 caractères')
-      .required('La description est requise'),
-    category: yup
-      .string()
-      .required('Sélectionnez une catégorie'), // Une seule catégorie sélectionnée
-    itemType: yup
-      .string()
-      .required('Sélectionnez un type'), // Un seul type sélectionné
-    condition: yup
-      .string()
-      .required('Sélectionnez un état'), // Un seul état sélectionné
-    price: yup
-      .number()
-      .positive('Le prix doit être un nombre positif')
-      .required('Le prix est requis'),
-    pictures: yup
-      .string()
-      .required('Une photo est requise'),
-  });
+      const schema = yup.object().shape({
+        title: yup
+          .string()
+          .max(40, 'Le titre ne doit pas dépasser 40 caractères')
+          .required('Le titre est requis'),
+        productDescription: yup
+          .string()
+          .max(250, 'La description ne doit pas dépasser 250 caractères')
+          .required('La description est requise'),
+        category: yup
+          .string()
+          .required('Sélectionnez une catégorie'), // Une seule catégorie sélectionnée
+        itemType: yup
+          .string()
+          .required('Sélectionnez un type'), // Un seul type sélectionné
+        condition: yup
+          .string()
+          .required('Sélectionnez un état'), // Un seul état sélectionné
+        price: yup
+          .number()
+          .positive('Le prix doit être un nombre positif')
+          .required('Le prix est requis'),
+        pictures: yup
+          .string()
+          .required('Une photo est requise'),
+        iban: yup
+          .string()
+          .matches(/^[A-Z0-9]{15,34}$/, `L'IBAN doit contenir uniquement des lettres majuscules et des chiffres, avec une longueur comprise entre 15 et 34 caractères`)
+          .required(`L'IBAN est requis`),
+      })
 
 // const userId = '67c70f09d7eb098b650dece3';
 const categories = ['0-1 an', '1-3 ans', '3-6 ans', '6-12 ans'];
@@ -59,6 +63,8 @@ const AddArticlesScreen = ({ navigation }) => {
         );
 
 const userToken = useSelector(state => state.user.value.token);
+const userIban = useSelector(state => state.user.value.iban);
+console.log("iban du user", userIban)
 
     const { control, handleSubmit, setValue, reset, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
@@ -133,6 +139,8 @@ const userToken = useSelector(state => state.user.value.token);
 
       const result = await response.json();
       // console.log(result)
+
+      
 
       if (response.ok) {
         Alert.alert('Succès', 'L\'article a été publié avec succès.');
@@ -263,6 +271,26 @@ const userToken = useSelector(state => state.user.value.token);
           )}
         />
         {errors.price && <Text style={styles.errorText}>{errors.price.message}</Text>}
+
+        {!userIban && (
+      <View style={styles.ibanContainer}>
+        <Text style={styles.labelCategorie}>IBAN :</Text>
+        <Controller
+          control={control}
+          name="iban"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.input}
+              placeholder="Votre IBAN"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+        />
+        {errors.iban && <Text style={styles.errorText}>{errors.iban.message}</Text>}
+      </View>
+    )}
 
         <ButtonBig text="Publier l'article" style={styles.submitButton} onPress={handleSubmit(onSubmit)} />
       </ScrollView>

@@ -28,6 +28,7 @@ export const userSlice = createSlice({
         email: null,
         dateOfBirth: null,
         status: false,
+        iban: null,
       };
     },
     loginUser: (state, action) => {
