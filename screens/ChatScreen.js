@@ -58,7 +58,7 @@ export default function ChatScreen({ route, navigation }) {
             }
 
             const savedMessage = await response.json();
-            setMessages(prevMessages => [savedMessage, ...prevMessages]); // 
+            setMessages(prevMessages => [savedMessage, ...prevMessages]);
             setInputText('');
         } catch (error) {
             console.error("❌ Erreur lors de l’envoi du message :", error);
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    messageContainer: { padding: 10, marginVertical: 5, borderRadius: 10, maxWidth: '80%', marginHorizontal: 20 },
+    messageContainer: { padding: 10, marginVertical: 5, borderRadius: 10, maxWidth: '80%', marginHorizontal: 20},
     sellerMessage: { alignSelf: 'flex-start', backgroundColor: '#bbb' },
     buyerMessage: { alignSelf: 'flex-end', backgroundColor: '#00CC99' },
     messageText: { fontSize: 16, color: 'white' },
