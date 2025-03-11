@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Image, StyleSheet, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -8,26 +8,26 @@ import { LinearGradient } from 'expo-linear-gradient';
 import HeaderNavigation from './components/HeaderNavigation'; 
 import ButtonBig from './components/ButtonBig';
 
-
-
+// ✅ Définition du schéma de validation avec Yup
 const schema = yup.object().shape({
   firstname: yup.string().required('Le prénom est requis'),
   lastname: yup.string().required('Le nom est requis'),
   address1: yup.string().required('L’adresse est requise'),
   address2: yup.string().optional(),
-  postalCode: yup.string().matches(/^\d{4}$/, 'Le code postal doit contenir 4 chiffres').required('Le code postal est requis'),
+  postalCode: yup.string().matches(/^\d{4,5}$/, 'Le code postal doit contenir 4 ou 5 chiffres').required('Le code postal est requis'),
   city: yup.string().required('La ville est requise'),
 });
 
 export default function InvoiceScreen({ navigation, route }) {
   const { article } = route.params;
   const user = useSelector(state => state.user.value);
+  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      firstname: user.firstname,
-      lastname: user.lastname,
+      firstname: user.firstname || '',
+      lastname: user.lastname || '',
       address1: '',
       address2: '',
       postalCode: '',
@@ -35,46 +35,57 @@ export default function InvoiceScreen({ navigation, route }) {
     },
   });
 
+  // ✅ Fonction d'achat de l'article
   const onSubmit = async (data) => {
-    const requestData = { 
-        ...data, 
-        articleId: article.id, 
-        seller: article.user 
+    // Création de l'objet à envoyer au backend
+    const requestBody = {
+      number: 0,  // Si tu veux ajouter un numéro de rue, demande à l'utilisateur
+      line1: data.address1,
+      line2: data.address2,
+      postalCode: data.postalCode,
+      city: data.city,
+      state: "", // Optionnel
+      country: "", // Optionnel
+      token: user.token,
+      articleId: article._id
     };
 
+    console.log("Données envoyées au backend :", requestBody); // ✅ Vérifier les données envoyées
+
     try {
-        const response = await fetch('https://api.ton-backend.com/achat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestData),
-        });
+      const response = await fetch(`${urlBackend}articles/buy`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json', // ✅ Correction : Envoi sous format JSON
+        },
+        body: JSON.stringify(requestBody),
+      });
 
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP: ${response.status}`);
-        }
+      const result = await response.json();
+      console.log("Réponse du backend :", result); // ✅ Vérifier la réponse du backend
 
-        const responseData = await response.json();
-        console.log('Réponse du serveur:', responseData);
-
-        // Ici tu peux gérer la navigation après la confirmation de l'achat
-        // navigation.navigate('ConfirmationScreen', { orderData: responseData });
-
+      if (response.ok) {
+        Alert.alert('Succès', 'Félicitations !!! L\'article a été vendu avec succès. Consultez votre boite mail pour le paiement.');
+        navigation.goBack();
+      } else {
+        Alert.alert('Erreur', result.error || 'Une erreur est survenue lors de l\'achat.');
+      }
     } catch (error) {
-        console.error('Erreur lors de l\'envoi des données:', error);
+      console.error('Erreur lors de l\'envoi des données:', error);
+      Alert.alert('Erreur', 'Problème de connexion au serveur.');
     }
-};
-
+  };
 
   return (
     <View style={styles.container}>
       <LinearGradient
-            colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
-            start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
-            end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
-            style={styles.header}
-        >
-            <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
-        </LinearGradient> 
+        colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 0, y: 0 }}
+        style={styles.header}
+      >
+        <HeaderNavigation onPress={() => navigation.navigate("Connection")} />
+      </LinearGradient>
 
       <View style={styles.articleContainer}>
         <Image source={{ uri: article.pictures[0] }} style={styles.articleImage} />
@@ -104,11 +115,12 @@ export default function InvoiceScreen({ navigation, route }) {
             {errors[field] && <Text style={styles.errorText}>{errors[field].message}</Text>}
           </View>
         ))}
-        <ButtonBig 
-                        style={styles.buttonSendForm} 
-                        text="Acheter l'article" 
-                        onPress={handleSubmit(onSubmit)} 
-                        />
+
+        <ButtonBig
+          style={styles.buttonSendForm}
+          text="Acheter l'article"
+          onPress={handleSubmit(onSubmit)}
+        />
       </View>
     </View>
   );
@@ -123,16 +135,11 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
   buttonSendForm: {
     backgroundColor: '#00CC99',
     marginBottom: 0,
     color: '#000000',
-},
+  },
   articleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -158,11 +165,15 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   input: {
+    width: '100%',
+    padding: 15,
+    marginVertical: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
+    borderColor: '#000',
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    fontSize: 16,
+    height: 50,
   },
   errorText: {
     color: 'red',

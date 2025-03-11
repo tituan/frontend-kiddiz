@@ -9,6 +9,7 @@ const initialState = {
     dateOfBirth: null,
     token: null, 
     status: null,
+    iban: null,
   },
 };
 
@@ -39,9 +40,13 @@ export const userSlice = createSlice({
         dateOfBirth: action.payload.dateOfBirth,
         token: action.payload.token,
         status: action.payload.token,
+        iban: action.payload.iban,
       };
        // Ajoutez un console.log pour vérifier ce qui est stocké
       // console.log("État actuel du reducer user après loginUser:", state.value);
+    },
+    updateIban: (state, action) => {
+      state.value.iban = action.payload.iban; // ✅ Met à jour uniquement l'IBAN sans toucher les autres données
     },
     signUpUser: (state, action) => {
       state.value = {
@@ -64,5 +69,5 @@ export const userSlice = createSlice({
 });
 
 // Exporter les actions
-export const { signUpUser, loginUser, updateUser, resetUser, logOut } = userSlice.actions;
+export const { signUpUser, loginUser, updateUser, resetUser, logOut, updateIban } = userSlice.actions;
 export default userSlice.reducer;

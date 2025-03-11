@@ -74,7 +74,8 @@ const SignInScreen = ({navigation}) => {
           email: data.userData.email,
           dateOfBirth: data.userData.dateOfBirth,
           token: data.userData.token,
-          status: data.userData.status
+          status: data.userData.status,
+          iban: data.userData.iban
         }));
         navigation.navigate("Home");
       } else {

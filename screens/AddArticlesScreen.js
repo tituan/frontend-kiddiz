@@ -5,13 +5,15 @@ import * as ImagePicker from 'expo-image-picker';
 import ButtonBig from './components/ButtonBig';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import RadioButton from './components/RadioButton'; 
 import { useFocusEffect } from '@react-navigation/native';
+import {updateIban} from '../reducers/users'
 
  // Env variable for BACKEND
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+//  const dispatch= useDispatch()
 
       const schema = yup.object().shape({
         title: yup
@@ -65,15 +67,24 @@ const AddArticlesScreen = ({ navigation }) => {
 const userToken = useSelector(state => state.user.value.token);
 const userIban = useSelector(state => state.user.value.iban);
 console.log("iban du user", userIban)
+console.log(userToken)
 
-    const { control, handleSubmit, setValue, reset, formState: { errors } } = useForm({
-        resolver: yupResolver(schema),
-    });
+const { control, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm({
+  resolver: yupResolver(schema),
+  defaultValues: { iban: userIban || "" }, // ✅ Assurer que l'IBAN est bien initialisé
+});
+
+const ibanValue = watch("iban"); // 👀 Suivre la valeur en temps réel
+console.log("Valeur actuelle de l'IBAN :", ibanValue);
 
   const [image, setImage] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
   const [selectedCondition, setSelectedCondition] = useState(null);
+ const dispatch = useDispatch()
+
+
+
 
   useEffect(() => {
     (async () => {
@@ -103,6 +114,7 @@ console.log("iban du user", userIban)
     setValue(fieldName, value); // Mettre à jour la valeur dans react-hook-form
   };
 
+  
   const onSubmit = async (data) => {
     try {
       // Créer un objet FormData
@@ -116,6 +128,7 @@ console.log("iban du user", userIban)
       formData.append('price', data.price.toString()); // Convertir en chaîne si nécessaire
       formData.append('articleCreationDate', new Date().toISOString());
         formData.append('token', userToken)
+        formData.append('iban', data.iban)
       // Ajouter l'image
       if (image) {
         const fileExtension = image.split('.').pop(); // Extraire l'extension du fichier
@@ -127,7 +140,8 @@ console.log("iban du user", userIban)
           type: `image/${fileExtension}`,
         });
       }
-
+      
+      console.log("Redux mis à jour avec l'IBAN :", data.iban);
       // Envoyer les données au backend
     const response = await fetch(`${urlBackend}articles`, {
         method: 'POST',
@@ -138,10 +152,8 @@ console.log("iban du user", userIban)
       });
 
       const result = await response.json();
+      dispatch(updateIban({ iban: data.iban }));
       // console.log(result)
-
-      
-
       if (response.ok) {
         Alert.alert('Succès', 'L\'article a été publié avec succès.');
         reset(); // Réinitialiser tous les champs du formulaire
@@ -153,6 +165,8 @@ console.log("iban du user", userIban)
       } else {
         Alert.alert('Erreur', result.error || 'Une erreur est survenue lors de la publication de l\'article.');
       }
+    
+      
     } catch (error) {
       Alert.alert('Erreur', 'Une erreur est survenue lors de la publication de l\'article.');
       console.error(error);
@@ -276,18 +290,22 @@ console.log("iban du user", userIban)
       <View style={styles.ibanContainer}>
         <Text style={styles.labelCategorie}>IBAN :</Text>
         <Controller
-          control={control}
-          name="iban"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="Votre IBAN"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-        />
+  control={control}
+  name="iban"
+  defaultValue=""
+  render={({ field: { onChange, onBlur, value } }) => (
+    <TextInput
+      style={styles.input}
+      placeholder="Votre IBAN"
+      onBlur={onBlur}
+      onChangeText={(text) => {
+        console.log("IBAN saisi :", text); // ✅ Vérifier si l'IBAN est bien mis à jour
+        onChange(text);
+      }}
+      value={value || ""}
+    />
+  )}
+/>
         {errors.iban && <Text style={styles.errorText}>{errors.iban.message}</Text>}
       </View>
     )}
