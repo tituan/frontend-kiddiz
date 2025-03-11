@@ -3,76 +3,35 @@ import { StyleSheet, View, FlatList, Text, Image, TouchableOpacity, ActivityIndi
 import { useSelector } from 'react-redux';
 import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useIsFocused } from '@react-navigation/native';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 export default function MessagerieScreen({ navigation }) {
+    const isFocused = useIsFocused()
     const userToken = useSelector(state => state.user.value.token);
     const [conversations, setConversations] = useState([]);
     const [loading, setLoading] = useState(true);
+    // console.log(conversations.id)
 
     useEffect(() => {
         const fetchConversations = async () => {
             if (!userToken) {
-                console.error("❌ Aucun token utilisateur trouvé !");
                 setLoading(false);
                 return;
             }
 
             try {
-                console.log(`🚀 Récupération des conversations pour userToken : ${userToken}`);
-
-                // 🔹 1. Récupérer les conversations
-                const response = await fetch(`${API_URL}chatroom/get/conversations/${userToken}`);
+                const response = await fetch(`${API_URL}chatroom/list/${userToken}`);
                 const data = await response.json();
-
-                if (!response.ok) {
-                    console.error(`❌ Erreur API (${response.status}):`, data.message);
+                
+                if (!data.formattedConversations) {
+                    // console.error("❌ Données invalides reçues :", data);
+                    setLoading(false);
                     return;
                 }
 
-                console.log("📩 Conversations reçues :", data);
-
-                // 🔹 2. Enrichir chaque conversation avec les détails de l'article et du participant
-                const enrichedConversations = await Promise.all(
-                    data.map(async (conversation) => {
-                        let articleData = {};
-                        let userData = {};
-
-                        // 🔹 Récupérer les infos de l'article
-                        try {
-                            const articleResponse = await fetch(`${API_URL}articles/get-by/id/${conversation.articleId}`);
-                            const articleJson = await articleResponse.json();
-                            articleData = articleJson.result ? articleJson.article : {};
-                        } catch (error) {
-                            console.error(`❌ Erreur lors de la récupération de l'article (${conversation.articleId}) :`, error);
-                        }
-
-                        // 🔹 Récupérer le participant avec qui je discute (toujours `participants[0]`)
-                        const otherParticipantToken = conversation.participants[0];
-
-                        // 🔹 Récupérer les infos du participant
-                        try {
-                            const userResponse = await fetch(`${API_URL}users/get-by-token/${otherParticipantToken}`);
-                            const userJson = await userResponse.json();
-                            console.log("🔍 Réponse utilisateur :", userJson);
-
-                            userData = userJson;
-                        } catch (error) {
-                            console.error(`❌ Erreur lors de la récupération du participant (${otherParticipantToken}) :`, error);
-                        }
-
-                        return {
-                            ...conversation,
-                            article: articleData, // Ajout des infos de l'article
-                            otherParticipantName: userData.firstname || "Utilisateur inconnu",
-                            articleImage: articleData.pictures?.[0] || "https://via.placeholder.com/50",
-                            otherParticipantToken, // 🔥 On stocke son token pour ChatScreen
-                        };
-                    })
-                );
-
-                setConversations(enrichedConversations);
+                setConversations(data.formattedConversations);
             } catch (error) {
                 console.error("❌ Erreur lors de la récupération des conversations :", error);
             } finally {
@@ -80,30 +39,29 @@ export default function MessagerieScreen({ navigation }) {
             }
         };
 
-        fetchConversations();
-    }, [userToken]);
+        isFocused && fetchConversations();
+    }, [userToken, isFocused]);
 
     const goToChatScreen = (conversation) => {
         navigation.navigate('ChatScreen', {
             userToken,
-            sellerToken: conversation.otherParticipantToken, // 🔥 On passe bien le participant principal
             conversationId: conversation._id,
-            article: conversation.article,
         });
     };
 
     const renderItem = ({ item }) => {
-        console.log(item)
+        console.log(item);
+        
         return (
             <TouchableOpacity style={styles.itemContainer} onPress={() => goToChatScreen(item)}>
-                <Image source={{ uri: item.articleImage }} style={styles.avatar} />
+                <Image source={{ uri: item.lastMessage.articleUri }} style={styles.avatar} />
                 <View style={styles.messageInfo}>
-                    <Text style={styles.name}>{item.otherParticipantName || "Utilisateur inconnu"}</Text>
+                    <Text style={styles.name}>{item.otherPerson}</Text>
                     <Text style={styles.lastMessage} numberOfLines={1}>
-                        {item.lastMessage || "Aucun message"}
+                        {item.lastMessage.content}
                     </Text>
                     <Text style={styles.dateMessage}>
-                        {item.lastMessageDate ? `Dernier message : ${new Date(item.lastMessageDate).toLocaleString()}` : "Aucune activité"}
+                        {item.lastMessage.date ? `Dernier message : ${new Date(item.lastMessage.date).toLocaleString()}` : "Aucune activité"}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -123,13 +81,15 @@ export default function MessagerieScreen({ navigation }) {
             ) : conversations.length === 0 ? (
                 <Text style={styles.noMessages}>Aucune conversation disponible.</Text>
             ) : (
-                <FlatList data={conversations} renderItem={renderItem} keyExtractor={(item) => item._id} />
+                <FlatList
+                    data={conversations}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => item?._id?.toString() || `conversation-${index}`}
+                />
             )}
         </View>
     );
 }
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -150,7 +110,6 @@ const styles = StyleSheet.create({
     titleMessagerie: {
         padding: 20,
         fontSize: 20,
-        fontFamily: 'LilitaOne-Regular',
     },
     noMessages: {
         textAlign: 'center',
@@ -178,6 +137,8 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 25,
         marginRight: 15,
+        borderColor: 'black',
+        borderWidth: 1,
     },
     messageInfo: {
         flex: 1,
@@ -185,18 +146,15 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 16,
         fontWeight: 'bold',
-        fontFamily: 'RopeSans-Regular',
     },
     lastMessage: {
         fontSize: 14,
         color: '#555',
         marginTop: 3,
-        fontFamily: 'RopeSans-Regular',
     },
     dateMessage: {
         fontSize: 12,
         marginTop: 5,
-        fontFamily: 'RopeSans-Regular',
     },
 });
 
