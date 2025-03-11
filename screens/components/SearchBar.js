@@ -31,9 +31,9 @@ function SearchBar({ onSearch }) {
     category: null,
   });
 
-  // Animation d'échelle et de couleur
+  
   const [scale] = useState(new Animated.Value(1));
-  const [backgroundColor, setBackgroundColor] = useState('#fff');  // Couleur de fond par défaut
+  const [backgroundColor, setBackgroundColor] = useState('#fff');  
 
   const handleSearch = () => {
     if (searchTerm.trim()) { 
@@ -54,21 +54,21 @@ function SearchBar({ onSearch }) {
       ...prevFilters,
       [filterCategory]: value,
     }));
-    // Ajouter une animation lors de la sélection
+    
     Animated.sequence([
       Animated.timing(scale, {
-        toValue: 0.95, // Réduit légèrement la taille
+        toValue: 0.95, 
         duration: 150,
         useNativeDriver: true,
       }),
       Animated.timing(scale, {
-        toValue: 1, // Retourne à la taille normale
+        toValue: 1, 
         duration: 150,
         useNativeDriver: true,
       }),
     ]).start();
 
-    setBackgroundColor('#F0D74D');  // Change la couleur de fond au clic
+    setBackgroundColor('#EDDC5F');  
   };
 
   const resetFilters = () => {
@@ -76,7 +76,7 @@ function SearchBar({ onSearch }) {
       age: null,
       category: null,
     });
-    setBackgroundColor('#fff');  // Restaure la couleur de fond par défaut
+    setBackgroundColor('#fff');  
   };
 
   return route.name === 'Home' ? (
@@ -126,7 +126,7 @@ function SearchBar({ onSearch }) {
                   style={[styles.filterOption, { transform: [{ scale }] }]}
                 >
                   <TouchableOpacity 
-                    style={[styles.filterOption, { backgroundColor: filters.age === ageRange ? backgroundColor : '#fff' }]} 
+                    style={[styles.filterOption, { backgroundColor: filters.age === ageRange ? backgroundColor : '#fff', borderRadius: 5 }]} 
                     onPress={() => handleFilterSelection('age', ageRange)}
                   >
                     <Text style={styles.filterText}>{ageRange}</Text>
@@ -141,7 +141,7 @@ function SearchBar({ onSearch }) {
                   style={[styles.filterOption, { transform: [{ scale }] }]}
                 >
                   <TouchableOpacity 
-                    style={[styles.filterOption, { backgroundColor: filters.category === category ? backgroundColor : '#fff' }]} 
+                    style={[styles.filterOption, { backgroundColor: filters.category === category ? backgroundColor : '#fff', borderRadius: 5 }]} 
                     onPress={() => handleFilterSelection('category', category)}
                   >
                     <Text style={styles.filterText}>{category}</Text>
@@ -258,6 +258,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#4478A9',
     paddingVertical: 10,
     borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#00000",
+    
   },
   closeButtonText: {
     fontSize: 16,
