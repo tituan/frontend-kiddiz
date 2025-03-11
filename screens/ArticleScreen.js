@@ -12,12 +12,17 @@ export default function ArticleScreen({ navigation, route }) {
     const userToken = useSelector(state => state.user.value.token);
     console.log(userToken)
     const { article } = route.params;
+    console.log(article)
     const sellerArticleToken = article.user.token
     // console.log(article.user.token)
+    // console.log(sellerArticleToken)
     
 const handleInvoice = () => {
-        navigation.navigate('InvoiceScreen', { article: article });
-        console.log('Article à acheter');
+    if(userToken === sellerArticleToken){
+        Alert.alert('Error', 'Vous ne pouvez pas acheter votre propre article');}
+        else{
+        navigation.navigate('InvoiceScreen', { article });
+        console.log('Article à acheter');}
     };
 
     return (

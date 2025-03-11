@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, Image, StyleSheet, Alert, ScrollView,KeyboardAvoidingView,Platform } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -7,11 +7,15 @@ import { useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import HeaderNavigation from './components/HeaderNavigation'; 
 import ButtonBig from './components/ButtonBig';
+import { useRef } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 // ✅ Définition du schéma de validation avec Yup
 const schema = yup.object().shape({
   firstname: yup.string().required('Le prénom est requis'),
   lastname: yup.string().required('Le nom est requis'),
+  number: yup.string().required('Le numéro de rue est requis'),
   address1: yup.string().required('L’adresse est requise'),
   address2: yup.string().optional(),
   postalCode: yup.string().matches(/^\d{4,5}$/, 'Le code postal doit contenir 4 ou 5 chiffres').required('Le code postal est requis'),
@@ -19,7 +23,20 @@ const schema = yup.object().shape({
 });
 
 export default function InvoiceScreen({ navigation, route }) {
+
+    // action de refresh scrollView (useFocusEffect,useRef,ref={scrollViewRef})
+    const scrollViewRef = useRef(null);
+        useFocusEffect(
+            React.useCallback(() => {
+             
+              if (scrollViewRef.current) {
+                scrollViewRef.current.scrollTo({ y: 0, animated: true });
+              }
+            }, [])
+          );
+
   const { article } = route.params;
+  console.log("CECI EST UN ARTICLE : " + JSON.stringify(article, null, 2));
   const user = useSelector(state => state.user.value);
   const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
@@ -28,9 +45,10 @@ export default function InvoiceScreen({ navigation, route }) {
     defaultValues: {
       firstname: user.firstname || '',
       lastname: user.lastname || '',
+      number: '',
       address1: '',
       address2: '',
-      postalCode: '',
+      postalCode: '', 
       city: '',
     },
   });
@@ -39,21 +57,19 @@ export default function InvoiceScreen({ navigation, route }) {
   const onSubmit = async (data) => {
     // Création de l'objet à envoyer au backend
     const requestBody = {
-      number: 0,  // Si tu veux ajouter un numéro de rue, demande à l'utilisateur
+      number: data.number,  
       line1: data.address1,
       line2: data.address2,
       postalCode: data.postalCode,
       city: data.city,
-      state: "", // Optionnel
-      country: "", // Optionnel
       token: user.token,
-      articleId: article._id
+      articleId: article.id
     };
 
     console.log("Données envoyées au backend :", requestBody); // ✅ Vérifier les données envoyées
 
     try {
-      const response = await fetch(`${urlBackend}articles/buy`, {
+      const response = await fetch(`${urlBackend}articles/buy/buy/buy`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json', // ✅ Correction : Envoi sous format JSON
@@ -65,7 +81,7 @@ export default function InvoiceScreen({ navigation, route }) {
       console.log("Réponse du backend :", result); // ✅ Vérifier la réponse du backend
 
       if (response.ok) {
-        Alert.alert('Succès', 'Félicitations !!! L\'article a été vendu avec succès. Consultez votre boite mail pour le paiement.');
+        Alert.alert('Succès', 'Félicitations !!! L\'article a été acheté avec succès. Consultez votre boite mail pour le paiement.');
         navigation.goBack();
       } else {
         Alert.alert('Erreur', result.error || 'Une erreur est survenue lors de l\'achat.');
@@ -74,9 +90,11 @@ export default function InvoiceScreen({ navigation, route }) {
       console.error('Erreur lors de l\'envoi des données:', error);
       Alert.alert('Erreur', 'Problème de connexion au serveur.');
     }
+    navigation.navigate('HomeScreen', { screen: 'Home' });
   };
 
   return (
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
     <View style={styles.container}>
       <LinearGradient
         colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']}
@@ -96,7 +114,8 @@ export default function InvoiceScreen({ navigation, route }) {
       </View>
 
       <View style={styles.formContainer}>
-        {['firstname', 'lastname', 'address1', 'address2', 'postalCode', 'city'].map((field, index) => (
+        <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
+        {['firstname', 'lastname', 'number' , 'address1', 'address2', 'postalCode', 'city'].map((field, index) => (
           <View key={index}>
             <Controller
               control={control}
@@ -121,8 +140,10 @@ export default function InvoiceScreen({ navigation, route }) {
           text="Acheter l'article"
           onPress={handleSubmit(onSubmit)}
         />
+        </ScrollView>
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 }
 
