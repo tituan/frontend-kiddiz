@@ -31,7 +31,6 @@ function SearchBar({ onSearch }) {
     category: null,
   });
 
-  
   const [scale] = useState(new Animated.Value(1));
   const [backgroundColor, setBackgroundColor] = useState('#fff');  
 
@@ -114,11 +113,6 @@ function SearchBar({ onSearch }) {
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>Sélectionner les filtres</Text>
 
-              {/* Bouton pour réinitialiser les filtres */}
-              <TouchableOpacity style={styles.filterOption} onPress={resetFilters}>
-                <Text style={styles.filterText}>Réinitialiser tous les filtres</Text>
-              </TouchableOpacity>
-
               {/* Filtres d'âge */}
               {['0 - 3 ans', '4 - 6 ans', '6 - 10 ans', '10 - 14 ans'].map((ageRange) => (
                 <Animated.View 
@@ -149,9 +143,19 @@ function SearchBar({ onSearch }) {
                 </Animated.View>
               ))}
 
-              {/* Bouton pour fermer le modal */}
+              {/* Bouton pour lancer la recherche */}
+              <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+                <Text style={styles.searchButtonText}>Lancer la recherche</Text>
+              </TouchableOpacity>
+
+              {/* Petit bouton rond avec croix pour fermer la modal */}
               <TouchableOpacity style={styles.closeButton} onPress={closeFilterModal}>
-                <Text style={styles.closeButtonText}>Fermer</Text>
+                <FontAwesome name="times" size={24} color="black" />
+              </TouchableOpacity>
+
+              {/* Bouton pour réinitialiser les filtres */}
+              <TouchableOpacity style={styles.resetButton} onPress={resetFilters}>
+                <Text style={styles.resetButtonText}>Réinitialiser</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -182,7 +186,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-
     shadowColor: "#000",
     shadowOffset: { width: 4, height: 4 },
     shadowOpacity: 0.4,
@@ -206,7 +209,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingRight: 10,
     position: 'relative',
-
     shadowColor: "#000",
     shadowOffset: { width: 4, height: 4 },
     shadowOpacity: 0.4,
@@ -229,7 +231,6 @@ const styles = StyleSheet.create({
     flex: 1,
     top: '19%',
     alignItems: 'center',
-    // backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalContent: {
     width: '90%',
@@ -238,33 +239,58 @@ const styles = StyleSheet.create({
     padding: 20,
     borderWidth: 2,
     borderColor: "#000000",
+    position: 'relative',
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
     fontFamily: 'LilitaOne-Regular',
   },
   filterOption: {
-    paddingVertical: 8,
-    
+    paddingVertical: 5,
   },
   filterText: {
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: 'RopaSans-Regular',
+    marginLeft: 10
   },
-  closeButton: {
+  searchButton: {
     marginTop: 20,
     backgroundColor: '#4478A9',
     paddingVertical: 10,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#00000",
-    
   },
-  closeButtonText: {
+  searchButtonText: {
     fontSize: 16,
     textAlign: 'center',
     color: 'white',
+    fontFamily: 'LilitaOne-Regular',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: 'white',
+    borderRadius: 25,
+    padding: 10,
+    
+  },
+  resetButton: {
+    marginTop: 10,
+    backgroundColor: '#FF6347',
+    paddingVertical: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#00000",
+    
+    
+  },
+  resetButtonText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'white',
+    fontFamily: 'LilitaOne-Regular',
   },
 });

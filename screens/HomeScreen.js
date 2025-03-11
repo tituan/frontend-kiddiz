@@ -24,6 +24,7 @@ export default function HomeScreen({ navigation }) {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchResults, setSearchResults] = useState([]);
+    
 
     // console.log(articles)
 
