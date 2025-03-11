@@ -7,11 +7,13 @@ import ButtonHalf from './components/ButtonHalf';
 import * as SplashScreen from 'expo-splash-screen';
 import Article from './components/Article';
 import { useState } from 'react';  
+import ArticleTransaction from './components/ArticleTransaction';
 
 export default function TransactionsScreen({ navigation }) {
     const user = useSelector(state => state.user.value);
     console.log(user);
     const [articles, setArticles] = useState([]);
+
 
     const [fontsLoaded, fontError] = useFonts({
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
@@ -43,12 +45,12 @@ export default function TransactionsScreen({ navigation }) {
                 <View style={styles.buttonContainer}> 
                     <ButtonHalf
                         style={[styles.buttonNav, getButtonStyle('vente')]}
-                        text="En vente"
+                        text="Mes ventes"
                         onPress={() => handleButtonPress('vente')}
                     />
                     <ButtonHalf
                         style={[styles.buttonNav, getButtonStyle('achete')]}
-                        text="Acheté"
+                        text="Mes achats"
                         onPress={() => handleButtonPress('achete')}
                     /> 
                 </View>
@@ -58,11 +60,19 @@ export default function TransactionsScreen({ navigation }) {
                         <View style={styles.row}>
                             {articles && articles.length > 0 ? (
                                 articles.map((item, i) => (
-                                    <Article key={item.id} item={item} />
+                                    <ArticleTransaction key={item.id} item={item} />
                                 ))
                             ) : (
                                 <View style={styles.noArticlesContainer}>
-                                    <Text style={styles.noArticlesText}>Vous avez vendu(e) aucun article </Text>
+                                    <View> 
+                                         <Text style={styles.noArticlesText}>Vous avez vendu(e) aucun article </Text>
+                                    </View>
+
+                                    <View style={styles.articlesContainer}>
+                                        <ArticleTransaction />
+                                        <ArticleTransaction />
+                                    </View>
+
                                 </View>
                             )}
                         </View>
@@ -72,7 +82,7 @@ export default function TransactionsScreen({ navigation }) {
                          <View style={styles.row}>
                             {articles && articles.length > 0 ? (
                                 articles.map((item, i) => (
-                                    <Article key={item.id} item={item} />
+                                    <ArticleTransaction key={item.id} item={item} />
                                 ))
                             ) : (
                                 <View style={styles.noArticlesContainer}>
@@ -89,6 +99,7 @@ export default function TransactionsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
+        
         flex: 1,
         backgroundColor: '#fffff',
     },
@@ -143,5 +154,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#666',
         fontStyle: 'italic',
+    },
+    articlesContainer:{
+        width: '100%',
     },
 });
