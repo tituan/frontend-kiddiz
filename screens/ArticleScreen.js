@@ -13,71 +13,81 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 export default function ArticleScreen({ navigation, route }) {
     const userToken = useSelector(state => state.user.value.token);
-    // console.log(userToken)
     const { article } = route.params;
     const sellerArticleToken = article.user.token
-    // console.log(sellerArticleToken)
-    // console.log(article)
-    
-    // const contactSeller = () => {
-    //     navigation.navigate("ChatScreen", {
-    //         userToken: userToken,
-    //         sellerToken: sellerArticleToken,
-    //         article: article
-    //     });
-    // };
 
     const contactSeller = async () => {
         try {
-            console.log("🚀 Vérification de la conversation...");
+            console.log("Vérification de la conversation");
     
-            // 🔹 Récupération des IDs
-            const sellerId = sellerArticleToken; // 🔥 Récupère bien l'ID du vendeur// 🔥 Récupère bien l'ID de l'acheteur
             const articleId = article.id;
-            const buyerId = userToken;// 🔥 ID de l'article
+
+            const token = userToken;
     
-            if (!sellerId || !buyerId || !articleId) {
-                console.error("❌ Paramètres manquants pour contacter le vendeur !");
+            if (!token || !articleId) {
+                console.error("Paramètres manquants pour contacter le vendeur !");
                 return;
             }
-            
-            // 🔹 Vérifier si une conversation existe déjà
-            const response = await fetch(`${API_URL}chatroom/get/conversation/${sellerId}/${buyerId}/${articleId}`);
-            
+              
+            const response = await fetch(`${API_URL}chatroom/${token}/${articleId}`);
             let conversation = await response.json();
-            // console.log(conversation)
-            // console.log(response.status)
-            console.log(conversation)
-            if (response.status === 404) {
-                console.log("⚠️ Aucune conversation trouvée, création d'une nouvelle...");
-    
-                // 🔹 Si aucune conversation n'existe, on en crée une nouvelle
-                const createResponse = await fetch(`${API_URL}chatroom/start`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ sellerId, buyerId, articleId }),
-                });
-    
-                conversation = await createResponse.json();
-                console.log(conversation)
-                if (!createResponse.ok) {
-                    console.error("❌ Erreur lors de la création de la conversation :", conversation.message);
+
+            if (conversation && conversation._id) {
+                console.log('Conversation trouvée, récupération des messages...');
+            
+                try {
+                    const messagesResponse = await fetch(`${API_URL}chatroom/messages/${token}/${conversation._id}`);
+                    
+                    if (!messagesResponse.ok) {
+                        console.error('Erreur lors de la récupération des messages :', messagesResponse.status);
+                        return;
+                    }
+            
+                    const existantConversation = await messagesResponse.json();
+                    console.log('Messages de la conversation:', existantConversation);
+            
+                    // Navigation vers `ChatScreen` avec la conversation existante
+                    navigation.navigate("ChatScreen", {
+                        userToken: token,
+                        conversationId: conversation._id,
+                        article: article,
+                        messages: existantConversation.messages, // Optionnel
+                    });
                     return;
+            
+                } catch (error) {
+                    console.error("Erreur lors de la récupération des messages :", error);
                 }
+            
+            } else {
+                console.log("Aucune conversation existante, rien à faire.");
             }
     
-            console.log("✅ Conversation obtenue :", conversation);
+
+            const createResponse = await fetch(`${API_URL}chatroom/new/conversation/${articleId}/${token}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+            });
+
+            conversation = await createResponse.json();
+            console.log(conversation)
+            if (!createResponse.ok) {
+                console.error("Erreur lors de la création de la conversation :", conversation.message);
+                return;
+            }
+
     
-            // 🔹 Navigation vers `ChatScreen` avec la conversation
+            console.log("Conversation obtenue :", conversation);
+    
+            // Navigation vers `ChatScreen` avec la conversation
             navigation.navigate("ChatScreen", {
-                userToken: buyerId,
-                sellerToken: sellerId,
+                userToken: token,
                 article: article,
-                conversationId: conversation._id, // 🔥 Passe l'ID de la conversation
+                conversationId: conversation._id, // Passe l'ID de la conversation
             });
     
         } catch (error) {
-            console.error("❌ Erreur lors de la connexion au chat :", error);
+            console.error("Erreur lors de la connexion au chat :", error);
         }
     };
     
