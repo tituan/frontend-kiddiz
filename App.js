@@ -13,11 +13,12 @@ import ProfilScreen from "./screens/ProfilScreen";
 import FavorisScreen from "./screens/FavorisScreen";
 import ArticleScreen from "./screens/ArticleScreen";
 import MessagerieScreen from "./screens/MessagerieScreen";
+import ChatScreen from "./screens/ChatScreen";
 import SellerScreen from "./screens/SellerScreen";
 import { useSelector } from "react-redux";
 import { StyleSheet } from "react-native";
 import TransactionsScreen from "./screens/TransactiosScreen";
-
+import FAQScreen from "./screens/FAQScreen"
 // Redux
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -101,7 +102,9 @@ const MainNavigator = () => {
             <Stack.Screen name="MesArticles" component={MyArticlesScreen} />
       <Stack.Screen name="SellerScreen" component={SellerScreen} />
       <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
+      <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="TransactionsScreen" component={TransactionsScreen} />
+      <Stack.Screen name="FAQScreen" component={FAQScreen} />
 
       {/* ✅ Ajouter TabNavigator ici pour qu'il soit accessible */}
       <Stack.Screen name="Tabs" component={TabNavigator} />
