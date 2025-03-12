@@ -70,7 +70,7 @@ export default function MyArticlesScreen({ navigation }) {
             }>
                 <Text style={styles.title}>Liste de vos articles actuellement en vente :</Text>
                 <View style={styles.containerList}>
-                    {articles.map((item, i) => (
+                    {articles && articles.map((item, i) => (
                         <Article
                             key={i}
                             item={item}

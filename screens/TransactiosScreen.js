@@ -1,18 +1,23 @@
-import { StyleSheet, View, ScrollView, Text, Image} from 'react-native';
-import HeaderNavigation from './components/HeaderNavigation'; 
+import { StyleSheet, View, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
+import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { useSelector } from 'react-redux';
 import ButtonHalf from './components/ButtonHalf';
 import * as SplashScreen from 'expo-splash-screen';
 import Article from './components/Article';
-import { useState } from 'react';  
+import { useState, useEffect } from 'react';
 import ArticleTransaction from './components/ArticleTransaction';
+
+const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function TransactionsScreen({ navigation }) {
     const user = useSelector(state => state.user.value);
     console.log(user);
-    const [articles, setArticles] = useState([]);
+    const [soldArticles, setSoldArticles] = useState([]);
+    const [boughtArticles, setBoughtArticles] = useState([]);
+    console.log('soldArticle ----------------->', soldArticles);
+    console.log('boughtArticle ----------------->', boughtArticles)
 
 
     const [fontsLoaded, fontError] = useFonts({
@@ -20,15 +25,47 @@ export default function TransactionsScreen({ navigation }) {
         'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
     });
 
-    const [activeView, setActiveView] = useState('vente');  
-    
+    const [activeView, setActiveView] = useState('vente');
+
     const handleButtonPress = (view) => {
-        setActiveView(view);  
+        setActiveView(view);
     };
 
     const getButtonStyle = (view) => {
         return view === activeView ? styles.activeButton : styles.inactiveButton;
     };
+
+    // Remplace l'URL par celle de ton backend
+    const fetchSoldArticle = async () => {
+        try {
+            const response = await fetch(`${urlBackend}articles/sold-by/seller/${user.token}`);
+            const data = await response.json();
+            console.log(data)
+            setSoldArticles(data.articles);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des articles:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchBoughtArticle = async () => {
+        try {
+            const response = await fetch(`${urlBackend}articles/bought-by/buyer/${user.token}`);
+            const data = await response.json();
+            console.log(data)
+            setBoughtArticles(data.user.articlesBought);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des articles:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchSoldArticle();
+        fetchBoughtArticle();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -38,11 +75,11 @@ export default function TransactionsScreen({ navigation }) {
                 end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
                 style={styles.header}
             >
-                <HeaderNavigation onPress={() => navigation.navigate("Connection")} />  
-            </LinearGradient> 
+                <HeaderNavigation onPress={() => navigation.navigate("Connection")} />
+            </LinearGradient>
 
             <ScrollView contentContainerStyle={styles.contentContainer}>
-                <View style={styles.buttonContainer}> 
+                <View style={styles.buttonContainer}>
                     <ButtonHalf
                         style={[styles.buttonNav, getButtonStyle('vente')]}
                         text="Mes ventes"
@@ -52,134 +89,81 @@ export default function TransactionsScreen({ navigation }) {
                         style={[styles.buttonNav, getButtonStyle('achete')]}
                         text="Mes achats"
                         onPress={() => handleButtonPress('achete')}
-                    /> 
+                    />
                 </View>
 
                 {activeView === 'vente' ? (
-                    
-                    <View style={styles.venteContainer}>
-                            <View style={styles.articleContainer}>
-                                <View style={styles.imageContainer}>
-                                    <Image source={require ('../assets/peluche.jpg')} style={styles.image} />
-                                </View>
-                                <View>
-                                    <View style={styles.textContainer}> 
-                                            <Text style={styles.textTitre}>Ours en peluche </Text>
-                                            <Text style={styles.textPrix}> 12 € </Text>
+                    // Partie "Mes ventes"
+                    soldArticles.length > 0 ? (
+                        soldArticles.map((item, i) => (
+                        <TouchableOpacity onPress={()=> navigation.navigate('ArticleScreen', { article: item })}>
+                            <View key={item.id} style={styles.venteContainer}>
+                                <View style={styles.articleContainer}>
+                                    <View style={styles.imageContainer}>
+                                        <Image source={{ uri: item.pictures[0] }} style={styles.image} />
                                     </View>
                                     <View>
-                                        <Text style={styles.textNom}> Jean </Text>
+                                        <View style={styles.textContainer}>
+                                            <Text style={styles.textTitre}>{item.title}</Text>
+                                            <Text style={styles.textPrix}>{item.price} €</Text>
+                                        </View>
+                                        <View>
+                                            <Text style={styles.textNom}>{item.boughtBy?.firstname}</Text>
+                                        </View>
                                     </View>
                                 </View>
                             </View>
-
-                            <View style={styles.articleContainer}>
-                                <View style={styles.imageContainer}>
-                                    <Image source={require ('../assets/poussette.jpg')} style={styles.image} />
-                                </View>
-                                <View>
-                                    <View style={styles.textContainer}> 
-                                            <Text style={styles.textTitre}>Poussette </Text>
-                                            <Text style={styles.textPrix}> 150 € </Text>
-                                    </View>
-                                    <View>
-                                        <Text style={styles.textNom}> Julia </Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={styles.articleContainer}>
-                                <View style={styles.imageContainer}>
-                                    <Image source={require ('../assets/voiture-bois.jpg')} style={styles.image} />
-                                </View>
-                                <View>
-                                    <View style={styles.textContainer}> 
-                                            <Text style={styles.textTitre}>Voiture-bois </Text>
-                                            <Text style={styles.textPrix}> 8 € </Text>
-                                    </View>
-                                    <View>
-                                        <Text style={styles.textNom}> Bastien </Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={styles.articleContainer}>
-                                <View style={styles.imageContainer}>
-                                    <Image source={require ('../assets/LEGO.jpg')} style={styles.image} />
-                                </View>
-                                <View>
-                                    <View style={styles.textContainer}> 
-                                            <Text style={styles.textTitre}>Lego classique </Text>
-                                            <Text style={styles.textPrix}> 30 € </Text>
-                                    </View>
-                                    <View>
-                                        <Text style={styles.textNom}> Bastien </Text>
-                                    </View>
-                                </View>
-                            </View>
-                            
-
-
-                        
-                        {/* <View style={styles.row}>
-                        
-                            {articles && articles.length > 0 ? (
-                                articles.map((item, i) => (
-                                    <ArticleTransaction key={item.id} item={item} />
-                                ))
-                            ) : (
-                                <View style={styles.noArticlesContainer}>
-                                    <View> 
-                                         <Text style={styles.noArticlesText}>Vous n'avez vendu(e) aucun article </Text>
-                                    </View>
-                                </View>
-                            )}
-                        </View> */}
-                    </View>
+                            </TouchableOpacity>
+                        ))
+                    ) : (
+                        <View style={styles.noArticlesContainer}>
+                            <Text style={styles.noArticlesText}>Vous n'avez vendu(e) aucun article</Text>
+                        </View>
+                    )
                 ) : (
-                    <View style={styles.acheteContainer}>
-                        <View style={styles.articleContainer}>
-                                <View style={styles.imageContainer}>
-                                    <Image source={require ('../assets/train-bois.jpg')} style={styles.image} />
-                                </View>
-                                <View>
-                                    <View style={styles.textContainer}> 
-                                            <Text style={styles.textTitre}>Train en bois </Text>
-                                            <Text style={styles.textPrix}> 12 € </Text>
+                    // Partie "Mes achats"
+                    boughtArticles.length > 0 ? (
+                        boughtArticles.map((item, i) => (
+                            <View key={item.id} style={styles.venteContainer}>
+                                <View style={styles.articleContainer}>
+                                    <View style={styles.imageContainer}>
+                                        <Image source={{ uri: item.pictures[0] }} style={styles.image} />
                                     </View>
                                     <View>
-                                        <Text style={styles.textNom}> Antoine </Text>
+                                        <View style={styles.textContainer}>
+                                            <Text style={styles.textTitre}>{item.title}</Text>
+                                            <Text style={styles.textPrix}>{item.price} €</Text>
+                                        </View>
+                                        <View>
+                                            <Text style={styles.textNom}>{item.user.firstname}</Text>
+                                        </View>
                                     </View>
                                 </View>
                             </View>
-
-                            <View style={styles.articleContainer}>
-                                <View style={styles.imageContainer}>
-                                    <Image source={require ('../assets/lego-technic.jpg')} style={styles.image} />
-                                </View>
-                                <View>
-                                    <View style={styles.textContainer}> 
-                                            <Text style={styles.textTitre}>Lego Technic </Text>
-                                            <Text style={styles.textPrix}> 90 € </Text>
-                                    </View>
-                                    <View>
-                                        <Text style={styles.textNom}> Emma </Text>
-                                    </View>
-                                </View>
-                            </View>
+                        ))
+                    ) : (
+                        <View style={styles.noArticlesContainer}>
+                            <Text style={styles.noArticlesText}>Vous n'avez acheté aucun article</Text>
+                        </View>
+                    )
 
 
-
-                         {/* <View style={styles.row}>
-                            {articles && articles.length > 0 ? (
-                                articles.map((item, i) => (
-                                    <ArticleTransaction key={item.id} item={item} />
-                                ))
-                            ) : (
-                                <View style={styles.noArticlesContainer}>
-                                    <Text style={styles.noArticlesText}> Aucun article acheté </Text>
-                                </View>
-                            )}
-                        </View> */}
-                    </View>
+                    // <View style={styles.acheteContainer}>
+                    //     <View style={styles.articleContainer}>
+                    //         <View style={styles.imageContainer}>
+                    //             <Image source={require('../assets/train-bois.jpg')} style={styles.image} />
+                    //         </View>
+                    //         <View>
+                    //             <View style={styles.textContainer}>
+                    //                 <Text style={styles.textTitre}>Train en bois </Text>
+                    //                 <Text style={styles.textPrix}> 12 € </Text>
+                    //             </View>
+                    //             <View>
+                    //                 <Text style={styles.textNom}> Antoine </Text>
+                    //             </View>
+                    //         </View>
+                    //     </View>
+                    // </View>
                 )}
             </ScrollView>
         </View>
@@ -188,7 +172,7 @@ export default function TransactionsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        
+
         flex: 1,
         backgroundColor: '#fffff',
     },
@@ -198,7 +182,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         paddingBottom: 20,
     },
-    
+
     buttonContainer: {
         width: '60%',
         padding: 10,
@@ -210,15 +194,15 @@ const styles = StyleSheet.create({
 
     venteContainer: {
         width: '100%',
-        paddingLeft:20,
+        paddingLeft: 20,
     },
 
     acheteContainer: {
         width: '100%',
-        paddingLeft:20,
-        
+        paddingLeft: 20,
+
     },
-    
+
     buttonNav: {
         marginRight: 15,
         paddingVertical: 10,
@@ -247,56 +231,56 @@ const styles = StyleSheet.create({
         color: '#666',
         fontStyle: 'italic',
     },
-    articlesContainer:{
+    articlesContainer: {
         width: '100%',
     },
 
 
     //////
-    articleContainer:{
+    articleContainer: {
         borderWidth: 1,
-    borderColor: "#000000",
+        borderColor: "#000000",
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 10,
         width: '95%',
-        height:70,
-        paddingLeft:20,
+        height: 70,
+        paddingLeft: 20,
         backgroundColor: 'white',
         hadowColor: "#000",
-        shadowOffset: { width: 4, height: 4 }, 
+        shadowOffset: { width: 4, height: 4 },
         shadowOpacity: 0.4,
         shadowRadius: 4,
         marginBottom: 10,
-        
-    
-      },
-    
-      imageContainer:{
+
+
+    },
+
+    imageContainer: {
         width: '25%',
-      },
-    
-      image:{
+    },
+
+    image: {
         height: 60,
-        width :60,
-        borderRadius:50,
-      },
-    
-      textContainer:{
+        width: 60,
+        borderRadius: 50,
+    },
+
+    textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-      },
-      textTitre: {
+    },
+    textTitre: {
         fontFamily: 'RopaSans-Regular',
         fontSize: 20,
-      },
-      textPrix: {
+    },
+    textPrix: {
         fontFamily: 'RopaSans-Regular',
         fontSize: 20,
-      },
-      textNom:{
+    },
+    textNom: {
         fontFamily: 'RopaSans-Regular',
         fontSize: 16,
-      },
+    },
 });
