@@ -13,7 +13,6 @@ const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function TransactionsScreen({ navigation }) {
     const user = useSelector(state => state.user.value);
-    console.log(user);
     const [soldArticles, setSoldArticles] = useState([]);
     const [boughtArticles, setBoughtArticles] = useState([]);
     console.log('soldArticle ----------------->', soldArticles);
@@ -96,23 +95,23 @@ export default function TransactionsScreen({ navigation }) {
                     // Partie "Mes ventes"
                     soldArticles.length > 0 ? (
                         soldArticles.map((item, i) => (
-                        <TouchableOpacity onPress={()=> navigation.navigate('ArticleScreen', { article: item })}>
-                            <View key={item.id} style={styles.venteContainer}>
-                                <View style={styles.articleContainer}>
-                                    <View style={styles.imageContainer}>
-                                        <Image source={{ uri: item.pictures[0] }} style={styles.image} />
-                                    </View>
-                                    <View>
-                                        <View style={styles.textContainer}>
-                                            <Text style={styles.textTitre}>{item.title}</Text>
-                                            <Text style={styles.textPrix}>{item.price} €</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('ArticleScreen', { article: item })}>
+                                <View key={i} style={styles.venteContainer}>
+                                    <View style={styles.articleContainer}>
+                                        <View style={styles.imageContainer}>
+                                            <Image source={{ uri: item.pictures[0] }} style={styles.image} />
                                         </View>
                                         <View>
-                                            <Text style={styles.textNom}>{item.boughtBy?.firstname}</Text>
+                                            <View style={styles.textContainer}>
+                                                <Text style={styles.textTitre}>{item.title}</Text>
+                                                <Text style={styles.textPrix}>{item.price} €</Text>
+                                            </View>
+                                            <View>
+                                                <Text style={styles.textNom}>{item.boughtBy?.firstname}</Text>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
-                            </View>
                             </TouchableOpacity>
                         ))
                     ) : (
@@ -124,22 +123,24 @@ export default function TransactionsScreen({ navigation }) {
                     // Partie "Mes achats"
                     boughtArticles.length > 0 ? (
                         boughtArticles.map((item, i) => (
-                            <View key={item.id} style={styles.venteContainer}>
-                                <View style={styles.articleContainer}>
-                                    <View style={styles.imageContainer}>
-                                        <Image source={{ uri: item.pictures[0] }} style={styles.image} />
-                                    </View>
-                                    <View>
-                                        <View style={styles.textContainer}>
-                                            <Text style={styles.textTitre}>{item.title}</Text>
-                                            <Text style={styles.textPrix}>{item.price} €</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('ArticleScreen', { article: item })}>
+                                <View key={i} style={styles.venteContainer}>
+                                    <View style={styles.articleContainer}>
+                                        <View style={styles.imageContainer}>
+                                            <Image source={{ uri: item.pictures[0] }} style={styles.image} />
                                         </View>
                                         <View>
-                                            <Text style={styles.textNom}>{item.user.firstname}</Text>
+                                            <View style={styles.textContainer}>
+                                                <Text style={styles.textTitre}>{item.title}</Text>
+                                                <Text style={styles.textPrix}>{item.price} €</Text>
+                                            </View>
+                                            <View>
+                                                <Text style={styles.textNom}>{item.user.firstname}</Text>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         ))
                     ) : (
                         <View style={styles.noArticlesContainer}>
