@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, FlatList, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import HeaderNavigation from './components/HeaderNavigation';
 import { FontAwesome } from '@expo/vector-icons';
@@ -11,8 +11,9 @@ export default function ChatScreen({ route, navigation }) {
     const [messages, setMessages] = useState([]);
     const [inputText, setInputText] = useState('');
     const [loading, setLoading] = useState(true);
-    console.log(messages)
-    // 🔹 Fonction pour récupérer les messages
+    const [refreshing, setRefreshing] = useState(false); 
+
+    // Fonction pour récupérer les messages
     const fetchMessages = async () => {
         try {
             const response = await fetch(`${API_URL}chatroom/messages/${userToken}/${conversationId}`);
@@ -26,12 +27,19 @@ export default function ChatScreen({ route, navigation }) {
         }
     };
 
-    // 🔹 Chargement des messages au montage
+    // Rafraîchissement au scroll (pull-to-refresh)
+    const onRefresh = async () => {
+        setRefreshing(true);
+        await fetchMessages(); // 🔄 Recharge les messages
+        setRefreshing(false);
+    };
+
+    //  Chargement des messages au montage
     useEffect(() => {
         fetchMessages();
     }, []);
 
-    // 🔹 Fonction pour envoyer un message
+    // Fonction pour envoyer un message
     const sendMessage = async () => {
         if (inputText.trim() === '') return;
         console.log(inputText)
@@ -100,6 +108,9 @@ export default function ChatScreen({ route, navigation }) {
                     keyExtractor={(_, index) => `${conversationId}-${index}`}
                     onEndReached={loadMoreMessages}
                     onEndReachedThreshold={0.2}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
                     inverted
                     ListFooterComponent={loading ? <ActivityIndicator size="small" color="#007aff" /> : null}
                 />
