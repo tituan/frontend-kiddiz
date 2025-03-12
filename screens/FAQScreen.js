@@ -100,8 +100,8 @@ export default function FAQScreen({ navigation }) {
                                 <Text style={styles.question}>{item.question}</Text>
                                 <FontAwesome
                                     name={openQuestionIndex === index ? "chevron-up" : "chevron-down"}
-                                    size={14}
-                                    color="white"
+                                    size={18}
+                                    color="black"
                                     style={styles.icon}
                                 />
                             </TouchableOpacity>
@@ -133,12 +133,14 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.9,
         shadowRadius: 4,
         elevation: 5,
+        
+        
     },
     questionContainer: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 20,
+        padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: "#ccc",
         backgroundColor: '#00CC99',
@@ -149,20 +151,27 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         color:'white',
-        paddingVertical: 5,
+        padding: 10,
+        
     },
     answer: {  
         fontFamily: 'RopaSans-Regular',
         fontSize: 18,
-        padding: 20,
+        fontWeight: 'normal',
+        padding: 15,
     },
     icon: {
         marginLeft: 10,
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
     buttonContact: {
         backgroundColor: '#4478A9',
-        marginTop: 30,
-        marginBottom: 40,
+        marginTop: 160,
         paddingHorizontal: 10, 
         alignSelf: 'center', 
         maxWidth: 350, 
