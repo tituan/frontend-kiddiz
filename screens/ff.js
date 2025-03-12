@@ -9,11 +9,11 @@ import { useSelector , useDispatch } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import RadioButton from './components/RadioButton'; 
 import { useFocusEffect } from '@react-navigation/native';
-import {updateIban} from '../reducers/users'
+import {loginUser} from '../reducers/users'
 
-
+ // Env variable for BACKEND
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
-
+//  const dispatch= useDispatch()
 
       const schema = yup.object().shape({
         title: yup
@@ -46,7 +46,7 @@ import {updateIban} from '../reducers/users'
           .required(`L'IBAN est requis`),
       })
 
-
+// const userId = '67c70f09d7eb098b650dece3';
 const categories = ['0-1 an', '1-3 ans', '3-6 ans', '6-12 ans'];
 const types = ['Puériculture', 'Loisir', 'Jouet'];
 const conditions = ['Très bon état', 'Bon état', 'État moyen', 'Neuf'];
@@ -131,7 +131,7 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
         formData.append('iban', data.iban)
       
       if (image) {
-        const fileExtension = image.split('.').pop();
+        const fileExtension = image.split('.').pop(); 
         const fileName = `photo.${fileExtension}`; 
 
         formData.append('pictures', {
@@ -142,21 +142,21 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
       }
       
       console.log("Redux mis à jour avec l'IBAN :", data.iban);
-     
+      
     const response = await fetch(`${urlBackend}articles`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data',
         },
         body: formData,
       });
 
       const result = await response.json();
-      dispatch(updateIban({ iban: data.iban }));
-      
+      dispatch(loginUser({ iban: data.iban }));
+     
       if (response.ok) {
         Alert.alert('Succès', 'L\'article a été publié avec succès.');
-        reset(); 
+        reset();
         setImage(null); 
         setSelectedCategory(null); 
         setSelectedType(null); 
@@ -169,7 +169,6 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
       
     } catch (error) {
       Alert.alert('Erreur', 'Une erreur est survenue lors de la publication de l\'article.');
-      
     }
   };
 
@@ -287,27 +286,27 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
         {errors.price && <Text style={styles.errorText}>{errors.price.message}</Text>}
 
         {!userIban && (
-              <View style={styles.ibanContainer}>
-                <Text style={styles.labelCategorie}>IBAN :</Text>
-                <Controller
-                  control={control}
-                  name="iban"
-                  defaultValue=""
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Votre IBAN"
-                      onBlur={onBlur}
-                      onChangeText={(text) => {
-                      console.log("IBAN saisi :", text); 
-                      onChange(text);
-                      }}
-                      value={value || ""}
-                    />
-                  )}
-                  />
-                {errors.iban && <Text style={styles.errorText}>{errors.iban.message}</Text>}
-              </View>
+      <View style={styles.ibanContainer}>
+        <Text style={styles.labelCategorie}>IBAN :</Text>
+        <Controller
+  control={control}
+  name="iban"
+  defaultValue=""
+  render={({ field: { onChange, onBlur, value } }) => (
+    <TextInput
+      style={styles.input}
+      placeholder="Votre IBAN"
+      onBlur={onBlur}
+      onChangeText={(text) => {
+        console.log("IBAN saisi :", text);
+        onChange(text);
+      }}
+      value={value || ""}
+    />
+  )}
+/>
+        {errors.iban && <Text style={styles.errorText}>{errors.iban.message}</Text>}
+      </View>
     )}
 
         <ButtonBig text="Publier l'article" style={styles.submitButton} onPress={handleSubmit(onSubmit)} />
@@ -390,3 +389,167 @@ const styles = StyleSheet.create({
 });
 
 export default AddArticlesScreen;
+
+
+
+
+
+
+
+const express = require("express");
+const router = express.Router();
+const nodemailer = require("nodemailer");
+const User = require("../models/User");
+const Article = require("../models/Article");
+
+router.put("/buy/buy/buy", async (req, res) => {
+    try {
+        // Vérifier que tous les champs requis sont présents
+        if (!checkBody(req.body, ["number", "line1", "postalCode", "city", "token", "articleId"])) {
+            return res.status(400).json({ result: false, error: "Missing or empty fields" });
+        }
+
+        const { number, line1, line2, postalCode, city, token, articleId } = req.body;
+
+        // Vérifier si l'utilisateur existe
+        const user = await User.findOne({ token: token });
+        if (!user) {
+            return res.status(404).json({ result: false, error: "User not found" });
+        }
+
+        // Vérifier si l'article existe et récupérer le vendeur avec ses informations
+        const article = await Article.findById(articleId).populate("user", "firstname lastname email iban");
+        if (!article) {
+            return res.status(404).json({ result: false, error: "Article not found" });
+        }
+
+        const seller = article.user; // Le vendeur
+        if (!seller) {
+            return res.status(404).json({ result: false, error: "Seller not found" });
+        }
+
+        // Vérifier si l'article est toujours en stock
+        if (article.availableStock === 0) {
+            return res.status(400).json({ result: false, error: "Article out of stock" });
+        }
+
+        // ✅ Mettre à jour l'adresse de l'acheteur
+        user.address = {
+            number,
+            line1,
+            line2: line2 || "", // Optionnel
+            zipCode: postalCode,
+            city
+        };
+
+        // ✅ Ajouter l'article acheté dans `articlesBought`
+        if (!user.articlesBought.includes(articleId)) {
+            user.articlesBought.push(articleId);
+        }
+        await user.save();
+
+        // ✅ Mettre à jour `availableStock` de l'article à `0`
+        article.availableStock = 0;
+        article.boughtBy = user._id;
+        await article.save();
+
+        // ✅ Envoi des e-mails
+        await sendEmailToSeller(seller, user, article);
+        await sendEmailToBuyer(user, seller, article);
+
+        // ✅ Réponse au client
+        res.json({
+            result: true,
+            message: "Achat validé. Adresse mise à jour, stock modifié et e-mails envoyés.",
+            user: {
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+                address: user.address,
+                articlesBought: user.articlesBought
+            },
+            article: {
+                _id: article._id,
+                title: article.title,
+                availableStock: article.availableStock,
+                boughtBy: article.boughtBy
+            }
+        });
+
+    } catch (error) {
+        console.error("Erreur lors de l'achat :", error);
+        res.status(500).json({
+            result: false,
+            message: "An error has occurred.",
+            error: error.message,
+        });
+    }
+});
+
+/**
+ * ✅ Envoie un e-mail au vendeur pour lui indiquer que son article a été acheté.
+ */
+async function sendEmailToSeller(seller, buyer, article) {
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.GMAIL_USER, // Ton email Gmail
+            pass: process.env.GMAIL_PASS // Ton mot de passe d'application Gmail
+        }
+    });
+
+    let mailOptions = {
+        from: process.env.GMAIL_USER,
+        to: seller.email,
+        subject: "Votre article a été vendu !",
+        html: `
+            <h2>Félicitations ${seller.firstname} ${seller.lastname} !</h2>
+            <p>Votre article <strong>${article.title}</strong> a été acheté par :</p>
+            <p><strong>Nom :</strong> ${buyer.firstname} ${buyer.lastname}<br>
+               <strong>Email :</strong> ${buyer.email}<br>
+               <strong>Adresse :</strong> ${buyer.address.number} ${buyer.address.line1}, ${buyer.address.city} ${buyer.address.zipCode}</p>
+            <p>Vous recevrez un virement sur votre compte bancaire (${seller.iban}) une fois le paiement effectué.</p>
+            <p>Merci d'expédier l'article dès que le paiement est confirmé.</p>
+        `
+    };
+
+    await transporter.sendMail(mailOptions);
+}
+
+/**
+ * ✅ Envoie un e-mail à l'acheteur avec une facture et l'IBAN du vendeur.
+ */
+async function sendEmailToBuyer(buyer, seller, article) {
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.GMAIL_USER, // Ton email Gmail
+            pass: process.env.GMAIL_PASS // Ton mot de passe d'application Gmail
+        }
+    });
+
+    const totalPrice = (article.price + 3.99).toFixed(2);
+
+    let mailOptions = {
+        from: process.env.GMAIL_USER,
+        to: buyer.email,
+        subject: "Confirmation d'achat et paiement requis",
+        html: `
+            <h2>Merci pour votre achat, ${buyer.firstname} ${buyer.lastname} !</h2>
+            <p>Vous avez acheté l'article suivant :</p>
+            <img src="${article.pictures[0]}" alt="Image de l'article" width="200"/>
+            <p><strong>Article :</strong> ${article.title}<br>
+               <strong>Description :</strong> ${article.description}<br>
+               <strong>Prix :</strong> ${article.price}€<br>
+               <strong>Livraison :</strong> 3.99€<br>
+               <strong>Total :</strong> ${totalPrice}€</p>
+            <p>Merci de procéder au paiement via virement bancaire sur le compte du vendeur :</p>
+            <p><strong>IBAN du vendeur :</strong> ${seller.iban}</p>
+            <p>Une fois le paiement effectué, l'article vous sera expédié.</p>
+        `
+    };
+
+    await transporter.sendMail(mailOptions);
+}
+
+module.exports = router;

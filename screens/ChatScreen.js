@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, FlatList, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import HeaderNavigation from './components/HeaderNavigation';
 import { FontAwesome } from '@expo/vector-icons';
@@ -11,38 +11,43 @@ export default function ChatScreen({ route, navigation }) {
     const [messages, setMessages] = useState([]);
     const [inputText, setInputText] = useState('');
     const [loading, setLoading] = useState(true);
-    console.log(messages)
-    // 🔹 Fonction pour récupérer les messages
+    const [refreshing, setRefreshing] = useState(false); 
+
+    // Fonction pour récupérer les messages
     const fetchMessages = async () => {
         try {
             const response = await fetch(`${API_URL}chatroom/messages/${userToken}/${conversationId}`);
             const data = await response.json();
 
-            setMessages(data.messages); // 🔥 Affichage du plus récent au plus ancien
+            setMessages(data.messages); 
         } catch (error) {
-            console.error("❌ Erreur lors de la récupération des messages :", error);
         } finally {
             setLoading(false);
         }
     };
 
-    // 🔹 Chargement des messages au montage
+    // Rafraîchissement au scroll (pull-to-refresh)
+    const onRefresh = async () => {
+        setRefreshing(true);
+        await fetchMessages(); // 🔄 Recharge les messages
+        setRefreshing(false);
+    };
+
+    //  Chargement des messages au montage
     useEffect(() => {
         fetchMessages();
     }, []);
 
-    // 🔹 Fonction pour envoyer un message
+    //  Fonction pour envoyer un message
     const sendMessage = async () => {
         if (inputText.trim() === '') return;
-        console.log(inputText)
-        console.log(userToken)
+        
         
         const newMessage = {
             conversationId,
             sender: userToken,
-            // receiver: sellerToken,
             content: inputText,
-            // date: new Date().toISOString(),
+            
         };
 
         try {
@@ -53,7 +58,7 @@ export default function ChatScreen({ route, navigation }) {
             });
 
             if (!response.ok) {
-                console.error("❌ Erreur lors de l’envoi du message :", await response.text());
+                console.error(" Erreur lors de l’envoi du message :", await response.text());
                 return;
             }
 
@@ -61,16 +66,16 @@ export default function ChatScreen({ route, navigation }) {
             setMessages(prevMessages => [savedMessage, ...prevMessages]);
             setInputText('');
         } catch (error) {
-            console.error("❌ Erreur lors de l’envoi du message :", error);
+            console.error(" Erreur lors de l’envoi du message :", error);
         }
     };
 
-    // 🔹 Fonction pour charger plus de messages
+    //  Fonction pour charger plus de messages
     const loadMoreMessages = async () => {
         if (!loading) fetchMessages();
     };
 
-    // 🔹 Rendu des messages
+    //  Rendu des messages
     const renderItem = ({ item }) => (
        <View style={[styles.messageContainer, item.isOwnMessage ? styles.buyerMessage : styles.sellerMessage]}>
             <Text style={styles.messageText}>{item.content}</Text>
@@ -83,12 +88,12 @@ export default function ChatScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            {/* 🔹 HEADER */}
+            {/*  HEADER */}
             <LinearGradient colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} start={{ x: 0, y: 1 }} end={{ x: 0, y: 0 }} style={styles.header}>
                 <HeaderNavigation onPress={() => navigation.goBack()} />
             </LinearGradient>
 
-            {/* 🔹 LISTE DES MESSAGES */}
+            {/*  LISTE DES MESSAGES */}
             {loading ? (
                 <ActivityIndicator size="large" color="#007aff" style={styles.loader} />
             ) : messages.length === 0 ? (
@@ -100,12 +105,15 @@ export default function ChatScreen({ route, navigation }) {
                     keyExtractor={(_, index) => `${conversationId}-${index}`}
                     onEndReached={loadMoreMessages}
                     onEndReachedThreshold={0.2}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
                     inverted
                     ListFooterComponent={loading ? <ActivityIndicator size="small" color="#007aff" /> : null}
                 />
             )}
 
-            {/* 🔹 INPUT POUR ENVOYER UN MESSAGE */}
+            {/*  INPUT POUR ENVOYER UN MESSAGE */}
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <View style={styles.inputContainer}>
                     <TextInput 

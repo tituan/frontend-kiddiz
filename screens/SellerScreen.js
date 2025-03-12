@@ -1,15 +1,14 @@
-import { StyleSheet, View, ScrollView, Text, ActivityIndicator, Image, Button } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, ActivityIndicator} from 'react-native';
 import React, { useEffect, useState } from "react";
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient'
 import { useFonts } from 'expo-font';
-import ButtonBig from './components/ButtonBig'
 import ButtonHalf from './components/ButtonHalf';
 import Article from './components/Article';
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 
-// Env variable for BACKEND
+
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function SellerScreen({ navigation, route }) {
@@ -24,17 +23,17 @@ export default function SellerScreen({ navigation, route }) {
     const numberArticlesSeller = articles ? articles.length : 0;
     const userToken = useSelector(state => state.user.value.token);
 
-    // Remplace l'URL par celle de ton backend
+    
     const fetchArticles = async () => {
         try {
             const response = await fetch(`${urlBackend}articles/get-by/seller/${sellerToken}`);
             const data = await response.json();
             console.log(data)
-            setArticles(data.articles); // Stocke les articles dans l'état
+            setArticles(data.articles);
         } catch (error) {
             console.error("Erreur lors de la récupération des articles:", error);
         } finally {
-            setLoading(false); // Arrête le chargement
+            setLoading(false); 
         }
     };
 
@@ -61,9 +60,9 @@ export default function SellerScreen({ navigation, route }) {
     return (
         <View style={styles.container}>
             <LinearGradient
-                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
-                start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
-                end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
+                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} 
+                start={{ x: 0, y: 1 }} 
+                end={{ x: 0, y: 0 }} 
                 style={styles.header}
             >
                 <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
@@ -105,7 +104,7 @@ export default function SellerScreen({ navigation, route }) {
                             if (!userToken) {
                                 navigation.navigate("Connection");
                             } else {
-                                // redirection vers la page d'achat
+                                
                             }
                         }}/>
 
@@ -116,16 +115,11 @@ export default function SellerScreen({ navigation, route }) {
                             if (!userToken) {
                                 navigation.navigate("Connection");
                             } else {
-                                // redirection vers la page d'achat
+                               
                             }
                         }}/>
 
                     </View>
-                    
-                    {/* <View style={styles.containerCategories}>
-                        <Text style={styles.titre}> Categorie </Text>
-                        <ButtonBig style={styles.buttonCategorie} text="Tous"/>
-                    </View> */}
                     
                 </View>
                 <Text style={styles.mainTitle}> {numberArticlesSeller} Articles en vente : </Text>

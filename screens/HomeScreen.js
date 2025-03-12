@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator, Text } from 'react-native';
 import React, { useEffect, useState, useRef } from "react";
 import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient'
@@ -6,12 +6,12 @@ import WelcomeHome from './components/WelcomeHome'
 import Article from './components/Article';
 import { useIsFocused } from '@react-navigation/native';
 
- // Env variable for BACKEND
+ 
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
 export default function HomeScreen({ navigation }) {
 
-    // action de refresh scrollView (useIsFocused,useRef,ref={scrollViewRef})
+    
     const isFocused = useIsFocused()
         
           const scrollViewRef = useRef(null);
@@ -30,11 +30,11 @@ export default function HomeScreen({ navigation }) {
             const response = await fetch(`${urlBackend}articles/recent`);
             const data = await response.json();
             console.log(data)
-            setArticles(data.article); // Stocke les articles dans l'état
+            setArticles(data.article); 
         } catch (error) {
             console.error("Erreur lors de la récupération des articles:", error);
         } finally {
-            setLoading(false); // Arrête le chargement
+            setLoading(false); 
         }
     };
     
@@ -48,13 +48,12 @@ export default function HomeScreen({ navigation }) {
     const handleSearch = async (searchTerm) => {
 
         try {
-            // encodeURIComponent permet de gérer les caractères spéciaux
+           
             const response = await fetch(`${urlBackend}articles/?search=${encodeURIComponent(searchTerm)}`);
 
             const data = await response.json();
 
             setArticles(data.articles);
-            // navigation.navigate("Home");
 
         } catch (error) {
             console.error('Erreur lors de la recherche :', error);
@@ -76,14 +75,14 @@ export default function HomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <LinearGradient
-                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
-                start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
-                end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
+                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} 
+                start={{ x: 0, y: 1 }} 
+                end={{ x: 0, y: 0 }} 
                 style={styles.header}
             >
                 <HeaderNavigation
                     onPress={() => navigation.navigate("Connection")}
-                    onSearch={handleSearch} // Passe la fonction handleSearch qui va fetch à HeaderNavigation
+                    onSearch={handleSearch} 
                 />
             </LinearGradient>
             <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
@@ -116,11 +115,11 @@ const styles = StyleSheet.create({
         borderBottomColor: '#00000',
         borderBottomWidth: 1,
         paddingBottom: 20,
-        shadowColor: "#000", // Couleur de l'ombre
-        shadowOffset: { width: 0, height: 3 }, // Décalage vertical de l'ombre
-        shadowOpacity: 0.9, // Opacité de l'ombre
-        shadowRadius: 4, // Flou de l'ombre
-        elevation: 5, // Ajoute l'ombre sur Android
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 3 }, 
+        shadowOpacity: 0.9, 
+        shadowRadius: 4, 
+        elevation: 5, 
 
     },
     row: {
