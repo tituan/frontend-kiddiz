@@ -41,7 +41,7 @@ export default function ProfilScreen({ navigation }) {
                 </View>
                 <View style={styles.containerProfilInfos}>
                     <Text style={styles.containerProfilInfosWelcome}>Bienvenue</Text>
-                    <Text style={styles.containerProfilInfosName}>{user.firstname} {user.lastname}</Text>
+                    <Text style={styles.containerProfilInfosName}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() + user.firstname.slice(1).toLowerCase() : 'Utilisateur'} {user?.lastname ? user.lastname.charAt(0).toUpperCase() + user.lastname.slice(1).toLowerCase() : 'Utilisateur'}</Text>
                 </View>
             </View>
             <ButtonBig style={styles.buttonSell} text="Vendez votre article" onPress={() => navigation.navigate('Vendre')} />

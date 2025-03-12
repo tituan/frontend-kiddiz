@@ -4,10 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { useSelector } from 'react-redux';
 import ButtonHalf from './components/ButtonHalf';
-import * as SplashScreen from 'expo-splash-screen';
-import Article from './components/Article';
 import { useState, useEffect } from 'react';
-import ArticleTransaction from './components/ArticleTransaction';
 
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
@@ -103,11 +100,11 @@ export default function TransactionsScreen({ navigation }) {
                                         </View>
                                         <View>
                                             <View style={styles.textContainer}>
-                                                <Text style={styles.textTitre}>{item.title}</Text>
-                                                <Text style={styles.textPrix}>{item.price} €</Text>
+                                                <Text style={styles.textTitre}>Article : {item.title}</Text>
                                             </View>
+                                            <Text style={styles.textPrix}>Prix : {item.price} €</Text>
                                             <View>
-                                                <Text style={styles.textNom}>{item.boughtBy?.firstname}</Text>
+                                                <Text style={styles.textNom}>Nom de l'acheteur : {item.boughtBy?.firstname}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -131,11 +128,11 @@ export default function TransactionsScreen({ navigation }) {
                                         </View>
                                         <View>
                                             <View style={styles.textContainer}>
-                                                <Text style={styles.textTitre}>{item.title}</Text>
-                                                <Text style={styles.textPrix}>{item.price} €</Text>
+                                                <Text style={styles.textTitre}>Article : {item.title}</Text>
                                             </View>
+                                            <Text style={styles.textPrix}>Prix : {item.price} €</Text>
                                             <View>
-                                                <Text style={styles.textNom}>{item.user.firstname}</Text>
+                                                <Text style={styles.textNom}>Nom du vendeur : {item.user.firstname}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -173,7 +170,6 @@ export default function TransactionsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-
         flex: 1,
         backgroundColor: '#fffff',
     },
@@ -183,7 +179,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         paddingBottom: 20,
     },
-
     buttonContainer: {
         width: '60%',
         padding: 10,
@@ -192,18 +187,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginLeft: 5,
     },
-
     venteContainer: {
         width: '100%',
-        paddingLeft: 20,
+        paddingHorizontal: 20,
     },
-
     acheteContainer: {
         width: '100%',
-        paddingLeft: 20,
-
+        padding: 20,
     },
-
     buttonNav: {
         marginRight: 15,
         paddingVertical: 10,
@@ -212,15 +203,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-
     activeButton: {
         backgroundColor: '#00CC99',
     },
-
     inactiveButton: {
-        backgroundColor: '#D3D3D3', // Gris clair pour les boutons non sélectionnés
+        backgroundColor: '#D3D3D3',
     },
-
     noArticlesContainer: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -235,53 +223,50 @@ const styles = StyleSheet.create({
     articlesContainer: {
         width: '100%',
     },
-
-
-    //////
     articleContainer: {
         borderWidth: 1,
         borderColor: "#000000",
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 10,
-        width: '95%',
-        height: 70,
-        paddingLeft: 20,
+        padding: 10,
         backgroundColor: 'white',
         hadowColor: "#000",
         shadowOffset: { width: 4, height: 4 },
         shadowOpacity: 0.4,
         shadowRadius: 4,
         marginBottom: 10,
-
-
     },
-
     imageContainer: {
-        width: '25%',
+        marginRight: 20,
+        marginLeft: 10,
+        width: '18%',
     },
-
     image: {
         height: 60,
         width: 60,
         borderRadius: 50,
+        borderColor: '#00000',
+        borderWidth: 1,
     },
-
     textContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        width: '82%',
     },
     textTitre: {
         fontFamily: 'RopaSans-Regular',
-        fontSize: 20,
+        fontSize: 18,
+        marginBottom: 4,
+        flexWrap: 'wrap',
+        width: '100%',
     },
     textPrix: {
         fontFamily: 'RopaSans-Regular',
-        fontSize: 20,
+        fontSize: 16,
+        marginBottom: 4,
     },
     textNom: {
         fontFamily: 'RopaSans-Regular',
-        fontSize: 16,
+        fontSize: 14,
     },
 });
