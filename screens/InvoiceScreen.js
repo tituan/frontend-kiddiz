@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   articlePrice: {
     fontFamily: 'LilitaOne-Regular',
       fontSize: 18,
-      width: '20%',
+      width: '34%',
       textAlign: 'center',
       padding: 5,
       borderWidth: 1,
