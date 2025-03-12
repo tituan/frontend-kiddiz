@@ -27,7 +27,7 @@ export default function HomeScreen({ navigation }) {
     // Remplace l'URL par celle de ton backend
     const fetchArticles = async () => {
         try {
-            const response = await fetch(`${urlBackend}articles/popular`);
+            const response = await fetch(`${urlBackend}articles/recent`);
             const data = await response.json();
             console.log(data)
             setArticles(data.article); // Stocke les articles dans l'état

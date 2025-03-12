@@ -116,7 +116,7 @@ export default function SignUpScreen({ navigation }) {
           token: data.userResponse.token,
           status: data.userResponse.status,
         }));
-        Alert.alert("Bienvenu sur Kiddiz");
+        Alert.alert("Bienvenue sur Kiddiz");
         // redirection vers la home
         navigation.navigate('Home');
       } else {
