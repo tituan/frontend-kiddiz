@@ -6,7 +6,7 @@ import {useEffect} from 'react';
 
 
 
-function ArticleTransaction({ text, onPress, style, item }) {
+function ArticleTransaction({ onPress, style, }) {
   const [loaded, error] = useFonts({
       'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
       'RopaSans-Regular': require('../../assets/fonts/RopaSans-Regular.ttf'),
@@ -67,15 +67,10 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     padding:15,
     backgroundColor:'white',  
-    
-
-    // Ombre sur iOS
     shadowColor: "#000",
     shadowOffset: { width: 4, height: 4 }, 
     shadowOpacity: 0.4,
     shadowRadius: 4,
-
-    // Ombre sur Android
     elevation: 5, 
   },
 

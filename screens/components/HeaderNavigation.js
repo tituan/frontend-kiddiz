@@ -6,16 +6,12 @@ import { useSelector } from 'react-redux';
 import ButtonHalf from './ButtonHalf'
 import ButtonIcon from './ButtonIcon'
 import SearchBar from './SearchBar'
-import { useDispatch } from 'react-redux';
-import { logOut } from '../../reducers/users';
-import HomeScreen from '../HomeScreen';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 
 const HeaderNavigation = ({ onPress, onSearch }) => {
     const userToken = useSelector(state => state.user.value.token);
-    const route = useRoute(); // Récupère la route actuelle
-    // const dispatch = useDispatch();
+    const route = useRoute(); 
     const navigation = useNavigation();
     const [loaded, error] = useFonts({
         'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),

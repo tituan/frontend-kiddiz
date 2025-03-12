@@ -26,13 +26,13 @@ import {loginUser} from '../reducers/users'
           .required('La description est requise'),
         category: yup
           .string()
-          .required('Sélectionnez une catégorie'), // Une seule catégorie sélectionnée
+          .required('Sélectionnez une catégorie'), 
         itemType: yup
           .string()
-          .required('Sélectionnez un type'), // Un seul type sélectionné
+          .required('Sélectionnez un type'), 
         condition: yup
           .string()
-          .required('Sélectionnez un état'), // Un seul état sélectionné
+          .required('Sélectionnez un état'), 
         price: yup
           .number()
           .positive('Le prix doit être un nombre positif')
@@ -53,7 +53,7 @@ const conditions = ['Très bon état', 'Bon état', 'État moyen', 'Neuf'];
 
 const AddArticlesScreen = ({ navigation }) => {
 
-  // action de refresh scrollView (useFocusEffect,useRef,ref={scrollViewRef})
+  
   const scrollViewRef = useRef(null);
       useFocusEffect(
           React.useCallback(() => {
@@ -71,10 +71,10 @@ console.log(userToken)
 
 const { control, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm({
   resolver: yupResolver(schema),
-  defaultValues: { iban: userIban || "" }, // ✅ Assurer que l'IBAN est bien initialisé
+  defaultValues: { iban: userIban || "" }, 
 });
 
-const ibanValue = watch("iban"); // 👀 Suivre la valeur en temps réel
+const ibanValue = watch("iban"); 
 console.log("Valeur actuelle de l'IBAN :", ibanValue);
 
   const [image, setImage] = useState(null);
@@ -105,34 +105,34 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      setValue('pictures', result.assets[0].uri); // Mettre à jour le champ "pictures"
+      setValue('pictures', result.assets[0].uri); 
     }
   };
 
   const handleRadioSelection = (value, setSelected, fieldName) => {
-    setSelected(value); // Mettre à jour l'élément sélectionné
-    setValue(fieldName, value); // Mettre à jour la valeur dans react-hook-form
+    setSelected(value); 
+    setValue(fieldName, value); 
   };
 
   
   const onSubmit = async (data) => {
     try {
-      // Créer un objet FormData
+      
       const formData = new FormData();
-      // Ajouter les champs du formulaire
+      
       formData.append('title', data.title);
       formData.append('productDescription', data.productDescription);
-      formData.append('category', data.category); // Convertir en JSON si le backend attend un tableau
-      formData.append('itemType', data.itemType); // Convertir en JSON si le backend attend un tableau
-      formData.append('condition', data.condition); // Convertir en JSON si le backend attend un tableau
-      formData.append('price', data.price.toString()); // Convertir en chaîne si nécessaire
+      formData.append('category', data.category); 
+      formData.append('itemType', data.itemType); 
+      formData.append('condition', data.condition); 
+      formData.append('price', data.price.toString()); 
       formData.append('articleCreationDate', new Date().toISOString());
         formData.append('token', userToken)
         formData.append('iban', data.iban)
-      // Ajouter l'image
+      
       if (image) {
-        const fileExtension = image.split('.').pop(); // Extraire l'extension du fichier
-        const fileName = `photo.${fileExtension}`; // Nom du fichier
+        const fileExtension = image.split('.').pop(); 
+        const fileName = `photo.${fileExtension}`; 
 
         formData.append('pictures', {
           uri: image,
@@ -142,25 +142,25 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
       }
       
       console.log("Redux mis à jour avec l'IBAN :", data.iban);
-      // Envoyer les données au backend
+      
     const response = await fetch(`${urlBackend}articles`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data', // Utiliser multipart/form-data pour les fichiers
+          'Content-Type': 'multipart/form-data',
         },
         body: formData,
       });
 
       const result = await response.json();
       dispatch(loginUser({ iban: data.iban }));
-      // console.log(result)
+     
       if (response.ok) {
         Alert.alert('Succès', 'L\'article a été publié avec succès.');
-        reset(); // Réinitialiser tous les champs du formulaire
-        setImage(null); // Réinitialiser l'image
-        setSelectedCategory(null); // Réinitialiser la catégorie sélectionnée
-        setSelectedType(null); // Réinitialiser le type sélectionné
-        setSelectedCondition(null); // Réinitialiser l'état sélectionné
+        reset();
+        setImage(null); 
+        setSelectedCategory(null); 
+        setSelectedType(null); 
+        setSelectedCondition(null); 
         navigation.goBack();
       } else {
         Alert.alert('Erreur', result.error || 'Une erreur est survenue lors de la publication de l\'article.');
@@ -169,7 +169,6 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
       
     } catch (error) {
       Alert.alert('Erreur', 'Une erreur est survenue lors de la publication de l\'article.');
-      console.error(error);
     }
   };
 
@@ -299,7 +298,7 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
       placeholder="Votre IBAN"
       onBlur={onBlur}
       onChangeText={(text) => {
-        console.log("IBAN saisi :", text); // ✅ Vérifier si l'IBAN est bien mis à jour
+        console.log("IBAN saisi :", text);
         onChange(text);
       }}
       value={value || ""}

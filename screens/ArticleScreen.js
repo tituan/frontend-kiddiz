@@ -1,10 +1,9 @@
-import { StyleSheet, View, ScrollView, FlatList, ActivityIndicator, Text, Button, Image, Alert } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Image, Alert } from 'react-native';
 import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient'
 import ButtonBig from './components/ButtonBig';
-import ButtonHalf from './components/ButtonHalf';
 import { FontAwesome } from '@expo/vector-icons';
 import ButtonProfil from './components/ButtonProfil';
 
@@ -17,7 +16,7 @@ export default function ArticleScreen({ navigation, route }) {
     console.log(article)
     const sellerArticleToken = article.user.token
 
-    // Fonction pour acheter un article
+    
     const handleInvoice = () => {
         if(userToken === sellerArticleToken){
             Alert.alert('Error', 'Vous ne pouvez pas acheter votre propre article');}
@@ -56,12 +55,12 @@ export default function ArticleScreen({ navigation, route }) {
                     const existantConversation = await messagesResponse.json();
                     console.log('Messages de la conversation:', existantConversation);
             
-                    // Navigation vers `ChatScreen` avec la conversation existante
+                    
                     navigation.navigate("ChatScreen", {
                         userToken: token,
                         conversationId: conversation._id,
                         article: article,
-                        messages: existantConversation.messages, // Optionnel
+                        messages: existantConversation.messages, 
                     });
                     return;
             
@@ -89,11 +88,11 @@ export default function ArticleScreen({ navigation, route }) {
     
             console.log("Conversation obtenue :", conversation);
     
-            // Navigation vers `ChatScreen` avec la conversation
+            
             navigation.navigate("ChatScreen", {
                 userToken: token,
                 article: article,
-                conversationId: conversation._id, // Passe l'ID de la conversation
+                conversationId: conversation._id, 
             });
     
         } catch (error) {
@@ -102,7 +101,7 @@ export default function ArticleScreen({ navigation, route }) {
     };
     const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-    // fonction de suppression de l'article (met availableStock à 0)
+    // fonction de suppression de l'article
     const handleDelete = async () => {
         try {
             const response = await fetch(`${urlBackend}articles/stock/${article.id}`, {
@@ -137,11 +136,11 @@ export default function ArticleScreen({ navigation, route }) {
             [
                 {
                     text: "Non",
-                    style: "cancel", // Ferme l'alerte sans rien faire
+                    style: "cancel", 
                 },
                 {
                     text: "Oui",
-                    onPress: () => handleDelete(), // Lance la suppression si l'utilisateur confirme
+                    onPress: () => handleDelete(), 
                 },
             ]
         );
@@ -150,9 +149,9 @@ export default function ArticleScreen({ navigation, route }) {
     return (
         <View style={styles.container}>
             <LinearGradient
-                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
-                start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
-                end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
+                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} 
+                start={{ x: 0, y: 1 }} 
+                end={{ x: 0, y: 0 }} 
                 style={styles.header}
             >
                 <HeaderNavigation onPress={() => navigation.navigate("Connection")} />
@@ -229,29 +228,18 @@ export default function ArticleScreen({ navigation, route }) {
                                 />
                             </View>
                             <Image style={styles.map} source={require('../assets/carte.jpg')} />
-                            <View style={styles.buttonHalfContainer}>
+                            <View style={styles.buttonContainer2}>
 
-                                <ButtonHalf 
+                                <ButtonBig 
                                 style={styles.buttonOffre} 
                                 text="Faire une offre"
                                 onPress={() => {
                                     if (!userToken) {
                                         navigation.navigate("Connection");
                                     } else {
-                                        // redirection vers la page d'achat
                                     }
                                 }} />
 
-                                <ButtonHalf 
-                                style={styles.buttonAchater} 
-                                text="Acheter"
-                                onPress={() => {
-                                    if (!userToken) {
-                                        navigation.navigate("Connection");
-                                    } else {
-                                        // redirection vers la page d'achat
-                                    }
-                                }} />
                             </View>
                         </>
                     )}
@@ -392,22 +380,16 @@ const styles = StyleSheet.create({
         height: 200,
         width: '100%',
     },
-    buttonHalfContainer: {
+    buttonContainer2: {
         padding: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+    
     },
     buttonOffre: {
-        width: '48%',
+        width: '100%',
         borderColor: "black",
         backgroundColor: "#00CC99",
     },
-    buttonAchater: {
-        width: '48%',
-        borderColor: "#000000",
-        backgroundColor: "#EDDC5F",
-    },
+    
     buttonModify: {
         backgroundColor: '#F095B4',
     },

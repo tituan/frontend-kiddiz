@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet, Alert, ScrollView,KeyboardAvoidingView,Platform } from 'react-native';
+import { View, Text, TextInput, Image, StyleSheet, Alert, ScrollView,KeyboardAvoidingView,Platform } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -11,7 +11,6 @@ import { useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 
-// ✅ Définition du schéma de validation avec Yup
 const schema = yup.object().shape({
   firstname: yup.string().required('Le prénom est requis'),
   lastname: yup.string().required('Le nom est requis'),
@@ -24,7 +23,7 @@ const schema = yup.object().shape({
 
 export default function InvoiceScreen({ navigation, route }) {
 
-    // action de refresh scrollView (useFocusEffect,useRef,ref={scrollViewRef})
+   
     const scrollViewRef = useRef(null);
         useFocusEffect(
             React.useCallback(() => {
@@ -53,9 +52,9 @@ export default function InvoiceScreen({ navigation, route }) {
     },
   });
 
-  // ✅ Fonction d'achat de l'article
+  
   const onSubmit = async (data) => {
-    // Création de l'objet à envoyer au backend
+   
     const requestBody = {
       number: data.number,  
       line1: data.address1,
@@ -66,19 +65,19 @@ export default function InvoiceScreen({ navigation, route }) {
       articleId: article.id
     };
 
-    console.log("Données envoyées au backend :", requestBody); // ✅ Vérifier les données envoyées
+    console.log("Données envoyées au backend :", requestBody); 
 
     try {
       const response = await fetch(`${urlBackend}articles/buy/buy/buy`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json', // ✅ Correction : Envoi sous format JSON
+          'Content-Type': 'application/json', 
         },
         body: JSON.stringify(requestBody),
       });
 
       const result = await response.json();
-      console.log("Réponse du backend :", result); // ✅ Vérifier la réponse du backend
+      console.log("Réponse du backend :", result);
 
       if (response.ok) {
         Alert.alert('Succès', 'Félicitations !!! L\'article a été acheté avec succès. Consultez votre boite mail pour le paiement.');

@@ -41,11 +41,11 @@ const ModifyArticleScreen = ({ navigation }) => {
   const [selectedCondition, setSelectedCondition] = useState(null);
   const [article, setArticle] = useState(null);
 
-  // BOUTON RETURN TEMPORAIRE
+  
   const handleGoBack = () => {
-    navigation.goBack(); // Retourne à l'écran précédent
+    navigation.goBack();
   };
-  // FIN PARTIE BOUTOU RETOUR TEMPORAIRE
+ 
 
   useEffect(() => {
 
@@ -59,16 +59,14 @@ const ModifyArticleScreen = ({ navigation }) => {
 
           setArticle(data);
 
-          setValue('title', data.article.title); // setValue est une fonction fournie par la bibliothèque React Hook Form : (nomDuChamp, nouvelleValeur)
-          setValue('productDescription', data.article.productDescription); // Pré-remplir le champ "productDescription"
+          setValue('title', data.article.title); 
+          setValue('productDescription', data.article.productDescription); 
           setValue('category', data.article.category);
           setValue('itemType', data.article.itemType);
           setValue('condition', data.article.condition);
           setValue('price', data.article.price.toString());
           setImage(data.article.pictures[0]);
           setValue('pictures', data.article.pictures[0]);
-
-          // Mettre à jour les états locaux pour les boutons radio
           setSelectedCategory(data.article.category);
           setSelectedType(data.article.itemType);
           setSelectedCondition(data.article.condition);
@@ -192,11 +190,11 @@ const ModifyArticleScreen = ({ navigation }) => {
       [
         {
           text: "Non",
-          style: "cancel", // Ferme l'alerte sans rien faire
+          style: "cancel", 
         },
         {
           text: "Oui",
-          onPress: () => handleDelete(), // Lance la suppression si l'utilisateur confirme
+          onPress: () => handleDelete(), 
         },
       ]
     );
