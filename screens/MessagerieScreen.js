@@ -74,7 +74,7 @@ export default function MessagerieScreen({ navigation }) {
             <Text style={styles.titleMessagerie}>Vos messages :</Text>
 
             {loading ? (
-                <ActivityIndicator size="large" color="#007aff" />
+                <ActivityIndicator size="large" color="#00CC99" />
             ) : conversations.length === 0 ? (
                 <Text style={styles.noMessages}>Aucune conversation disponible.</Text>
             ) : (
