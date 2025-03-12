@@ -110,11 +110,12 @@ export default function InvoiceScreen({ navigation, route }) {
         <View style={styles.articleInfo}>
           <Text style={styles.articleTitle}>{article.title}</Text>
           <Text style={styles.articlePrice}>{article.price}€</Text>
+          <Text>Frais de livraison: 3.99€</Text>
         </View>
       </View>
-
+      <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
       <View style={styles.formContainer}>
-        <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
+       
         {['firstname', 'lastname', 'number' , 'address1', 'address2', 'postalCode', 'city'].map((field, index) => (
           <View key={index}>
             <Controller
@@ -140,8 +141,8 @@ export default function InvoiceScreen({ navigation, route }) {
           text="Acheter l'article"
           onPress={handleSubmit(onSubmit)}
         />
-        </ScrollView>
       </View>
+        </ScrollView>
     </View>
     </KeyboardAvoidingView>
   );
