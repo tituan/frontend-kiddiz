@@ -25,25 +25,23 @@ export default function FavorisScreen({ navigation }) {
     const userToken = useSelector(state => state.user.value.token);
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
-    // console.log(articles)
-
-    useEffect(() => {
-
-        const fetchArticles = async () => {
+    
+    const fetchFavorites = async () => {
         try {
             const response = await fetch(`${urlBackend}favorites/${userToken}`);
             const data = await response.json();
-            setArticles(data.article[0].articles); // Stocke les articles dans l'état
-            // console.log()
+            setArticles(data.articles); 
+            
         } catch (error) {
             console.error("Erreur lors de la récupération des articles:", error);
         } finally {
-            setLoading(false); // Arrête le chargement
+            setLoading(false); 
         }
-        };
-
-        fetchArticles();
-    }, []);
+    };
+    
+    useEffect(() => {
+        if(isFocused) fetchFavorites();
+    }, [isFocused]);
 
     if (loading) {
         return (
@@ -52,6 +50,10 @@ export default function FavorisScreen({ navigation }) {
           </View>
         );
       }
+
+      const handleRefresh = () => {
+        fetchFavorites();
+      };
 
     return (
     <View style={styles.container}>
@@ -68,7 +70,7 @@ export default function FavorisScreen({ navigation }) {
             <View style={styles.row}>
                 {articles && articles.length > 0 ? (
                     articles.map((item, i) => (
-                        <Article key={i} item={item} />
+                        <Article key={i} item={item} isFavorite={true} onRefresh={handleRefresh}/>
                     ))
                 ) : (
                     <View style={styles.noArticlesContainer}>
@@ -77,7 +79,6 @@ export default function FavorisScreen({ navigation }) {
                 )}
             </View>
         </ScrollView>
-        
     </View>
     );
 }

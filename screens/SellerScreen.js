@@ -7,6 +7,7 @@ import ButtonBig from './components/ButtonBig'
 import ButtonHalf from './components/ButtonHalf';
 import Article from './components/Article';
 import { FontAwesome } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 // Env variable for BACKEND
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
@@ -21,24 +22,29 @@ export default function SellerScreen({ navigation, route }) {
     const [loading, setLoading] = useState(true);
     const [articles, setArticles] = useState([]);
     const numberArticlesSeller = articles ? articles.length : 0;
+    const userToken = useSelector(state => state.user.value.token);
+
+    // Remplace l'URL par celle de ton backend
+    const fetchArticles = async () => {
+        try {
+            const response = await fetch(`${urlBackend}articles/get-by/seller/${sellerToken}`);
+            const data = await response.json();
+            console.log(data)
+            setArticles(data.articles); // Stocke les articles dans l'état
+        } catch (error) {
+            console.error("Erreur lors de la récupération des articles:", error);
+        } finally {
+            setLoading(false); // Arrête le chargement
+        }
+    };
 
     useEffect(() => {
-        // Remplace l'URL par celle de ton backend
-        const fetchArticles = async () => {
-            try {
-                const response = await fetch(`${urlBackend}articles/get-by/seller/${sellerToken}`);
-                const data = await response.json();
-                console.log(data)
-                setArticles(data.articles); // Stocke les articles dans l'état
-            } catch (error) {
-                console.error("Erreur lors de la récupération des articles:", error);
-            } finally {
-                setLoading(false); // Arrête le chargement
-            }
-        };
-
         fetchArticles();
     }, []);
+
+    const handleRefresh = () => {
+        fetchArticles();
+      };
 
     const [fontsLoaded] = useFonts({
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
@@ -49,7 +55,8 @@ export default function SellerScreen({ navigation, route }) {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
 
-    
+    console.log('test:', article)
+    console.log('test2:', articles)
 
     return (
         <View style={styles.container}>
@@ -90,8 +97,29 @@ export default function SellerScreen({ navigation, route }) {
                         <Text style={styles.textVente} > Nombre de vente réalisées 50 </Text>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <ButtonHalf style={styles.buttonContacter} text="Contacter"/>
-                        <ButtonHalf style={styles.buttonAbonner} text="S'abonner"/>
+
+                        <ButtonHalf 
+                        style={styles.buttonContacter} 
+                        text="Contacter"
+                        onPress={() => {
+                            if (!userToken) {
+                                navigation.navigate("Connection");
+                            } else {
+                                // redirection vers la page d'achat
+                            }
+                        }}/>
+
+                        <ButtonHalf 
+                        style={styles.buttonAbonner} 
+                        text="S'abonner"
+                        onPress={() => {
+                            if (!userToken) {
+                                navigation.navigate("Connection");
+                            } else {
+                                // redirection vers la page d'achat
+                            }
+                        }}/>
+
                     </View>
                     
                     {/* <View style={styles.containerCategories}>
@@ -103,8 +131,8 @@ export default function SellerScreen({ navigation, route }) {
                 <Text style={styles.mainTitle}> {numberArticlesSeller} Articles en vente : </Text>
             
                 <View style={styles.row}> 
-                    {articles.map((article, index) => (
-                        <Article key={article.id} item={article} />
+                    {articles && articles.map((article, index) => (
+                        <Article key={article.id} item={article} onRefresh={handleRefresh}/>
                     ))}
                 </View>
             </ScrollView>
