@@ -23,30 +23,29 @@ export default function HomeScreen({ navigation }) {
       
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [searchResults, setSearchResults] = useState([]);
 
-    // console.log(articles)
-
+    // Remplace l'URL par celle de ton backend
+    const fetchArticles = async () => {
+        try {
+            const response = await fetch(`${urlBackend}articles/popular`);
+            const data = await response.json();
+            console.log(data)
+            setArticles(data.article); // Stocke les articles dans l'état
+        } catch (error) {
+            console.error("Erreur lors de la récupération des articles:", error);
+        } finally {
+            setLoading(false); // Arrête le chargement
+        }
+    };
+    
     useEffect(() => {
-        // Remplace l'URL par celle de ton backend
-        const fetchArticles = async () => {
-            try {
-                const response = await fetch(`${urlBackend}articles/popular`);
-                const data = await response.json();
-                setArticles(data.article); // Stocke les articles dans l'état
-            } catch (error) {
-                console.error("Erreur lors de la récupération des articles:", error);
-            } finally {
-                setLoading(false); // Arrête le chargement
-            }
-        };
-
+        console.log(isFocused)
+        if(isFocused){
         fetchArticles();
-    }, []);
+        }
+    }, [isFocused]);
 
     const handleSearch = async (searchTerm) => {
-
-        
 
         try {
             // encodeURIComponent permet de gérer les caractères spéciaux
@@ -61,6 +60,10 @@ export default function HomeScreen({ navigation }) {
             console.error('Erreur lors de la recherche :', error);
         }
     };
+
+    const handleRefresh = () => {
+        fetchArticles();
+      };
 
     if (loading) {
         return (
@@ -89,7 +92,7 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.row}>
                     {articles && articles.length > 0 ? (
                         articles.map((item, i) => (
-                            <Article key={item.id} item={item} />
+                            <Article key={item.id} item={item} onRefresh={handleRefresh}/>
                         ))
                     ) : (
                         <View style={styles.noArticlesContainer}>

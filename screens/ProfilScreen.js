@@ -48,7 +48,7 @@ export default function ProfilScreen({ navigation }) {
             <ButtonBig style={styles.buttonNav} text="Mes articles" onPress={() => navigation.navigate('MesArticles')} />
             <ButtonBig style={styles.buttonNav} text="Mes favoris" onPress={() => navigation.navigate('Favoris')} />
             <ButtonBig style={styles.buttonNav} text="Mes transactions" onPress={() => navigation.navigate('TransactionsScreen')} />
-            <ButtonBig style={styles.buttonNav} text="FAQ" onPress={() => navigation.navigate('Vendre')} />
+            <ButtonBig style={styles.buttonNav} text="FAQ" onPress={() => navigation.navigate('FAQScreen')} />
             <ButtonBig style={styles.buttonNav} text="Déconnexion" onPress={handleLogOut} />
         </ScrollView>
         
