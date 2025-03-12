@@ -90,7 +90,7 @@ export default function InvoiceScreen({ navigation, route }) {
       console.error('Erreur lors de l\'envoi des données:', error);
       Alert.alert('Erreur', 'Problème de connexion au serveur.');
     }
-    navigation.navigate('HomeScreen', { screen: 'Home' });
+    navigation.navigate('Home');
   };
 
   return (
