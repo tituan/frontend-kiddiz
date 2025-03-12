@@ -4,10 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { useSelector } from 'react-redux';
 import ButtonHalf from './components/ButtonHalf';
-import * as SplashScreen from 'expo-splash-screen';
-import Article from './components/Article';
 import { useState, useEffect } from 'react';
-import ArticleTransaction from './components/ArticleTransaction';
 
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
@@ -104,7 +101,6 @@ export default function TransactionsScreen({ navigation }) {
                                         <View>
                                             <View style={styles.textContainer}>
                                                 <Text style={styles.textTitre}>Article : {item.title}</Text>
-                                                
                                             </View>
                                             <Text style={styles.textPrix}>Prix : {item.price} €</Text>
                                             <View>
@@ -244,6 +240,7 @@ const styles = StyleSheet.create({
     imageContainer: {
         marginRight: 20,
         marginLeft: 10,
+        width: '18%',
     },
     image: {
         height: 60,
@@ -254,13 +251,14 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        width: '82%',
     },
     textTitre: {
         fontFamily: 'RopaSans-Regular',
         fontSize: 18,
         marginBottom: 4,
+        flexWrap: 'wrap',
+        width: '100%',
     },
     textPrix: {
         fontFamily: 'RopaSans-Regular',
