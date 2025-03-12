@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, View, Alert } from "react-native";
 import { useFonts } from 'expo-font';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { FontAwesome } from '@expo/vector-icons';
@@ -18,7 +18,7 @@ function Article({ onPress, style, item, showModifyButton = false, isFavorite = 
   });
 
   const [isLiked, setIsLiked] = useState(isFavorite);
-  // const [likesCount, setLikesCount] = useState(item.likesCount);
+
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
@@ -70,8 +70,6 @@ function Article({ onPress, style, item, showModifyButton = false, isFavorite = 
       const data = await response.json();
 
       if (data.result) {
-        // setIsLiked(!isLiked);
-        // setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
         if (onRefresh) onRefresh();
       } else {
         console.error("Erreur API:", data.error);

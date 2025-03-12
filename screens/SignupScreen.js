@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, View, Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useForm, Controller } from 'react-hook-form';
@@ -14,10 +14,10 @@ import { useDispatch } from 'react-redux';
 import { signUpUser } from '../reducers/users';
 import ButtonIcon from './components/ButtonIcon';
 
-// Env variable for BACKEND
+
 const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-// Schéma de validation avec yup
+
 const schema = yup.object().shape({
   firstname: yup.string().required('Prénom requis'),
   lastname: yup.string().required('Nom requis'),
@@ -33,7 +33,7 @@ const schema = yup.object().shape({
   publicy: yup.bool().oneOf([true], 'Vous devez accepter les conditions de confidentialité'),
 });
 
-// Composant personnalisé pour la case à cocher
+
 const CustomCheckBox = ({ label, value, onChange }) => {
   return (
     <TouchableOpacity onPress={() => onChange(!value)} style={styles.checkboxContainer}>
@@ -50,9 +50,9 @@ const CustomCheckBox = ({ label, value, onChange }) => {
 export default function SignUpScreen({ navigation }) {
 
   const dispatch = useDispatch();
-  const [showDatePicker, setShowDatePicker] = useState(false); // État pour afficher/masquer le DatePicker
+  const [showDatePicker, setShowDatePicker] = useState(false); 
 
-  // Chargement de la police
+  
   const [loaded, error] = useFonts({
     'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
     'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
@@ -68,7 +68,7 @@ export default function SignUpScreen({ navigation }) {
     return null;
   }
 
-  // Initialisation de react-hook-form
+  
   const {
     control,
     handleSubmit,
@@ -88,10 +88,10 @@ export default function SignUpScreen({ navigation }) {
     },
   });
 
-  // Fonction pour envoyer les données au serveur
+  
   const handleSignUp = async (values) => {
     try {
-      // Convertir la date de naissance en format ISO
+      
       const formattedValues = {
         ...values,
         dateOfBirth: values.dateOfBirth ? new Date(values.dateOfBirth).toISOString() : null,
@@ -117,7 +117,7 @@ export default function SignUpScreen({ navigation }) {
           status: data.userResponse.status,
         }));
         Alert.alert("Bienvenu sur Kiddiz");
-        // redirection vers la home
+        
         navigation.navigate('Home');
       } else {
         console.log('Une erreur s\'est produite lors de l\'inscription :', data.error);
@@ -144,7 +144,7 @@ export default function SignUpScreen({ navigation }) {
           <SafeAreaView style={styles.innerContainer}>
             <Text style={styles.title}>Kiddiz</Text>
 
-            {/* Champ Prénom */}
+        
             <Controller
               control={control}
               name="firstname"
@@ -162,7 +162,7 @@ export default function SignUpScreen({ navigation }) {
               )}
             />
 
-            {/* Champ Nom */}
+           
             <Controller
               control={control}
               name="lastname"
@@ -180,7 +180,7 @@ export default function SignUpScreen({ navigation }) {
               )}
             />
 
-            {/* Champ Email */}
+            
             <Controller
               control={control}
               name="email"
@@ -200,7 +200,7 @@ export default function SignUpScreen({ navigation }) {
               )}
             />
 
-            {/* Champ Date de naissance */}
+            
             <Controller
               control={control}
               name="dateOfBirth"
@@ -218,9 +218,9 @@ export default function SignUpScreen({ navigation }) {
                       mode="date"
                       display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                       onChange={(event, selectedDate) => {
-                        setShowDatePicker(false); // Masquer le DatePicker après la sélection
+                        setShowDatePicker(false); 
                         if (selectedDate) {
-                          onChange(selectedDate); // Mettre à jour la valeur dans react-hook-form
+                          onChange(selectedDate); 
                         }
                       }}
                     />
@@ -229,7 +229,7 @@ export default function SignUpScreen({ navigation }) {
               )}
             />
 
-            {/* Champ Mot de passe */}
+            
             <Controller
               control={control}
               name="password"
@@ -248,7 +248,7 @@ export default function SignUpScreen({ navigation }) {
               )}
             />
 
-            {/* Champ Confirmation du mot de passe */}
+            
             <Controller
               control={control}
               name="confirmPassword"
@@ -267,7 +267,7 @@ export default function SignUpScreen({ navigation }) {
               )}
             />
 
-            {/* Case à cocher pour les conditions d'utilisation */}
+            
             <Controller
               control={control}
               name="conditionUtilisation"
@@ -281,7 +281,7 @@ export default function SignUpScreen({ navigation }) {
             />
             {errors.conditionUtilisation && <Text style={styles.errorText}>{errors.conditionUtilisation.message}</Text>}
 
-            {/* Case à cocher pour les conditions de confidentialité */}
+            
             <Controller
               control={control}
               name="publicy"
@@ -295,7 +295,7 @@ export default function SignUpScreen({ navigation }) {
             />
             {errors.publicy && <Text style={styles.errorText}>{errors.publicy.message}</Text>}
 
-            {/* Bouton d'inscription */}
+           
             <ButtonBig style={styles.buttonSignUp} text="S'inscrire" onPress={handleSubmit(onSubmit)} />
           </SafeAreaView>
         </KeyboardAvoidingView>

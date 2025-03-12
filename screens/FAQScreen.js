@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, View, ScrollView, ActivityIndicator, Text, TouchableOpacity, Linking } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Linking } from 'react-native';
 import { useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused } from '@react-navigation/native';
@@ -78,9 +78,7 @@ export default function FAQScreen({ navigation }) {
         const email = 'kiddizproject25@gmail.com';
         const subject = 'Sujet de votre message';
         const body = 'Écrivez ici votre message: ';
-    
         const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
         Linking.openURL(url).catch(err => console.error('Erreur lors de l\'ouverture de l\'application mail:', err));
     };
 

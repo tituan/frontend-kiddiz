@@ -26,9 +26,9 @@ const WelcomeHome = ({ navigation }) => {
 
  return (
     <LinearGradient
-            colors={['rgba(253,187,45,1)', 'rgba(34,193,195,1)']} // Couleurs du dégradé
-            start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
-            end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
+            colors={['rgba(253,187,45,1)', 'rgba(34,193,195,1)']} 
+            start={{ x: 0, y: 1 }} 
+            end={{ x: 0, y: 0 }} 
             style={styles.header}
             >
     {/* <View style={styles.container}> */}
@@ -45,7 +45,6 @@ const WelcomeHome = ({ navigation }) => {
                 <ButtonBig style={styles.buttonVendre} text="Vendre votre article" onPress={() => navigation.navigate("Connection")}/>
             </View>
       )} 
-    {/* </View> */}
     </LinearGradient>
 
  );

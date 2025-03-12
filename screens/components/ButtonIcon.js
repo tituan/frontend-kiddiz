@@ -28,15 +28,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    // marginVertical: 10,
-
-    // Ombre sur iOS
     shadowColor: "#000",
     shadowOffset: { width: 4, height: 4 }, 
     shadowOpacity: 0.4,
     shadowRadius: 4,
-
-    // Ombre sur Android
     elevation: 5, 
    
   }
