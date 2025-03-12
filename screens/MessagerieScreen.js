@@ -12,7 +12,6 @@ export default function MessagerieScreen({ navigation }) {
     const userToken = useSelector(state => state.user.value.token);
     const [conversations, setConversations] = useState([]);
     const [loading, setLoading] = useState(true);
-    // console.log(conversations.id)
 
     useEffect(() => {
         const fetchConversations = async () => {
@@ -26,14 +25,13 @@ export default function MessagerieScreen({ navigation }) {
                 const data = await response.json();
                 
                 if (!data.formattedConversations) {
-                    // console.error("❌ Données invalides reçues :", data);
                     setLoading(false);
                     return;
                 }
 
                 setConversations(data.formattedConversations);
             } catch (error) {
-                console.error("❌ Erreur lors de la récupération des conversations :", error);
+                console.error("Erreur lors de la récupération des conversations :", error);
             } finally {
                 setLoading(false);
             }
@@ -50,7 +48,6 @@ export default function MessagerieScreen({ navigation }) {
     };
 
     const renderItem = ({ item }) => {
-        console.log(item);
         
         return (
             <TouchableOpacity style={styles.itemContainer} onPress={() => goToChatScreen(item)}>
@@ -109,7 +106,8 @@ const styles = StyleSheet.create({
     },
     titleMessagerie: {
         padding: 20,
-        fontSize: 20,
+        fontSize: 25,
+        fontFamily: 'LilitaOne-Regular',
     },
     noMessages: {
         textAlign: 'center',
