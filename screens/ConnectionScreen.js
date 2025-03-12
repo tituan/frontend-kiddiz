@@ -37,7 +37,7 @@ export default function ConnectionScreen({ navigation }) {
 
       <ButtonBig style={styles.buttonInscrisToi} text="Inscris-toi" onPress={() => navigation.navigate('SignUp')} />
       <ButtonBig style={styles.buttonConnectesToi} text="Connectes-toi" onPress={() => navigation.navigate('SignIn')} />
-      <ButtonBig style={styles.buttonGoogle} text="Se connecter avec Google" />
+      {/* <ButtonBig style={styles.buttonGoogle} text="Se connecter avec Google" /> */}
     </SafeAreaView>
   );
 }

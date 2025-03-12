@@ -12,7 +12,6 @@ export default function MessagerieScreen({ navigation }) {
     const userToken = useSelector(state => state.user.value.token);
     const [conversations, setConversations] = useState([]);
     const [loading, setLoading] = useState(true);
-    
 
     useEffect(() => {
         const fetchConversations = async () => {
@@ -26,14 +25,13 @@ export default function MessagerieScreen({ navigation }) {
                 const data = await response.json();
                 
                 if (!data.formattedConversations) {
-                    
                     setLoading(false);
                     return;
                 }
 
                 setConversations(data.formattedConversations);
             } catch (error) {
-                console.error(error);
+                console.error("Erreur lors de la récupération des conversations :", error);
             } finally {
                 setLoading(false);
             }
@@ -76,7 +74,7 @@ export default function MessagerieScreen({ navigation }) {
             <Text style={styles.titleMessagerie}>Vos messages :</Text>
 
             {loading ? (
-                <ActivityIndicator size="large" color="#007aff" />
+                <ActivityIndicator size="large" color="#00CC99" />
             ) : conversations.length === 0 ? (
                 <Text style={styles.noMessages}>Aucune conversation disponible.</Text>
             ) : (
@@ -108,7 +106,8 @@ const styles = StyleSheet.create({
     },
     titleMessagerie: {
         padding: 20,
-        fontSize: 20,
+        fontSize: 25,
+        fontFamily: 'LilitaOne-Regular',
     },
     noMessages: {
         textAlign: 'center',

@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Image,
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 import ButtonBig from './components/ButtonBig';
+import ButtonIcon from './components/ButtonIcon';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
@@ -150,7 +151,7 @@ const ModifyArticleScreen = ({ navigation }) => {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Article non trouvé</Text>
-        <TouchableOpacity onPress={handleGoBack}><Text>Retour</Text></TouchableOpacity>
+        <ButtonIcon style={styles.buttonBack}  name="arrow-left"  onPress={handleGoBack}/>
       </View>
     );
   }
@@ -209,9 +210,8 @@ const ModifyArticleScreen = ({ navigation }) => {
       >
         <View style={styles.container}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
+            <ButtonIcon style={styles.buttonBack}  name="arrow-left"  onPress={handleGoBack}/>
             <Text style={styles.title}>Modifiez votre article !</Text>
-            <TouchableOpacity onPress={handleGoBack}><Text>Retour</Text></TouchableOpacity>
-
             <Text style={styles.labelCategorie}>Ajouter votre photo :</Text>
             <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
               {image ? (
@@ -327,14 +327,18 @@ const ModifyArticleScreen = ({ navigation }) => {
     title: {
       fontSize: 36,
       fontWeight: 'bold',
-      paddingTop: 60,
-      marginBottom: 40,
+      paddingTop: 30,
+      marginBottom: 20,
       color: 'white',
       textShadowColor: 'rgba(0, 0, 0, 0.5)',
       textShadowOffset: { width: 2, height: 2 },
       textShadowRadius: 3,
       fontFamily: 'LilitaOne-Regular',
       textAlign: 'center',
+    },
+    buttonBack: {
+      marginTop: 30,
+      backgroundColor: '#F095B4',
     },
     input: {
       width: '100%',
