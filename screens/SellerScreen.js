@@ -24,23 +24,27 @@ export default function SellerScreen({ navigation, route }) {
     const numberArticlesSeller = articles ? articles.length : 0;
     const userToken = useSelector(state => state.user.value.token);
 
-    useEffect(() => {
-        // Remplace l'URL par celle de ton backend
-        const fetchArticles = async () => {
-            try {
-                const response = await fetch(`${urlBackend}articles/get-by/seller/${sellerToken}`);
-                const data = await response.json();
-                console.log(data)
-                setArticles(data.articles); // Stocke les articles dans l'état
-            } catch (error) {
-                console.error("Erreur lors de la récupération des articles:", error);
-            } finally {
-                setLoading(false); // Arrête le chargement
-            }
-        };
+    // Remplace l'URL par celle de ton backend
+    const fetchArticles = async () => {
+        try {
+            const response = await fetch(`${urlBackend}articles/get-by/seller/${sellerToken}`);
+            const data = await response.json();
+            console.log(data)
+            setArticles(data.articles); // Stocke les articles dans l'état
+        } catch (error) {
+            console.error("Erreur lors de la récupération des articles:", error);
+        } finally {
+            setLoading(false); // Arrête le chargement
+        }
+    };
 
+    useEffect(() => {
         fetchArticles();
     }, []);
+
+    const handleRefresh = () => {
+        fetchArticles();
+      };
 
     const [fontsLoaded] = useFonts({
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
@@ -51,7 +55,8 @@ export default function SellerScreen({ navigation, route }) {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
 
-    
+    console.log('test:', article)
+    console.log('test2:', articles)
 
     return (
         <View style={styles.container}>
@@ -126,8 +131,8 @@ export default function SellerScreen({ navigation, route }) {
                 <Text style={styles.mainTitle}> {numberArticlesSeller} Articles en vente : </Text>
             
                 <View style={styles.row}> 
-                    {articles.map((article, index) => (
-                        <Article key={article.id} item={article} />
+                    {articles && articles.map((article, index) => (
+                        <Article key={article.id} item={article} onRefresh={handleRefresh}/>
                     ))}
                 </View>
             </ScrollView>

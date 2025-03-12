@@ -155,7 +155,7 @@ export default function ArticleScreen({ navigation, route }) {
                     <View style={styles.titreContainer}>
                         <Text style={styles.titre}>{article.title}</Text>
                         <View style={styles.titreContainerLikes}>
-                            <FontAwesome name="heart" size={20} color={"red"} style={styles.like} />
+                            <FontAwesome name="heart" size={20} color={"red"} style={styles.like}/>
                             <Text style={styles.likesCount}>{article.likesCount}</Text>
                         </View>
                     </View>
@@ -191,7 +191,13 @@ export default function ArticleScreen({ navigation, route }) {
                                 <ButtonBig 
                         style={styles.buttonAcheterArticle} 
                         text="Contacter le vendeur" 
-                        onPress={contactSeller}
+                        onPress={() => {
+                            if (!userToken) {
+                                navigation.navigate("Connection");
+                            } else {
+                                contactSeller();
+                            }
+                        }}
                         />
                     </View>
                         )}
