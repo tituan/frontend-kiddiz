@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet, Alert, ScrollView,KeyboardAvoidingView,Platform } from 'react-native';
+import { View, Text, TextInput, Image, StyleSheet, Alert, ScrollView,KeyboardAvoidingView,Platform } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -9,6 +9,9 @@ import HeaderNavigation from './components/HeaderNavigation';
 import ButtonBig from './components/ButtonBig';
 import { useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
 
 
 // ✅ Définition du schéma de validation avec Yup
@@ -22,18 +25,46 @@ const schema = yup.object().shape({
   city: yup.string().required('La ville est requise'),
 });
 
+const placeholders = {
+  firstname: 'Prénom',
+  lastname: 'Nom',
+  number: 'Numéro de rue',
+  address1: 'Adresse',
+  address2: 'Complément d\'adresse (facultatif)',
+  postalCode: 'Code postal',
+  city: 'Ville',
+};
+
+
+
 export default function InvoiceScreen({ navigation, route }) {
+
+   const [loaded, error] = useFonts({
+       'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
+       'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
+     });
+   
+    useEffect(() => {
+      if (loaded || error) {
+        SplashScreen.hideAsync();
+      }
+    }, [loaded, error]);
+  
+    if (!loaded && !error) {
+      return null;
+    }
 
     // action de refresh scrollView (useFocusEffect,useRef,ref={scrollViewRef})
     const scrollViewRef = useRef(null);
-        useFocusEffect(
-            React.useCallback(() => {
-             
-              if (scrollViewRef.current) {
-                scrollViewRef.current.scrollTo({ y: 0, animated: true });
-              }
-            }, [])
-          );
+
+    useFocusEffect(
+        React.useCallback(() => {
+          
+          if (scrollViewRef.current) {
+            scrollViewRef.current.scrollTo({ y: 0, animated: true });
+          }
+        }, [])
+      );
 
   const { article } = route.params;
   console.log("CECI EST UN ARTICLE : " + JSON.stringify(article, null, 2));
@@ -90,7 +121,7 @@ export default function InvoiceScreen({ navigation, route }) {
       console.error('Erreur lors de l\'envoi des données:', error);
       Alert.alert('Erreur', 'Problème de connexion au serveur.');
     }
-    navigation.navigate('HomeScreen', { screen: 'Home' });
+    navigation.navigate('Home');
   };
 
   return (
@@ -104,18 +135,18 @@ export default function InvoiceScreen({ navigation, route }) {
       >
         <HeaderNavigation onPress={() => navigation.navigate("Connection")} />
       </LinearGradient>
-
+      <Text style={styles.articleTitlePage}>Votre achat :</Text>
       <View style={styles.articleContainer}>
         <Image source={{ uri: article.pictures[0] }} style={styles.articleImage} />
         <View style={styles.articleInfo}>
           <Text style={styles.articleTitle}>{article.title}</Text>
           <Text style={styles.articlePrice}>{article.price}€</Text>
-          <Text>Frais de livraison: 3.99€</Text>
+          <Text style={styles.articleDelivery}>Frais de livraison: 1.99 €</Text>
         </View>
       </View>
       <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
       <View style={styles.formContainer}>
-       
+      <Text style={styles.infosTitle}>Vos informations : </Text>
         {['firstname', 'lastname', 'number' , 'address1', 'address2', 'postalCode', 'city'].map((field, index) => (
           <View key={index}>
             <Controller
@@ -124,7 +155,7 @@ export default function InvoiceScreen({ navigation, route }) {
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   style={styles.input}
-                  placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                  placeholder={placeholders[field]}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -162,29 +193,73 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     color: '#000000',
   },
+  articleTitlePage: {
+    borderTopColor: 'black',
+    borderTopWidth: 1,
+    backgroundColor: '#00CC99',
+    paddingTop: 20,
+    fontSize: 24,
+    fontWeight: 'bold',
+    fontFamily: 'LilitaOne-Regular',
+    paddingHorizontal: 20,
+  },
   articleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
+    paddingBottom: 30,
+    backgroundColor: '#00CC99',
+    borderBottomColor: '#00000',
+    borderBottomWidth: 1,
   },
   articleImage: {
-    width: 100,
-    height: 100,
-    marginRight: 20,
+    width: 130,
+    height: 130,
+    marginRight: 25,
+    borderWidth: 1,
+    borderColor: "#000000",
   },
   articleInfo: {
     flex: 1,
   },
   articleTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
+    fontFamily: 'LilitaOne-Regular',
+    marginBottom: 7,
+    textTransform: 'uppercase',
+  },
+  infosTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    fontFamily: 'LilitaOne-Regular',
+    marginBottom: 7,
+  },
+  articleDelivery: {
+    fontFamily: 'RopaSans-Regular',
+        fontSize: 10,
+        alignSelf: "flex-start",
+        backgroundColor: 'white',
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        paddingVertical: 7,
+        marginRight: 10,
   },
   articlePrice: {
-    fontSize: 16,
-    color: '#E94C65',
+    fontFamily: 'LilitaOne-Regular',
+      fontSize: 18,
+      width: '34%',
+      textAlign: 'center',
+      padding: 5,
+      borderWidth: 1,
+      borderColor: "#000000",
+      borderRadius: 5,
+      backgroundColor: '#EDDC5F',
+      marginBottom: 15,
   },
   formContainer: {
     padding: 20,
+    paddingBottom: 40,
   },
   input: {
     width: '100%',
@@ -196,6 +271,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     fontSize: 16,
     height: 50,
+    fontFamily: 'RopaSans-Regular',
   },
   errorText: {
     color: 'red',
