@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Image} from 'react-native';
 import HeaderNavigation from './components/HeaderNavigation'; 
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
@@ -56,8 +56,71 @@ export default function TransactionsScreen({ navigation }) {
                 </View>
 
                 {activeView === 'vente' ? (
+                    
                     <View style={styles.venteContainer}>
-                        <View style={styles.row}>
+                            <View style={styles.articleContainer}>
+                                <View style={styles.imageContainer}>
+                                    <Image source={require ('../assets/peluche.jpg')} style={styles.image} />
+                                </View>
+                                <View>
+                                    <View style={styles.textContainer}> 
+                                            <Text style={styles.textTitre}>Ours en peluche </Text>
+                                            <Text style={styles.textPrix}> 12 € </Text>
+                                    </View>
+                                    <View>
+                                        <Text style={styles.textNom}> Jean </Text>
+                                    </View>
+                                </View>
+                            </View>
+
+                            <View style={styles.articleContainer}>
+                                <View style={styles.imageContainer}>
+                                    <Image source={require ('../assets/poussette.jpg')} style={styles.image} />
+                                </View>
+                                <View>
+                                    <View style={styles.textContainer}> 
+                                            <Text style={styles.textTitre}>Poussette </Text>
+                                            <Text style={styles.textPrix}> 150 € </Text>
+                                    </View>
+                                    <View>
+                                        <Text style={styles.textNom}> Julia </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.articleContainer}>
+                                <View style={styles.imageContainer}>
+                                    <Image source={require ('../assets/voiture-bois.jpg')} style={styles.image} />
+                                </View>
+                                <View>
+                                    <View style={styles.textContainer}> 
+                                            <Text style={styles.textTitre}>Voiture-bois </Text>
+                                            <Text style={styles.textPrix}> 8 € </Text>
+                                    </View>
+                                    <View>
+                                        <Text style={styles.textNom}> Bastien </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.articleContainer}>
+                                <View style={styles.imageContainer}>
+                                    <Image source={require ('../assets/LEGO.jpg')} style={styles.image} />
+                                </View>
+                                <View>
+                                    <View style={styles.textContainer}> 
+                                            <Text style={styles.textTitre}>Lego classique </Text>
+                                            <Text style={styles.textPrix}> 30 € </Text>
+                                    </View>
+                                    <View>
+                                        <Text style={styles.textNom}> Bastien </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            
+
+
+                        
+                        {/* <View style={styles.row}>
+                        
                             {articles && articles.length > 0 ? (
                                 articles.map((item, i) => (
                                     <ArticleTransaction key={item.id} item={item} />
@@ -65,21 +128,47 @@ export default function TransactionsScreen({ navigation }) {
                             ) : (
                                 <View style={styles.noArticlesContainer}>
                                     <View> 
-                                         <Text style={styles.noArticlesText}>Vous avez vendu(e) aucun article </Text>
+                                         <Text style={styles.noArticlesText}>Vous n'avez vendu(e) aucun article </Text>
                                     </View>
-
-                                    <View style={styles.articlesContainer}>
-                                        <ArticleTransaction />
-                                        <ArticleTransaction />
-                                    </View>
-
                                 </View>
                             )}
-                        </View>
+                        </View> */}
                     </View>
                 ) : (
                     <View style={styles.acheteContainer}>
-                         <View style={styles.row}>
+                        <View style={styles.articleContainer}>
+                                <View style={styles.imageContainer}>
+                                    <Image source={require ('../assets/train-bois.jpg')} style={styles.image} />
+                                </View>
+                                <View>
+                                    <View style={styles.textContainer}> 
+                                            <Text style={styles.textTitre}>Train en bois </Text>
+                                            <Text style={styles.textPrix}> 12 € </Text>
+                                    </View>
+                                    <View>
+                                        <Text style={styles.textNom}> Antoine </Text>
+                                    </View>
+                                </View>
+                            </View>
+
+                            <View style={styles.articleContainer}>
+                                <View style={styles.imageContainer}>
+                                    <Image source={require ('../assets/lego-technic.jpg')} style={styles.image} />
+                                </View>
+                                <View>
+                                    <View style={styles.textContainer}> 
+                                            <Text style={styles.textTitre}>Lego Technic </Text>
+                                            <Text style={styles.textPrix}> 90 € </Text>
+                                    </View>
+                                    <View>
+                                        <Text style={styles.textNom}> Emma </Text>
+                                    </View>
+                                </View>
+                            </View>
+
+
+
+                         {/* <View style={styles.row}>
                             {articles && articles.length > 0 ? (
                                 articles.map((item, i) => (
                                     <ArticleTransaction key={item.id} item={item} />
@@ -89,7 +178,7 @@ export default function TransactionsScreen({ navigation }) {
                                     <Text style={styles.noArticlesText}> Aucun article acheté </Text>
                                 </View>
                             )}
-                        </View>
+                        </View> */}
                     </View>
                 )}
             </ScrollView>
@@ -121,10 +210,13 @@ const styles = StyleSheet.create({
 
     venteContainer: {
         width: '100%',
+        paddingLeft:20,
     },
 
     acheteContainer: {
         width: '100%',
+        paddingLeft:20,
+        
     },
     
     buttonNav: {
@@ -158,4 +250,53 @@ const styles = StyleSheet.create({
     articlesContainer:{
         width: '100%',
     },
+
+
+    //////
+    articleContainer:{
+        borderWidth: 1,
+    borderColor: "#000000",
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 10,
+        width: '95%',
+        height:70,
+        paddingLeft:20,
+        backgroundColor: 'white',
+        hadowColor: "#000",
+        shadowOffset: { width: 4, height: 4 }, 
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        marginBottom: 10,
+        
+    
+      },
+    
+      imageContainer:{
+        width: '25%',
+      },
+    
+      image:{
+        height: 60,
+        width :60,
+        borderRadius:50,
+      },
+    
+      textContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      },
+      textTitre: {
+        fontFamily: 'RopaSans-Regular',
+        fontSize: 20,
+      },
+      textPrix: {
+        fontFamily: 'RopaSans-Regular',
+        fontSize: 20,
+      },
+      textNom:{
+        fontFamily: 'RopaSans-Regular',
+        fontSize: 16,
+      },
 });

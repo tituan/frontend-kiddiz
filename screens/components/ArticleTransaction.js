@@ -22,9 +22,9 @@ function ArticleTransaction({ text, onPress, style, item }) {
         return null;
     } 
 
-    if (!item) {
-        return null; 
-      }
+    // if (!item) {
+    //     return null; 
+    //   }
 
     return (
         <TouchableOpacity
@@ -34,22 +34,20 @@ function ArticleTransaction({ text, onPress, style, item }) {
         >
             <View style={styles.articleContainer}>
                 <View style={styles.imageContainer}>
-                    <Image source={{ uri: item.pictures[0] }} style={styles.image} />
-                   
-
+                    <Image source={require ('../../assets/peluche.jpg')} style={styles.image} />
                 </View>
                 <View>
                     <View style={styles.textContainer}> 
-                         <Text style={styles.textTitre}>{item.title}</Text>
-                         <Text style={styles.textPrix}> {item.price}</Text>
+                         <Text style={styles.textTitre}>Ours en peluche </Text>
+                         <Text style={styles.textPrix}> 8 € </Text>
                     </View>
                     <View>
-                        <Text style={styles.textNom}> prénom </Text>
+                        <Text style={styles.textNom}> Jean </Text>
                     </View>
-                   
-
                 </View>
             </View>
+
+            
           
         </TouchableOpacity>
       );
