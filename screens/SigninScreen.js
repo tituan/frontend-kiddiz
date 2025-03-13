@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback,} from 'react-native';
+import { Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, Alert} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -143,7 +143,7 @@ const SignInScreen = ({navigation}) => {
           <ButtonBig style={styles.submitButton} text="Connexion" onPress={handleSubmit(onSubmit)}/>
 
           <TouchableOpacity >
-             <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
+             <Text style={styles.forgotPasswordText} onPress={() => Alert.alert('En cours', 'Fonctionnalité à venir ...')}>Mot de passe oublié ?</Text>
           </TouchableOpacity>
         
         </KeyboardAvoidingView>

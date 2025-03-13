@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, Text, StyleSheet, TextInput, View, Modal, TouchableWithoutFeedback, Keyboard, Animated } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, TextInput, View, Modal, TouchableWithoutFeedback, Keyboard, Animated, Alert } from "react-native";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -146,7 +146,7 @@ function SearchBar({ onSearch }) {
               ))}
 
               {/* Bouton pour lancer la recherche */}
-              <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+              <TouchableOpacity style={styles.searchButton} onPress={() => Alert.alert('En cours', 'Fonctionnalité à venir ...')}>
                 <Text style={styles.searchButtonText}>Lancer la recherche</Text>
               </TouchableOpacity>
 
