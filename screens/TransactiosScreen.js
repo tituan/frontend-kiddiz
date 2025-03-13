@@ -90,7 +90,7 @@ export default function TransactionsScreen({ navigation }) {
 
                 {activeView === 'vente' ? (
                     // Partie "Mes ventes"
-                    soldArticles.length > 0 ? (
+                    soldArticles && soldArticles.length > 0 ? (
                         soldArticles.map((item, i) => (
                             <TouchableOpacity key={i} onPress={() => navigation.navigate('ArticleScreen', { article: item })}>
                                 <View key={i} style={styles.venteContainer}>
@@ -118,7 +118,7 @@ export default function TransactionsScreen({ navigation }) {
                     )
                 ) : (
                     // Partie "Mes achats"
-                    boughtArticles.length > 0 ? (
+                    boughtArticles && boughtArticles.length > 0 ? (
                         boughtArticles.map((item, i) => (
                             <TouchableOpacity key={i} onPress={() => navigation.navigate('ArticleScreen', { article: item })}>
                                 <View key={i} style={styles.venteContainer}>
