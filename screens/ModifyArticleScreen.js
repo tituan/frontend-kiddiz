@@ -211,7 +211,7 @@ const ModifyArticleScreen = ({ navigation }) => {
         <View style={styles.container}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
             <ButtonIcon style={styles.buttonBack}  name="arrow-left"  onPress={handleGoBack}/>
-            <Text style={styles.title}>Modifiez votre article !</Text>
+            <Text style={styles.title}>Modifier l'article !</Text>
             <Text style={styles.labelCategorie}>Ajouter votre photo :</Text>
             <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
               {image ? (
