@@ -68,7 +68,7 @@ export default function MyArticlesScreen({ navigation }) {
                     onRefresh={onRefresh}
                 />
             }>
-                <Text style={styles.title}>Liste de vos articles actuellement en vente :</Text>
+                <Text style={styles.title}>Mes articles en vente :</Text>
                 <View style={styles.containerList}>
                     {articles && articles.map((item, i) => (
                         <Article

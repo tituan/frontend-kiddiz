@@ -66,7 +66,7 @@ export default function FavorisScreen({ navigation }) {
             <HeaderNavigation onPress={() => navigation.navigate("Connection")}/>  
         </LinearGradient> 
         <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.title}>Liste de vos articles ajouté en favoris :</Text>
+            <Text style={styles.title}>Mes favoris :</Text>
             <View style={styles.row}>
                 {articles && articles.length > 0 ? (
                     articles.map((item, i) => (

@@ -35,8 +35,8 @@ export default function ConnectionScreen({ navigation }) {
         <Text style={styles.bodyContainer}>s'inscrire</Text>
       </View>
 
-      <ButtonBig style={styles.buttonInscrisToi} text="Inscris-toi" onPress={() => navigation.navigate('SignUp')} />
-      <ButtonBig style={styles.buttonConnectesToi} text="Connectes-toi" onPress={() => navigation.navigate('SignIn')} />
+      <ButtonBig style={styles.buttonInscrisToi} text="Inscription" onPress={() => navigation.navigate('SignUp')} />
+      <ButtonBig style={styles.buttonConnectesToi} text="Connexion" onPress={() => navigation.navigate('SignIn')} />
       {/* <ButtonBig style={styles.buttonGoogle} text="Se connecter avec Google" /> */}
     </SafeAreaView>
   );

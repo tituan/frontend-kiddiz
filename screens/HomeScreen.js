@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, ActivityIndicator, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator, Text, RefreshControl } from 'react-native';
 import React, { useEffect, useState, useRef } from "react";
 import HeaderNavigation from './components/HeaderNavigation';
 import { LinearGradient } from 'expo-linear-gradient'
@@ -23,6 +23,7 @@ export default function HomeScreen({ navigation }) {
       
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
     // Remplace l'URL par celle de ton backend
     const fetchArticles = async () => {
@@ -36,6 +37,12 @@ export default function HomeScreen({ navigation }) {
         } finally {
             setLoading(false); 
         }
+    };
+
+    const onRefresh = async () => {
+        setRefreshing(true);
+        await fetchArticles(); // Recharge les articles
+        setRefreshing(false);
     };
     
     useEffect(() => {
@@ -85,7 +92,13 @@ export default function HomeScreen({ navigation }) {
                     onSearch={handleSearch} 
                 />
             </LinearGradient>
-            <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
+            <ScrollView
+                ref={scrollViewRef}
+                contentContainerStyle={styles.contentContainer}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            >
                 <WelcomeHome navigation={navigation} />
                 
                 <View style={styles.row}>
