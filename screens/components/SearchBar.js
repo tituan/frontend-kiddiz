@@ -114,7 +114,7 @@ function SearchBar({ onSearch }) {
               <Text style={styles.modalTitle}>Sélectionner les filtres</Text>
 
               {/* Filtres d'âge */}
-              {['0 - 1 ans', '1 - 3 ans', '4 - 6 ans', '6 - 12 ans'].map((ageRange) => (
+              {['0 - 1 an', '1 - 3 ans', '3 - 6 ans', '6 - 12 ans'].map((ageRange) => (
                 <Animated.View 
                   key={ageRange} 
                   style={[styles.filterOption, { transform: [{ scale }] }]}
@@ -129,7 +129,7 @@ function SearchBar({ onSearch }) {
                   </TouchableOpacity>
                 </Animated.View>
               ))}
-                                          <View style={styles.separation}> </View>
+                   <View style={styles.separation} />
               {/* Filtres de catégorie */}
               {['Puériculture', 'Jouets', 'Loisirs'].map((category) => (
                 <Animated.View 
