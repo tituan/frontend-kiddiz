@@ -14,7 +14,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
 
-// ✅ Définition du schéma de validation avec Yup
 const schema = yup.object().shape({
   firstname: yup.string().required('Le prénom est requis'),
   lastname: yup.string().required('Le nom est requis'),
@@ -84,9 +83,9 @@ export default function InvoiceScreen({ navigation, route }) {
     },
   });
 
-  // ✅ Fonction d'achat de l'article
+  
   const onSubmit = async (data) => {
-    // Création de l'objet à envoyer au backend
+   
     const requestBody = {
       number: data.number,  
       line1: data.address1,
@@ -97,19 +96,19 @@ export default function InvoiceScreen({ navigation, route }) {
       articleId: article.id
     };
 
-    console.log("Données envoyées au backend :", requestBody); // ✅ Vérifier les données envoyées
+    console.log("Données envoyées au backend :", requestBody); 
 
     try {
       const response = await fetch(`${urlBackend}articles/buy/buy/buy`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json', // ✅ Correction : Envoi sous format JSON
+          'Content-Type': 'application/json', 
         },
         body: JSON.stringify(requestBody),
       });
 
       const result = await response.json();
-      console.log("Réponse du backend :", result); // ✅ Vérifier la réponse du backend
+      console.log("Réponse du backend :", result);
 
       if (response.ok) {
         Alert.alert('Succès', 'Félicitations !!! L\'article a été acheté avec succès. Consultez votre boite mail pour le paiement.');

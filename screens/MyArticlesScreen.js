@@ -14,7 +14,7 @@ export default function MyArticlesScreen({ navigation }) {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
-    // Permet d'actualiser la page lors du scrollDown avec un reRender + un appel à fetchArticles()
+   
     const onRefresh = () => {
         setRefreshing(true);
         fetchArticles();
@@ -28,13 +28,13 @@ export default function MyArticlesScreen({ navigation }) {
             const response = await fetch(`${urlBackend}articles/get-by/seller/${userToken}`);
             const data = await response.json();
             console.log('Articles récupérés:', data.articles);
-            setArticles(data.articles); // Stocke les articles dans l'état
+            setArticles(data.articles); 
         }
         catch (error) {
             console.error("Erreur lors de la récupération des articles:", error);
         }
         finally {
-            setLoading(false); // Arrête le chargement
+            setLoading(false); 
         }
     };
 
@@ -53,9 +53,9 @@ export default function MyArticlesScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <LinearGradient
-                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} // Couleurs du dégradé
-                start={{ x: 0, y: 1 }} // Point de départ du dégradé (0,1 = bas)
-                end={{ x: 0, y: 0 }} // Point d'arrivée du dégradé (0,0 = haut)
+                colors={['rgba(34,193,195,1)', 'rgba(253,187,45,1)']} 
+                start={{ x: 0, y: 1 }} 
+                end={{ x: 0, y: 0 }} 
                 style={styles.header}
             >
                 <HeaderNavigation onPress={() => navigation.navigate("Connection")} />
@@ -91,11 +91,11 @@ const styles = StyleSheet.create({
         borderBottomColor: '#00000',
         borderBottomWidth: 1,
         paddingBottom: 20,
-        shadowColor: "#000", // Couleur de l'ombre
-        shadowOffset: { width: 0, height: 3 }, // Décalage vertical de l'ombre
-        shadowOpacity: 0.9, // Opacité de l'ombre
-        shadowRadius: 4, // Flou de l'ombre
-        elevation: 5, // Ajoute l'ombre sur Android
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 3 }, 
+        shadowOpacity: 0.9, 
+        shadowRadius: 4, 
+        elevation: 5, 
 
     },
     row: {

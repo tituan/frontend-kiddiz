@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, Button } from 'react-native';
+import { Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback,} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -12,10 +12,10 @@ import ButtonBig from './components/ButtonBig'
 import ButtonIcon from './components/ButtonIcon';
 import { TouchableOpacity} from 'react-native';
 
- // Env variable for BACKEND
+ 
  const urlBackend = process.env.EXPO_PUBLIC_API_URL;
 
-// Définition du schéma de validation avec yup
+
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -35,14 +35,14 @@ const SignInScreen = ({navigation}) => {
     'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
   });
 
-  // Masquer l'écran de chargement jusqu'à ce que la police soit prête
+  
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
 
-  // Afficher un écran de chargement si les polices ne sont pas encore prêtes
+  
   if (!fontsLoaded) {
     return null;
   }
@@ -67,7 +67,7 @@ const SignInScreen = ({navigation}) => {
       const data = await response.json();
 
       if (data.result) {
-        // console.log('Connexion réussie:', data);
+       
         dispatch(loginUser({
           firstname: data.userData.firstname,
           lastname: data.userData.lastname,
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  // buttonSInscrire
+  
   innerContainer: {
     flex: 1,
     justifyContent: 'center',

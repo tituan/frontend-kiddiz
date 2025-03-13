@@ -2,7 +2,6 @@ import React, { useEffect, } from "react";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { LinearGradient } from 'expo-linear-gradient'
 import { FontAwesome } from '@expo/vector-icons';
 
 
@@ -32,7 +31,7 @@ function ButtonProfil({ sellerFirstName, sellerLastName, onPress, style }) {
       onPress={onPress}
       activeOpacity={0.7}
     >
-      {/* Profil Section */}
+      
       <View style={styles.profil}>
         <View style={styles.cardProfil}>
           <View style={styles.idBox}>
@@ -72,12 +71,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 10,
-    // Ombre sur iOS
     shadowColor: "#000",
     shadowOffset: { width: 4, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 4,
-    // Ombre sur Android
     elevation: 5,
   },
   profil: {
@@ -108,6 +105,8 @@ const styles = StyleSheet.create({
     color: '#00000',
     fontFamily: 'LilitaOne-Regular',
     fontSize: 60,
+    marginRight:7,
+    
   },
   iconProfil: {
     width: '35%',
