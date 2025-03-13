@@ -36,8 +36,8 @@ export default function TransactionsScreen({ navigation }) {
         try {
             const response = await fetch(`${urlBackend}articles/sold-by/seller/${user.token}`);
             const data = await response.json();
-            console.log(data)
-            setSoldArticles(data.articles);
+            console.log('data -------->>>>',data)
+            if(data){setSoldArticles(data.articles);}
         } catch (error) {
             console.error("Erreur lors de la récupération des articles:", error);
         } finally {
