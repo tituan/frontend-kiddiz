@@ -126,7 +126,7 @@ export default function SignUpScreen({ navigation }) {
     } catch (error) {
       console.error('Erreur lors de l\'inscription :', error);
     } finally {
-      setIsLoading(false); // ✅ Désactivation du loader après la réponse
+      setIsLoading(false); 
     }
   };
 

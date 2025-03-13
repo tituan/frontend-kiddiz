@@ -65,7 +65,7 @@ const SignInScreen = ({navigation}) => {
         body: JSON.stringify(values),
       });
       const data = await response.json();
-
+      
       if (data.result) {
        
         dispatch(loginUser({
@@ -79,7 +79,8 @@ const SignInScreen = ({navigation}) => {
         }));
         navigation.navigate("Home");
       } else {
-        console.log('Erreur de connexion:', data.message);
+        // console.log('Erreur de connexion:', data.message);
+        Alert.alert(data.error)
       }
     } catch (error) {
       console.error("Erreur lors de l'envoi des données :", error);
