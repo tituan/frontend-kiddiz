@@ -20,7 +20,7 @@ const schema = yup.object().shape({
   number: yup.string().required('Le numéro de rue est requis'),
   address1: yup.string().required('L’adresse est requise'),
   address2: yup.string().optional(),
-  postalCode: yup.string().matches(/^\d{4,5}$/, 'Le code postal doit contenir 4 ou 5 chiffres').required('Le code postal est requis'),
+  postalCode: yup.string().matches(/^\d{5}$/, 'Le code postal doit contenir 5 chiffres').required('Le code postal est requis'),
   city: yup.string().required('La ville est requise'),
 });
 
@@ -134,6 +134,8 @@ export default function InvoiceScreen({ navigation, route }) {
       >
         <HeaderNavigation onPress={() => navigation.navigate("Connection")} />
       </LinearGradient>
+      
+      <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
       <Text style={styles.articleTitlePage}>Votre achat :</Text>
       <View style={styles.articleContainer}>
         <Image source={{ uri: article.pictures[0] }} style={styles.articleImage} />
@@ -143,7 +145,6 @@ export default function InvoiceScreen({ navigation, route }) {
           <Text style={styles.articleDelivery}>Frais de livraison: 1.99 €</Text>
         </View>
       </View>
-      <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
       <View style={styles.formContainer}>
       <Text style={styles.infosTitle}>Vos informations : </Text>
         {['firstname', 'lastname', 'number' , 'address1', 'address2', 'postalCode', 'city'].map((field, index) => (

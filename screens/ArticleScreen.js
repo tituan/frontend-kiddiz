@@ -238,6 +238,7 @@ export default function ArticleScreen({ navigation, route }) {
                                     if (!userToken) {
                                         navigation.navigate("Connection");
                                     } else {
+                                        contactSeller();
                                     }
                                 }} />
 
