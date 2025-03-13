@@ -20,11 +20,11 @@ const schema = yup.object().shape({
   email: yup
     .string()
     .email('Adresse email invalide')
-    .required('Email est requis'),
+    .required('Email requis'),
   password: yup
     .string()
     .min(5, 'Le mot de passe doit contenir au moins 6 caractères')
-    .required('Mot de passe est requis'),
+    .required('Mot de passe requis'),
 });
 
 const SignInScreen = ({navigation}) => {
@@ -140,7 +140,7 @@ const SignInScreen = ({navigation}) => {
           />
           {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
 
-          <ButtonBig style={styles.submitButton} text="Connectez-vous" onPress={handleSubmit(onSubmit)}/>
+          <ButtonBig style={styles.submitButton} text="Connexion" onPress={handleSubmit(onSubmit)}/>
 
           <TouchableOpacity >
              <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>

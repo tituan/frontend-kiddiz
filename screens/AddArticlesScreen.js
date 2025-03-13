@@ -18,7 +18,7 @@ import {updateIban} from '../reducers/users'
       const schema = yup.object().shape({
         title: yup
           .string()
-          .max(40, 'Le titre ne doit pas dépasser 40 caractères')
+          .max(30, 'Le titre ne doit pas dépasser 30 caractères')
           .required('Le titre est requis'),
         productDescription: yup
           .string()
@@ -186,7 +186,7 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
       <ScrollView ref={scrollViewRef} contentContainerStyle={styles.contentContainer}>
         <Text style={styles.title}>Vendez votre article !</Text>
 
-        <Text style={styles.labelCategorie}>Ajouter votre photo :</Text>
+        <Text style={styles.labelCategorie}>Ajouter une photo :</Text>
         <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
           {image ? (
             <Image source={{ uri: image }} style={styles.image} />
@@ -204,7 +204,7 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
-              placeholder="Titre de l'article (max 40 caractères)"
+              placeholder="Titre de l'article (max 30 caractères)"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
