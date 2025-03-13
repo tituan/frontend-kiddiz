@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Alert, ActivityIndicator  } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useForm, Controller } from 'react-hook-form';
@@ -51,7 +51,7 @@ export default function SignUpScreen({ navigation }) {
 
   const dispatch = useDispatch();
   const [showDatePicker, setShowDatePicker] = useState(false); 
-
+  const [isLoading, setIsLoading] = useState(false);
   
   const [loaded, error] = useFonts({
     'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
@@ -90,6 +90,7 @@ export default function SignUpScreen({ navigation }) {
 
   
   const handleSignUp = async (values) => {
+    setIsLoading(true);
     try {
       
       const formattedValues = {
@@ -124,6 +125,8 @@ export default function SignUpScreen({ navigation }) {
       }
     } catch (error) {
       console.error('Erreur lors de l\'inscription :', error);
+    } finally {
+      setIsLoading(false); // ✅ Désactivation du loader après la réponse
     }
   };
 
@@ -294,8 +297,7 @@ export default function SignUpScreen({ navigation }) {
               )}
             />
             {errors.publicy && <Text style={styles.errorText}>{errors.publicy.message}</Text>}
-
-           
+            {isLoading && <ActivityIndicator size="small" color="#FFF" />}
             <ButtonBig style={styles.buttonSignUp} text="S'inscrire" onPress={handleSubmit(onSubmit)} />
           </SafeAreaView>
         </KeyboardAvoidingView>

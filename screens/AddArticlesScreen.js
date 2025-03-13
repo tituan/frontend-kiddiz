@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Image, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Image, Alert, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 import ButtonBig from './components/ButtonBig';
@@ -52,7 +52,7 @@ const types = ['Puériculture', 'Loisir', 'Jouet'];
 const conditions = ['Très bon état', 'Bon état', 'État moyen', 'Neuf'];
 
 const AddArticlesScreen = ({ navigation }) => {
-
+ const [isLoading, setIsLoading] = useState(false);
   
   const scrollViewRef = useRef(null);
       useFocusEffect(
@@ -116,6 +116,7 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
 
   
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       
       const formData = new FormData();
@@ -170,6 +171,8 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
     } catch (error) {
       Alert.alert('Erreur', 'Une erreur est survenue lors de la publication de l\'article.');
       
+    } finally {
+      setIsLoading(false); // ✅ Désactivation du loader après la réponse
     }
   };
 
@@ -309,7 +312,7 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
                 {errors.iban && <Text style={styles.errorText}>{errors.iban.message}</Text>}
               </View>
     )}
-
+        {isLoading && <ActivityIndicator size="small" color="#FFF" />}
         <ButtonBig text="Publier l'article" style={styles.submitButton} onPress={handleSubmit(onSubmit)} />
       </ScrollView>
      
