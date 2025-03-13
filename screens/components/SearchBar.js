@@ -114,20 +114,22 @@ function SearchBar({ onSearch }) {
               <Text style={styles.modalTitle}>Sélectionner les filtres</Text>
 
               {/* Filtres d'âge */}
-              {['0 - 3 ans', '4 - 6 ans', '6 - 10 ans', '10 - 14 ans'].map((ageRange) => (
+              {['0 - 1 ans', '1 - 3 ans', '4 - 6 ans', '6 - 12 ans'].map((ageRange) => (
                 <Animated.View 
                   key={ageRange} 
                   style={[styles.filterOption, { transform: [{ scale }] }]}
                 >
+                  
                   <TouchableOpacity 
                     style={[styles.filterOption, { backgroundColor: filters.age === ageRange ? backgroundColor : '#fff', borderRadius: 5 }]} 
                     onPress={() => handleFilterSelection('age', ageRange)}
                   >
+                    
                     <Text style={styles.filterText}>{ageRange}</Text>
                   </TouchableOpacity>
                 </Animated.View>
               ))}
-
+                                          <View style={styles.separation}> </View>
               {/* Filtres de catégorie */}
               {['Puériculture', 'Jouets', 'Loisirs'].map((category) => (
                 <Animated.View 
@@ -245,6 +247,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'LilitaOne-Regular',
+  },
+
+  separation: {
+    borderWidth: 1,
+    borderColor: "#000000",
+    width: '75%',
+    marginLeft: 40,
+    marginTop:10,
+    marginBottom:10,
   },
   filterOption: {
     paddingVertical: 5,
