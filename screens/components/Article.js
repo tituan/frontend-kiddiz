@@ -112,8 +112,8 @@ function Article({ onPress, style, item, showModifyButton = false, isFavorite = 
         </View>
       </TouchableOpacity>
       {showModifyButton && (
-        <TouchableOpacity onPress={handleModify}>
-          <Text>modifier</Text>
+        <TouchableOpacity style={styles.btnModify} onPress={handleModify}>
+          <Text style={styles.btnModifyText}>modifier</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -231,5 +231,26 @@ const styles = StyleSheet.create({
     width: 100,
     height: 40,
     backgroundColor: '#fdba2d',
-  }
+  },
+  btnModify: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 4,
+    backgroundColor: '#f095B4',
+    borderRadius: 5,
+    borderBlockColor: 'black',
+    borderWidth: 1,
+    textAlign: 'center',
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 3,
+   
+  },
+  btnModifyText: {
+    color: 'white',
+  },
 });
