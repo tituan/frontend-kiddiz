@@ -172,7 +172,7 @@ console.log("Valeur actuelle de l'IBAN :", ibanValue);
       Alert.alert('Erreur', 'Une erreur est survenue lors de la publication de l\'article.');
       
     } finally {
-      setIsLoading(false); // ✅ Désactivation du loader après la réponse
+      setIsLoading(false);
     }
   };
 
