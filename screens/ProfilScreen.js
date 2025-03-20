@@ -63,7 +63,7 @@ export default function ProfilScreen({ navigation }) {
                     <Text style={styles.containerProfilInfosName}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() + user.firstname.slice(1).toLowerCase() : 'Utilisateur'} {user?.lastname ? user.lastname.charAt(0).toUpperCase() + user.lastname.slice(1).toLowerCase() : 'Utilisateur'}</Text>
                 </View>
             </View>
-            <ButtonBig style={styles.buttonSell} text="Vendre un artcile" onPress={() => navigation.navigate('Vendre')} />
+            <ButtonBig style={styles.buttonSell} text="Vendre un article" onPress={() => navigation.navigate('Vendre')} />
             <ButtonBig style={styles.buttonNav} text="Mes articles" onPress={() => navigation.navigate('MesArticles')} />
             <ButtonBig style={styles.buttonNav} text="Mes favoris" onPress={() => navigation.navigate('Favoris')} />
             <ButtonBig style={styles.buttonNav} text="Mes transactions" onPress={() => navigation.navigate('TransactionsScreen')} />
