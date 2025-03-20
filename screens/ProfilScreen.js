@@ -7,6 +7,8 @@ import ButtonBig from './components/ButtonBig';
 import { logOut } from '../reducers/users';
 import { useDispatch } from 'react-redux';
 
+const urlBackend = process.env.EXPO_PUBLIC_API_URL;
+
 export default function ProfilScreen({ navigation }) {
     const user = useSelector(state => state.user.value);
     console.log(user)
@@ -17,14 +19,13 @@ export default function ProfilScreen({ navigation }) {
         'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
       });
 
-      const resetToken = async (userToken) => {   
+      const resetToken = async () => {   
         try {
-            const response = await fetch(`${urlBackend}users/logout`, {
+            const response = await fetch(`${urlBackend}users/logout/${user.token}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ token: userToken }),
             });
     
             const data = await response.json(); 
@@ -35,7 +36,7 @@ export default function ProfilScreen({ navigation }) {
     };
 
     const handleLogOut = () => {
-        resetToken(user.token);
+        resetToken();
         dispatch(logOut()); 
         navigation.navigate('Home')
         console.log('Utilisateur déconnecté');
