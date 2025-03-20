@@ -65,17 +65,17 @@ const SignInScreen = ({navigation}) => {
         body: JSON.stringify(values),
       });
       const data = await response.json();
-      
+      console.log('Réponse serveur:', data);
       if (data.result) {
        
         dispatch(loginUser({
-          firstname: data.userData.firstname,
-          lastname: data.userData.lastname,
-          email: data.userData.email,
-          dateOfBirth: data.userData.dateOfBirth,
-          token: data.userData.token,
-          status: data.userData.status,
-          iban: data.userData.iban
+          firstname: data.userResponse.firstname,
+          lastname: data.userResponse.lastname,
+          email: data.userResponse.email,
+          dateOfBirth: data.userResponse.dateOfBirth,
+          token: data.userResponse.token,
+          status: data.userResponse.status,
+          iban: data.userResponse.iban
         }));
         navigation.navigate("Home");
       } else {
