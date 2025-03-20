@@ -25,7 +25,6 @@ export default function HomeScreen({ navigation }) {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
-    // Remplace l'URL par celle de ton backend
     const fetchArticles = async () => {
         try {
             const response = await fetch(`${urlBackend}articles/recent`);
@@ -41,7 +40,7 @@ export default function HomeScreen({ navigation }) {
 
     const onRefresh = async () => {
         setRefreshing(true);
-        await fetchArticles(); // Recharge les articles
+        await fetchArticles();
         setRefreshing(false);
     };
     
