@@ -144,24 +144,6 @@ export default function TransactionsScreen({ navigation }) {
                             <Text style={styles.noArticlesText}>Vous n'avez acheté aucun article</Text>
                         </View>
                     )
-
-
-                    // <View style={styles.acheteContainer}>
-                    //     <View style={styles.articleContainer}>
-                    //         <View style={styles.imageContainer}>
-                    //             <Image source={require('../assets/train-bois.jpg')} style={styles.image} />
-                    //         </View>
-                    //         <View>
-                    //             <View style={styles.textContainer}>
-                    //                 <Text style={styles.textTitre}>Train en bois </Text>
-                    //                 <Text style={styles.textPrix}> 12 € </Text>
-                    //             </View>
-                    //             <View>
-                    //                 <Text style={styles.textNom}> Antoine </Text>
-                    //             </View>
-                    //         </View>
-                    //     </View>
-                    // </View>
                 )}
             </ScrollView>
         </View>
