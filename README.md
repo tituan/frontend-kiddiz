@@ -198,6 +198,6 @@ Ce projet est sous **licence MIT**. Vous êtes libre de l'utiliser et de le modi
 ---
 
 🔥 **Merci d'utiliser Kiddiz !** 🎠  
-Si vous aimez ce projet, ⭐ **étoilez-le** sur GitHub ! 🚀
+Si vous aimez ce projet, ⭐ **étoilez-le** sur GitHub ! 
 
 

@@ -17,7 +17,25 @@ export default function ProfilScreen({ navigation }) {
         'RopaSans-Regular': require('../assets/fonts/RopaSans-Regular.ttf'),
       });
 
+      const resetToken = async (userToken) => {   
+        try {
+            const response = await fetch(`${urlBackend}users/logout`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: userToken }),
+            });
+    
+            const data = await response.json(); 
+            console.log('Utilisateur déconnecté:', data);
+        } catch (error) {
+            console.error('Erreur lors de la déconnexion:', error);
+        }
+    };
+
     const handleLogOut = () => {
+        resetToken(user.token);
         dispatch(logOut()); 
         navigation.navigate('Home')
         console.log('Utilisateur déconnecté');
