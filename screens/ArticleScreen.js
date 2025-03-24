@@ -183,7 +183,7 @@ export default function ArticleScreen({ navigation, route }) {
                             <Text style={styles.textType}>{article.condition}</Text>
                         </View>
                         <Text style={styles.textDescription}>Description : {article.productDescription}</Text>
-                        {userToken !== sellerArticleToken && article.availableStock > 0 && (
+                        {(userToken === null || sellerArticleToken === null || userToken !== sellerArticleToken) && article.availableStock > 0 && (
                             <View style={styles.buttonContainer}>
                                 <ButtonBig
                                     style={styles.buttonAcheterArticle}
@@ -211,13 +211,13 @@ export default function ArticleScreen({ navigation, route }) {
                     </View>
                         )}
                     </View>
-                    {userToken === sellerArticleToken && article.availableStock > 0 && (
+                    {userToken && userToken === sellerArticleToken && article.availableStock > 0 && (
                         <View style={styles.containerBtnSeller}>
                             <ButtonBig style={styles.buttonModify} text="Modifier votre article" onPress={() => navigation.navigate("Modifier", { articleId: article.id })} />
                             <ButtonBig style={styles.buttonDelete} text="Supprimer votre article" onPress={confirmDelete} />
                         </View>
                     )}  
-                    {userToken !== sellerArticleToken && article.availableStock > 0 && (
+                    {(userToken === null || sellerArticleToken === null || userToken !== sellerArticleToken) && article.availableStock > 0 && (
                         <>
                             <Text>{article.firstname}</Text>
                             <View style={styles.buttonSeller}>
